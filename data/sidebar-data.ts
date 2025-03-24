@@ -2,6 +2,7 @@ import {
   IconBarrierBlock,
   IconBrowserCheck,
   IconBug,
+  IconCalendarEvent,
   IconChecklist,
   IconError404,
   IconHelp,
@@ -47,7 +48,7 @@ export const sidebarData: SidebarData = {
         {
           title: "Appointments",
           url: "/appointments",
-          icon: IconUsers,
+          icon: IconCalendarEvent,
         },
       ],
     },
