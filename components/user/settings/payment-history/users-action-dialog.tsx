@@ -37,7 +37,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import Link from "next/link";
+import { useUsers } from "./context/users-context";
 
 const formSchema = z.object({
   type: z.string().min(1, { message: "Payment Type 11 is required." }),
@@ -58,6 +58,8 @@ const initialState = {
 };
 
 export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
+  const { setOpen } = useUsers();
+
   const isEdit = !!currentRow;
   const formRef = useRef<HTMLFormElement>(null);
   const [state, formAction, isPending] = useActionState(
@@ -107,6 +109,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
                   const formData = new FormData(formRef.current!);
                   startTransition(() => {
                     formAction(formData);
+                    setOpen("");
                   });
                 })(evt);
               }}
