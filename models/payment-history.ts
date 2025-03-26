@@ -3,6 +3,8 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 export interface IPaymentEntry extends Document {
   type: string;
   amount: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const PaymentEntrySchema = new Schema<IPaymentEntry>(

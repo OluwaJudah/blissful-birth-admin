@@ -25,8 +25,13 @@ export default async function PaymentHistory() {
         <Separator className="my-4 flex-none" />
         <ScrollArea className="faded-bottom -mx-4 flex-1 scroll-smooth px-4 md:pb-16">
           <div className="-mx-1 px-1.5 flex flex-col gap-3 lg:max-w-xl">
-            {paymentEntries?.map((entry) => (
-              <PaymentEntry key={entry.id} />
+            {paymentEntries?.map(({ id, type, amount, createdAt }) => (
+              <PaymentEntry
+                type={type}
+                amount={amount}
+                createdAt={createdAt}
+                key={id}
+              />
             ))}
           </div>
         </ScrollArea>
