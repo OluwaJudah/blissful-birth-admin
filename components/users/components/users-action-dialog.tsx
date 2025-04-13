@@ -26,7 +26,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { PasswordInput } from "@/components/password-input";
 import { SelectDropdown } from "@/components/select-dropdown";
 import { userTypes } from "../data/data";
-import { User } from "../data/schema";
+import { IMotherInfo } from "@/definitions/mother-info";
 
 const formSchema = z
   .object({
@@ -89,7 +89,7 @@ const formSchema = z
 type UserForm = z.infer<typeof formSchema>;
 
 interface Props {
-  currentRow?: User;
+  currentRow?: IMotherInfo;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }

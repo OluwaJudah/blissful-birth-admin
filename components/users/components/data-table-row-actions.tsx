@@ -14,9 +14,10 @@ import {
 import { useUsers } from "../context/users-context";
 import { User } from "../data/schema";
 import { useRouter } from "next/navigation";
+import { IMotherInfo } from "@/definitions/mother-info";
 
 interface DataTableRowActionsProps {
-  row: Row<User>;
+  row: Row<IMotherInfo>;
 }
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
@@ -38,24 +39,12 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           <DropdownMenuItem
             onClick={() => {
               setCurrentRow(row.original);
-              router.push("/user/settings");
+              router.push(`/user/settings/${row.original?._id}`);
             }}
           >
             View
             <DropdownMenuShortcut>
               <IconEye size={16} />
-            </DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />{" "}
-          <DropdownMenuItem
-            onClick={() => {
-              setCurrentRow(row.original);
-              setOpen("edit");
-            }}
-          >
-            Edit
-            <DropdownMenuShortcut>
-              <IconEdit size={16} />
             </DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuSeparator />

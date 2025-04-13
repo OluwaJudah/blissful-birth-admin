@@ -1,15 +1,15 @@
 "use client";
 import React, { useState } from "react";
 import useDialogState from "@/hooks/use-dialog-state";
-import { User } from "../data/schema";
+import { IMotherInfo } from "@/definitions/mother-info";
 
 type UsersDialogType = "invite" | "add" | "edit" | "delete";
 
 interface UsersContextType {
   open: UsersDialogType | null;
   setOpen: (str: UsersDialogType | null) => void;
-  currentRow: User | null;
-  setCurrentRow: React.Dispatch<React.SetStateAction<User | null>>;
+  currentRow: IMotherInfo | null;
+  setCurrentRow: React.Dispatch<React.SetStateAction<IMotherInfo | null>>;
 }
 
 const UsersContext = React.createContext<UsersContextType | null>(null);
@@ -20,7 +20,7 @@ interface Props {
 
 export default function UsersProvider({ children }: Props) {
   const [open, setOpen] = useDialogState<UsersDialogType>(null);
-  const [currentRow, setCurrentRow] = useState<User | null>(null);
+  const [currentRow, setCurrentRow] = useState<IMotherInfo | null>(null);
 
   return (
     <UsersContext value={{ open, setOpen, currentRow, setCurrentRow }}>

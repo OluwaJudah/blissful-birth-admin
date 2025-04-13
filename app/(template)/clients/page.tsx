@@ -10,10 +10,14 @@ import { UsersTable } from "@/components/users/components/users-table";
 import UsersProvider from "@/components/users/context/users-context";
 import { userListSchema } from "@/components/users/data/schema";
 import { users } from "@/components/users/data/users";
+import { getMothers } from "@/data/mother-info";
+import { IMotherInfo } from "@/definitions/mother-info";
 
-export default function Users() {
+export default async function Users() {
   // Parse user list
   const userList = userListSchema.parse(users);
+  const data = (await getMothers()) as IMotherInfo[];
+  const clients = JSON.parse(JSON.stringify(data));
 
   return (
     <UsersProvider>
@@ -29,14 +33,12 @@ export default function Users() {
         <div className="mb-2 flex flex-wrap items-center justify-between space-y-2">
           <div>
             <h2 className="text-2xl font-bold tracking-tight">Clients</h2>
-            <p className="text-muted-foreground">
-              Manage your clients here.
-            </p>
+            <p className="text-muted-foreground">Manage your clients here.</p>
           </div>
           <UsersPrimaryButtons />
         </div>
         <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0">
-          <UsersTable data={userList} columns={columns} />
+          <UsersTable data={clients} columns={columns} />
         </div>
       </Main>
 

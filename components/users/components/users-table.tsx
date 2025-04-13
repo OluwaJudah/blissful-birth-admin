@@ -23,7 +23,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { User } from "../data/schema";
+import { IMotherInfo } from "@/definitions/mother-info";
 import { DataTablePagination } from "./data-table-pagination";
 import { DataTableToolbar } from "./data-table-toolbar";
 
@@ -35,8 +35,8 @@ declare module "@tanstack/react-table" {
 }
 
 interface DataTableProps {
-  columns: ColumnDef<User>[];
-  data: User[];
+  columns: ColumnDef<IMotherInfo>[];
+  data: IMotherInfo[];
 }
 
 export function UsersTable({ columns, data }: DataTableProps) {
