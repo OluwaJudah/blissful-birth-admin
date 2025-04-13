@@ -1,4 +1,4 @@
-import dbConnect from "@/lib/mongodb";
+import dbConnect from "@/lib/db";
 import PaymentEntry from "@/models/payment-history";
 import { unstable_noStore as noStore } from "next/cache";
 

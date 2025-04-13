@@ -1,7 +1,7 @@
 "use server";
 import PaymentEntry from "@/models/payment-history";
 import { z } from "zod";
-import dbConnect from "@/lib/mongodb";
+import dbConnect from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
 export type PaymentHistoryState = {
