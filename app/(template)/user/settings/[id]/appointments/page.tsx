@@ -2,8 +2,16 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { AppointmmentPrimaryButton } from "@/components/user/settings/appointments/appointment-button";
 import AppointmentEntry from "@/components/user/settings/appointments/AppointmentEntry";
+import { getMotherAppointments } from "@/data/appointment";
 
-export default function SettingsAccount() {
+export default async function SettingsAccount({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const appointments = await getMotherAppointments(id, "");
+
   return (
     <div className="flex flex-1 flex-col">
       <div className="flex justify-between">
@@ -19,9 +27,17 @@ export default function SettingsAccount() {
       <Separator className="my-4 flex-none" />
       <ScrollArea className="faded-bottom -mx-4 flex-1 scroll-smooth px-4 md:pb-16">
         <div className="-mx-1 px-1.5 flex flex-col gap-3 lg:max-w-xl">
-          <AppointmentEntry />
-          <AppointmentEntry />
-          <AppointmentEntry />
+          {appointments.map(({ _id, date, time, status, pregnancyWeeks }) => (
+            <AppointmentEntry
+              key={_id.toString()}
+              id={_id.toString()}
+              date={date}
+              time={time}
+              status={status}
+              pregnancyWeeks={pregnancyWeeks}
+              userId={id}
+            />
+          ))}
         </div>
       </ScrollArea>
     </div>
