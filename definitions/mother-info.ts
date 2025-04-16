@@ -150,6 +150,7 @@ export type IMedicalHistory = {
 
 export type IBirthCompanion = {
   _id?: string;
+  userId?: string;
   fullName: string;
   surname: string;
   maidenName: string;

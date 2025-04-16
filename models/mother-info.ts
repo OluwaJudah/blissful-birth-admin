@@ -1,7 +1,7 @@
 import { IMotherInfo } from "@/definitions/mother-info";
 import mongoose, { Schema, Document, Model } from "mongoose";
 
-export interface MotherInfo extends Omit<Document, '_id'>, IMotherInfo {
+export interface MotherInfo extends Omit<Document, "_id">, IMotherInfo {
   userId: string;
   createdAt?: Date;
   updatedAt?: Date;

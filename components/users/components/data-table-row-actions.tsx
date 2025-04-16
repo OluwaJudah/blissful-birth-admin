@@ -39,7 +39,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           <DropdownMenuItem
             onClick={() => {
               setCurrentRow(row.original);
-              router.push(`/user/settings/${row.original?._id}`);
+              router.push(`/user/settings/${row.original?.userId}`);
             }}
           >
             View

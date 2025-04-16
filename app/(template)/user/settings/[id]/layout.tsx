@@ -15,29 +15,6 @@ import { ProfileDropdown } from "@/components/profile-dropdown";
 import { Search } from "@/components/search";
 import { ThemeSwitch } from "@/components/theme-switch";
 
-const sidebarNavItems = [
-  {
-    title: "Profile",
-    icon: <IconUser size={18} />,
-    href: "/user/settings",
-  },
-  {
-    title: "Appointments",
-    icon: <IconCalendarEvent size={18} />,
-    href: "/user/settings/appointments",
-  },
-  {
-    title: "Payment History",
-    icon: <IconReceiptDollar size={18} />,
-    href: "/user/settings/payment-history",
-  },
-  {
-    title: "Notifications",
-    icon: <IconBellRinging2 size={18} />,
-    href: "/user/settings/notifications",
-  },
-];
-
 export default async function RootLayout({
   params,
   children,
