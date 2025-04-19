@@ -52,7 +52,7 @@ export type IMotherReport = {
   motherWeight: number;
   motherUrine: number;
   motherPalpation: number;
-  motherBloodPressure: number;
+  motherBloodPressure: string;
   motherFh: number;
   motherNote: string;
 };
@@ -79,9 +79,11 @@ export const motherReportFormSchema = z.object({
   motherPalpation: z.coerce.number().min(1, {
     message: "Mother's Palpation must be greater than 0.",
   }),
-  motherBloodPressure: z.coerce.number().min(1, {
-    message: "Mother's Blood Pressure must be greater than 0.",
-  }),
+  motherBloodPressure: z
+    .string()
+    .regex(/^\d{2,3}\/\d{2,3}$/, {
+      message: "Please follow the pattern of mm/Hg. E.g 120/80",
+    }),
   motherFh: z.coerce.number().min(1, {
     message: "Mother's FH must be greater than 0.",
   }),

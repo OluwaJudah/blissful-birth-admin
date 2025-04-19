@@ -4,7 +4,7 @@ export const defaultValueMotherReportForm = {
   motherWeight: 0,
   motherUrine: 0,
   motherPalpation: 0,
-  motherBloodPressure: 0,
+  motherBloodPressure: "",
   motherFh: 0,
   motherNote: "",
 };
@@ -39,9 +39,8 @@ export const motherReportFormData: any[] = [
   },
   {
     name: "motherBloodPressure",
-    label: "Blood Pressure (cm)",
-    type: "number",
-    placeholder: "Please enter the mother's pressure in centimeters",
+    label: "Blood Pressure (mm/Hg)",
+    placeholder: "Please enter the mother's pressure in mmHg. E.g 120/80",
   },
   {
     name: "motherFh",

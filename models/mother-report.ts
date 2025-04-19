@@ -12,7 +12,7 @@ const MotherReportSchema = new Schema<MotherReport>(
     motherWeight: { type: Number, required: true },
     motherUrine: { type: Number, required: true },
     motherPalpation: { type: Number, required: true },
-    motherBloodPressure: { type: Number, required: true },
+    motherBloodPressure: { type: String, required: true },
     motherFh: { type: Number, required: true },
     motherNote: { type: String },
     appointmentId: { type: String, required: true },
