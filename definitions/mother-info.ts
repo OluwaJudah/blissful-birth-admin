@@ -164,6 +164,7 @@ export type IBirthCompanion = {
 
 export type IMotherInfo = IBirthCompanion & {
   lastMenstrualDate: Date;
+  paymentSum?: number;
 };
 
 export type IBabyInfo = {

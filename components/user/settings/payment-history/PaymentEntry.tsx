@@ -8,7 +8,7 @@ const PaymentEntry = ({
   createdAt,
 }: {
   type: string;
-  amount: string;
+  amount: number;
   createdAt: Date;
 }) => {
   const paymentObj: any = {

@@ -8,15 +8,12 @@ import { UsersDialogs } from "@/components/users/components/users-dialogs";
 import { UsersPrimaryButtons } from "@/components/users/components/users-primary-buttons";
 import { UsersTable } from "@/components/users/components/users-table";
 import UsersProvider from "@/components/users/context/users-context";
-import { userListSchema } from "@/components/users/data/schema";
-import { users } from "@/components/users/data/users";
-import { getMothers } from "@/data/mother-info";
+import { getMotherInfoWithPaymentSum } from "@/data/mother-info";
 import { IMotherInfo } from "@/definitions/mother-info";
 
 export default async function Users() {
   // Parse user list
-  const userList = userListSchema.parse(users);
-  const data = (await getMothers()) as IMotherInfo[];
+  const data = (await getMotherInfoWithPaymentSum()) as IMotherInfo[];
   const clients = JSON.parse(JSON.stringify(data));
 
   return (

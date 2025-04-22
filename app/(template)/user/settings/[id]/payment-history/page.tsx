@@ -6,8 +6,13 @@ import PaymentEntry from "@/components/user/settings/payment-history/PaymentEntr
 import { UsersDialogs } from "@/components/user/settings/payment-history/users-dialogs";
 import { fetchPaymentEntry } from "@/data/payment-history";
 
-export default async function PaymentHistory() {
-  const paymentEntries = await fetchPaymentEntry();
+export default async function PaymentHistory({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const paymentEntries = await fetchPaymentEntry(id);
 
   return (
     <UsersProvider>
@@ -35,7 +40,7 @@ export default async function PaymentHistory() {
             ))}
           </div>
         </ScrollArea>
-        <UsersDialogs />
+        <UsersDialogs userId={id} />
       </div>
     </UsersProvider>
   );

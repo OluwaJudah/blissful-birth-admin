@@ -73,6 +73,14 @@ export const columns: ColumnDef<IMotherInfo>[] = [
     enableSorting: false,
   },
   {
+    accessorKey: "paymentSum",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Total Payment" />
+    ),
+    cell: ({ row }) => <div>R {row.original.paymentSum}</div>,
+    enableSorting: false,
+  },
+  {
     id: "actions",
     cell: DataTableRowActions,
   },

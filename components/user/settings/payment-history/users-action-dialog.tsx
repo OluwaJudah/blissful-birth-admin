@@ -38,6 +38,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useUsers } from "./context/users-context";
+import { useParams, usePathname } from "next/navigation";
 
 const formSchema = z.object({
   type: z.string().min(1, { message: "Payment Type 11 is required." }),
@@ -47,6 +48,7 @@ const formSchema = z.object({
 type UserForm = z.infer<typeof formSchema>;
 
 interface Props {
+  userId: string;
   currentRow?: User;
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -57,13 +59,24 @@ const initialState = {
   errors: {},
 };
 
-export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
+export function UsersActionDialog({
+  userId,
+  currentRow,
+  open,
+  onOpenChange,
+}: Props) {
   const { setOpen } = useUsers();
-
+  const pathname = usePathname();
   const isEdit = !!currentRow;
   const formRef = useRef<HTMLFormElement>(null);
+
+  const createPaymentEntryWithUserId = createPaymentEntry.bind(
+    null,
+    userId,
+    pathname
+  );
   const [state, formAction, isPending] = useActionState(
-    createPaymentEntry,
+    createPaymentEntryWithUserId,
     initialState
   );
 
@@ -109,6 +122,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
                   const formData = new FormData(formRef.current!);
                   startTransition(() => {
                     formAction(formData);
+                    form.reset();
                     setOpen("");
                   });
                 })(evt);

@@ -4,11 +4,12 @@ import { UsersActionDialog } from "./users-action-dialog";
 import { UsersDeleteDialog } from "./users-delete-dialog";
 import { UsersInviteDialog } from "./users-invite-dialog";
 
-export function UsersDialogs() {
+export function UsersDialogs({ userId }: { userId: string }) {
   const { open, setOpen, currentRow, setCurrentRow } = useUsers();
   return (
     <>
       <UsersActionDialog
+        userId={userId}
         key="user-add"
         open={open === "add"}
         onOpenChange={() => setOpen("add")}
@@ -23,6 +24,7 @@ export function UsersDialogs() {
       {currentRow && (
         <>
           <UsersActionDialog
+            userId={userId}
             key={`user-edit-${currentRow.id}`}
             open={open === "edit"}
             onOpenChange={() => {
