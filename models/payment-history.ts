@@ -1,8 +1,9 @@
-import mongoose, { Schema, Document, Model } from "mongoose";
+import mongoose, { Schema, Document, Model, Types } from "mongoose";
 
 export interface IPaymentEntry extends Document {
   type: string;
-  amount: string;
+  amount: number;
+  userId: Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -10,7 +11,8 @@ export interface IPaymentEntry extends Document {
 const PaymentEntrySchema = new Schema<IPaymentEntry>(
   {
     type: { type: String, required: true },
-    amount: { type: String, required: true },
+    amount: { type: Number, required: true },
+    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
   },
   { timestamps: true }
 );

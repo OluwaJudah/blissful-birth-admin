@@ -1,8 +1,8 @@
 import { IAppointment } from "@/definitions/appointment";
-import mongoose, { Schema, Document, Model } from "mongoose";
+import mongoose, { Schema, Document, Model, Types } from "mongoose";
 
 interface Appointment extends Document, IAppointment {
-  userId: string;
+  userId: Types.ObjectId;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -14,7 +14,7 @@ const AppointmentSchema = new Schema<Appointment>(
     status: { type: String, required: true },
     note: { type: String },
     pregnancyWeeks: { type: Number, required: true },
-    userId: { type: String, required: true },
+    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
   },
   { timestamps: true }
 );

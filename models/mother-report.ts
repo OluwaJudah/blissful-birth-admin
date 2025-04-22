@@ -1,8 +1,8 @@
 import { IMotherReport } from "@/definitions/appointment";
-import mongoose, { Schema, Document, Model } from "mongoose";
+import mongoose, { Schema, Document, Model, Types } from "mongoose";
 
-interface MotherReport extends Document, Omit<IMotherReport, '_id'> {
-  appointmentId: string;
+interface MotherReport extends Document, Omit<IMotherReport, "_id"> {
+  appointmentId: Types.ObjectId;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -15,7 +15,11 @@ const MotherReportSchema = new Schema<MotherReport>(
     motherBloodPressure: { type: String, required: true },
     motherFh: { type: Number, required: true },
     motherNote: { type: String },
-    appointmentId: { type: String, required: true },
+    appointmentId: {
+      type: Schema.Types.ObjectId,
+      ref: "Appointment",
+      required: true,
+    },
   },
   { timestamps: true }
 );

@@ -12,6 +12,7 @@ import dbConnect from "@/lib/db";
 import Appointment from "@/models/appointment";
 import BabyReport from "@/models/baby-report";
 import MotherReport from "@/models/mother-report";
+import { Types } from "mongoose";
 import { revalidatePath } from "next/cache";
 
 export async function submitMotherReport(
@@ -65,9 +66,13 @@ const updateMotherReportData = async (
 ) => {
   await dbConnect();
 
+  if (!Types.ObjectId.isValid(appointmentId)) {
+    throw new Error('Invalid appointment ID');
+  }
+  
   const motherReport = await MotherReport.findOneAndUpdate(
-    { appointmentId }, // Filter
-    { $set: { ...data, appointmentId } },
+    { appointmentId: new Types.ObjectId(appointmentId) }, // Filter
+    { $set: { ...data } },
     {
       new: true, // Return the updated document
       upsert: true, // Create if it doesn't exist
@@ -123,9 +128,13 @@ const updateBabyReportData = async (
 ) => {
   await dbConnect();
 
+  if (!Types.ObjectId.isValid(appointmentId)) {
+    throw new Error('Invalid appointment ID');
+  }
+
   const babyReport = await BabyReport.findOneAndUpdate(
-    { appointmentId }, // Filter
-    { $set: { ...data, appointmentId } },
+    { appointmentId: new Types.ObjectId(appointmentId) }, // Filter
+    { $set: { ...data } },
     {
       new: true, // Return the updated document
       upsert: true, // Create if it doesn't exist
@@ -140,6 +149,10 @@ const updateAppointmentStatus = async (
   appointmentId: string
 ) => {
   await dbConnect();
+
+  if (!Types.ObjectId.isValid(appointmentId)) {
+    throw new Error('Invalid appointment ID');
+  }
 
   const appointment = await Appointment.findByIdAndUpdate(
     appointmentId, // Filter

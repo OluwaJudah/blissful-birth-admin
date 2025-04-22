@@ -1,8 +1,8 @@
 import { IBabyReport } from "@/definitions/appointment";
-import mongoose, { Schema, Document, Model } from "mongoose";
+import mongoose, { Schema, Document, Model, Types } from "mongoose";
 
 interface BabyReport extends Document, Omit<IBabyReport, "_id"> {
-  appointmentId: string;
+  appointmentId: Types.ObjectId;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -14,7 +14,11 @@ const BabyReportSchema = new Schema<BabyReport>(
     babyHeartRate: { type: Number, required: true },
     babyPosition: { type: String, required: true },
     babyNote: { type: String },
-    appointmentId: { type: String, required: true },
+    appointmentId: {
+      type: Schema.Types.ObjectId,
+      ref: "Appointment",
+      required: true,
+    },
   },
   { timestamps: true }
 );

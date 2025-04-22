@@ -1,8 +1,8 @@
 import { IMotherInfo } from "@/definitions/mother-info";
-import mongoose, { Schema, Document, Model } from "mongoose";
+import mongoose, { Schema, Document, Model, Types } from "mongoose";
 
-export interface MotherInfo extends Omit<Document, "_id">, IMotherInfo {
-  userId: string;
+export interface MotherInfo extends Omit<Document, "_id">, Omit<IMotherInfo, "userId"> {
+  userId: Types.ObjectId;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -10,7 +10,7 @@ export interface MotherInfo extends Omit<Document, "_id">, IMotherInfo {
 const MotherInfoSchema = new Schema<MotherInfo>(
   {
     fullName: { type: String, required: true },
-    userId: { type: String, required: true },
+    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
     surname: { type: String, required: true },
     maidenName: { type: String },
     idPassportNo: { type: String, required: true },

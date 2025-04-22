@@ -3,6 +3,7 @@ import PaymentEntry from "@/models/payment-history";
 import { z } from "zod";
 import dbConnect from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import { Types } from "mongoose";
 
 export type PaymentHistoryState = {
   errors?: {
@@ -18,6 +19,8 @@ const formSchema = z.object({
 });
 
 export async function createPaymentEntry(
+  userId: string,
+  pathname: string,
   prevState: PaymentHistoryState | undefined,
   formData: FormData
 ) {
@@ -35,10 +38,13 @@ export async function createPaymentEntry(
 
   const { type, amount } = validatedFields.data;
   try {
-    const paymentEntry = await PaymentEntry.create({ type, amount });
-    console.log("paymentEntry: ", paymentEntry);
+    await PaymentEntry.create({
+      type,
+      amount,
+      userId: new Types.ObjectId(userId),
+    });
   } catch (error) {
     console.log("error: ", error);
   }
-  revalidatePath("/user/settings/payment-history");
+  revalidatePath(pathname);
 }
