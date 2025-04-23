@@ -3,20 +3,17 @@
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -24,12 +21,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { SelectDropdown } from "@/components/select-dropdown";
 import { userTypes } from "./data/data";
 import { User } from "./data/schema";
 import { startTransition, useActionState, useRef } from "react";
-import { createPaymentEntry } from "@/actions/payment-history";
-import { useFormState } from "react-dom";
+import {
+  createPaymentEntry,
+  editPaymentEntry,
+} from "@/actions/payment-history";
 import {
   Select,
   SelectContent,
@@ -70,11 +68,10 @@ export function UsersActionDialog({
   const isEdit = !!currentRow;
   const formRef = useRef<HTMLFormElement>(null);
 
-  const createPaymentEntryWithUserId = createPaymentEntry.bind(
-    null,
-    userId,
-    pathname
-  );
+  const createPaymentEntryWithUserId = isEdit
+    ? editPaymentEntry.bind(null, currentRow.id, pathname)
+    : createPaymentEntry.bind(null, userId, pathname);
+
   const [state, formAction, isPending] = useActionState(
     createPaymentEntryWithUserId,
     initialState

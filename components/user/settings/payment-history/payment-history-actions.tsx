@@ -19,7 +19,15 @@ interface DataTableRowActionsProps {
   row: Row<User>;
 }
 
-export function PaymentHistoryActions() {
+export function PaymentHistoryActions({
+  id,
+  type,
+  amount,
+}: {
+  id: string;
+  type: string;
+  amount: number;
+}) {
   const { setOpen, setCurrentRow } = useUsers();
   const router = useRouter();
   return (
@@ -37,7 +45,11 @@ export function PaymentHistoryActions() {
         <DropdownMenuContent align="end" className="w-[160px]">
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow({ id: "1", username: "hey" } as any);
+              setCurrentRow({
+                id,
+                type,
+                amount,
+              } as any);
               setOpen("edit");
             }}
           >
@@ -49,7 +61,11 @@ export function PaymentHistoryActions() {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow({ id: "1", username: "hey" } as any);
+              setCurrentRow({
+                id,
+                type,
+                amount,
+              } as any);
               setOpen("delete");
             }}
             className="!text-red-500"

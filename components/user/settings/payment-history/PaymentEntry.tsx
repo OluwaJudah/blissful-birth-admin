@@ -3,10 +3,12 @@ import { IconReceiptDollar } from "@tabler/icons-react";
 import { PaymentHistoryActions } from "./payment-history-actions";
 
 const PaymentEntry = ({
+  id,
   type,
   amount,
   createdAt,
 }: {
+  id: string;
   type: string;
   amount: number;
   createdAt: Date;
@@ -40,7 +42,7 @@ const PaymentEntry = ({
       </div>
       <div className="flex gap-3">
         <Badge variant="outline">R {amount}</Badge>
-        <PaymentHistoryActions />
+        <PaymentHistoryActions id={id} type={type} amount={amount} />
       </div>
     </div>
   );

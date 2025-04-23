@@ -32,10 +32,11 @@ export default async function PaymentHistory({
           <div className="-mx-1 px-1.5 flex flex-col gap-3 lg:max-w-xl">
             {paymentEntries?.map(({ id, type, amount, createdAt }) => (
               <PaymentEntry
+                key={id}
+                id={id}
                 type={type}
                 amount={amount}
                 createdAt={createdAt}
-                key={id}
               />
             ))}
           </div>
