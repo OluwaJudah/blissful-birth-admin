@@ -9,6 +9,17 @@ export type IAppointment = {
   pregnancyWeeks: number;
 };
 
+export type IAppointmentData = {
+  id: string;
+  time: string;
+  date: string;
+  status: string;
+  fullName: string;
+  surname: string;
+  userId: string;
+  pregnancyWeeks: number;
+};
+
 export type IBabyReport = {
   _id?: string;
   babyWeight: number;
@@ -79,11 +90,9 @@ export const motherReportFormSchema = z.object({
   motherPalpation: z.coerce.number().min(1, {
     message: "Mother's Palpation must be greater than 0.",
   }),
-  motherBloodPressure: z
-    .string()
-    .regex(/^\d{2,3}\/\d{2,3}$/, {
-      message: "Please follow the pattern of mm/Hg. E.g 120/80",
-    }),
+  motherBloodPressure: z.string().regex(/^\d{2,3}\/\d{2,3}$/, {
+    message: "Please follow the pattern of mm/Hg. E.g 120/80",
+  }),
   motherFh: z.coerce.number().min(1, {
     message: "Mother's FH must be greater than 0.",
   }),

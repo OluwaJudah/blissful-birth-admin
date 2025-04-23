@@ -7,12 +7,14 @@ import { columns } from "@/components/appointments/components/users-columns";
 import { UsersDialogs } from "@/components/appointments/components/users-dialogs";
 import { UsersTable } from "@/components/appointments/components/users-table";
 import UsersProvider from "@/components/appointments/context/users-context";
-import { appointmentListSchema } from "@/components/appointments/data/schema";
-import { users } from "@/components/appointments/data/users";
+import { getAppointments } from "@/data/appointment";
+import { IAppointmentData } from "@/definitions/appointment";
 
-export default function Users() {
+export default async function Users() {
   // Parse user list
-  const userList = appointmentListSchema.parse(users);
+  const data = (await getAppointments()) as IAppointmentData[];
+  const clients = JSON.parse(JSON.stringify(data));
+  console.log({ clients });
 
   return (
     <UsersProvider>
@@ -34,7 +36,7 @@ export default function Users() {
           </div>
         </div>
         <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0">
-          <UsersTable data={userList} columns={columns} />
+          <UsersTable data={clients} columns={columns} />
         </div>
       </Main>
 

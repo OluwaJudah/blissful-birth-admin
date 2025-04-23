@@ -5,11 +5,11 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import LongText from "@/components/long-text";
 import { callTypes, serviceTypes, userTypes } from "../data/data";
-import { User } from "../data/schema";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
+import { IAppointmentData } from "@/definitions/appointment";
 
-export const columns: ColumnDef<User>[] = [
+export const columns: ColumnDef<IAppointmentData>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -41,77 +41,48 @@ export const columns: ColumnDef<User>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "username",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Username" />
-    ),
-    cell: ({ row }) => (
-      <LongText className="max-w-36">{row.getValue("username")}</LongText>
-    ),
-    meta: {
-      className: cn(
-        "drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)] lg:drop-shadow-none",
-        "bg-background transition-colors duration-200 group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted",
-        "sticky left-6 md:table-cell",
-        "basis-1/5"
-      ),
-    },
-    enableHiding: false,
-  },
-  {
     id: "fullName",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Name" />
     ),
     cell: ({ row }) => {
-      const { firstName, lastName } = row.original;
-      const fullName = `${firstName} ${lastName}`;
-      return <LongText className="max-w-36">{fullName}</LongText>;
+      return (
+        <LongText className="max-w-36">
+          {row.original.fullName} {row.original.surname}
+        </LongText>
+      );
     },
     meta: { className: "basis-1/5" },
   },
   {
-    id: "serviceType",
+    id: "date",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Service Type" />
+      <DataTableColumnHeader column={column} title="Schedule Date" />
     ),
     cell: ({ row }) => {
-      const { serviceType } = row.original;
-      const value = serviceTypes.get(serviceType);
-
-      return <LongText className="max-w-36">{value}</LongText>;
+      return <LongText className="max-w-36">{row.original.date}</LongText>;
     },
     meta: { className: "basis-1/5" },
   },
   {
-    id: "scheduledAt",
+    id: "time",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Scheduled Date" />
+      <DataTableColumnHeader column={column} title="Time Slot" />
     ),
     cell: ({ row }) => {
-      const { scheduledAt } = row.original;
-      const date = scheduledAt.toLocaleDateString("en-GB", {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-      });
-
-      return <LongText className="max-w-36">{date}</LongText>;
+      return <LongText className="max-w-36">{row.original.time}</LongText>;
     },
     meta: { className: "basis-1/5" },
   },
   {
-    id: "scheduledTime",
+    id: "pregnancyWeeks",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Scheduled Time" />
+      <DataTableColumnHeader column={column} title="Pregnancy Weeks" />
     ),
     cell: ({ row }) => {
-      const { scheduledTime } = row.original;
-      const time = scheduledTime.toLocaleTimeString("en-GB", {
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-      return <LongText className="max-w-36">{time}</LongText>;
+      return (
+        <LongText className="max-w-36">{row.original.pregnancyWeeks}</LongText>
+      );
     },
     meta: { className: "basis-1/5" },
   },
@@ -122,7 +93,7 @@ export const columns: ColumnDef<User>[] = [
     ),
     cell: ({ row }) => {
       const { status } = row.original;
-      const badgeColor = callTypes.get(status);
+      const badgeColor = callTypes.get(status as any);
       return (
         <div className="flex space-x-2">
           <Badge variant="outline" className={cn("capitalize", badgeColor)}>

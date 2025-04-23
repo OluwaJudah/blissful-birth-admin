@@ -15,7 +15,7 @@ export function UsersDialogs() {
       />
 
       <UsersActionDialog
-        key="user-add"
+        key="user-edit"
         open={open === "edit"}
         onOpenChange={() => setOpen("add")}
       />

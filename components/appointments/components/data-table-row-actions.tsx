@@ -1,7 +1,7 @@
 "use client";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { Row } from "@tanstack/react-table";
-import { IconEdit, IconEye, IconTrash } from "@tabler/icons-react";
+import { IconEye } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -12,13 +12,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useUsers } from "../context/users-context";
-import { User } from "../data/schema";
+import { IAppointmentData } from "@/definitions/appointment";
+import { useRouter } from "next/navigation";
 
 interface DataTableRowActionsProps {
-  row: Row<User>;
+  row: Row<IAppointmentData>;
 }
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
+  const router = useRouter();
   const { setOpen, setCurrentRow } = useUsers();
   return (
     <>
@@ -36,7 +38,9 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           <DropdownMenuItem
             onClick={() => {
               setCurrentRow(row.original);
-              setOpen("edit");
+              router.push(
+                `/user/settings/${row.original?.userId}/appointments/${row.original?.id}`
+              );
             }}
           >
             View
@@ -44,31 +48,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
               <IconEye size={16} />
             </DropdownMenuShortcut>
           </DropdownMenuItem>
-          <DropdownMenuSeparator />{" "}
-          <DropdownMenuItem
-            onClick={() => {
-              setCurrentRow(row.original);
-              setOpen("edit");
-            }}
-          >
-            Edit
-            <DropdownMenuShortcut>
-              <IconEdit size={16} />
-            </DropdownMenuShortcut>
-          </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={() => {
-              setCurrentRow(row.original);
-              setOpen("delete");
-            }}
-            className="!text-red-500"
-          >
-            Delete
-            <DropdownMenuShortcut>
-              <IconTrash size={16} />
-            </DropdownMenuShortcut>
-          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </>
