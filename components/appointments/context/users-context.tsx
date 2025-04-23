@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import React, { useState } from "react";
 import useDialogState from "@/hooks/use-dialog-state";
 import { IAppointmentData } from "@/definitions/appointment";
 
