@@ -14,7 +14,6 @@ export default async function Users() {
   // Parse user list
   const data = (await getAppointments()) as IAppointmentData[];
   const clients = JSON.parse(JSON.stringify(data));
-  console.log({ clients });
 
   return (
     <UsersProvider>
