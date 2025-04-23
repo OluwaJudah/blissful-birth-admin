@@ -40,11 +40,12 @@ export default async function RootLayout({
       icon: <IconReceiptDollar size={18} />,
       href: `/user/settings/${id}/payment-history`,
     },
-    {
+    /*     {
       title: "Notifications",
       icon: <IconBellRinging2 size={18} />,
       href: `/user/settings/${id}/notifications`,
     },
+ */
   ];
 
   return (
