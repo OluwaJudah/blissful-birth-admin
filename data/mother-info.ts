@@ -1,6 +1,10 @@
 "use server";
 import dbConnect from "@/lib/db";
+import BabyInfo from "@/models/baby-info";
+import BirthCompanion from "@/models/birth-companion";
+import MedicalHistory from "@/models/medical-history";
 import MotherInfo from "@/models/mother-info";
+import { Types } from "mongoose";
 
 export const getMothers = async () => {
   await dbConnect();
@@ -11,6 +15,38 @@ export const getMothers = async () => {
     userId: m.userId.toString(),
   }));
   return mothers;
+};
+
+export const getMotherDetails = async (userId: string) => {
+  await dbConnect();
+
+  return await MotherInfo.findOne({
+    userId: new Types.ObjectId(userId),
+  }).lean();
+};
+
+export const getBirthCompanion = async (userId: string) => {
+  await dbConnect();
+
+  return await BirthCompanion.findOne({
+    userId: new Types.ObjectId(userId),
+  }).lean();
+};
+
+export const getBabyInfo = async (userId: string) => {
+  await dbConnect();
+
+  return await BabyInfo.findOne({
+    motherId: new Types.ObjectId(userId),
+  }).lean();
+};
+
+export const getMedicalHistory = async (userId: string) => {
+  await dbConnect();
+
+  return await MedicalHistory.findOne({
+    userId: new Types.ObjectId(userId),
+  }).lean();
 };
 
 export const getMotherInfoWithPaymentSum = async () => {
@@ -35,6 +71,7 @@ export const getMotherInfoWithPaymentSum = async () => {
         surname: 1,
         firstName: 1,
         contactNumber: 1,
+        packageType: 1,
         paymentSum: 1,
       },
     },

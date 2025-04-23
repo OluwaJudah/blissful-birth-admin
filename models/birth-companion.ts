@@ -1,15 +1,15 @@
-import { IMotherInfo } from "@/definitions/mother-info";
+import type { IBirthCompanion, IMotherInfo } from "@/definitions/mother-info";
 import mongoose, { Schema, Document, Model, Types } from "mongoose";
 
-export interface MotherInfo
+interface BirthCompanion
   extends Omit<Document, "_id">,
-    Omit<IMotherInfo, "userId"> {
-  userId: Types.ObjectId;
+    Omit<IBirthCompanion, "userId"> {
   createdAt?: Date;
   updatedAt?: Date;
+  userId: Types.ObjectId;
 }
 
-const MotherInfoSchema = new Schema<MotherInfo>(
+const BirthCompanionSchema = new Schema<BirthCompanion>(
   {
     fullName: { type: String, required: true },
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
@@ -17,18 +17,16 @@ const MotherInfoSchema = new Schema<MotherInfo>(
     maidenName: { type: String },
     idPassportNo: { type: String, required: true },
     dateOfBirth: { type: Date, required: true },
-    lastMenstrualDate: { type: Date, required: true },
     contactNumber: { type: String, required: true },
     email: { type: String },
     countryOfOrigin: { type: String, required: true },
     occupation: { type: String },
-    packageType: { type: String },
   },
   { timestamps: true }
 );
 
-const MotherInfo: Model<MotherInfo> =
-  mongoose.models.MotherInfo ||
-  mongoose.model<MotherInfo>("MotherInfo", MotherInfoSchema);
+const BirthCompanion: Model<IBirthCompanion> =
+  mongoose.models.BirthCompanion ||
+  mongoose.model<BirthCompanion>("BirthCompanion", BirthCompanionSchema);
 
-export default MotherInfo;
+export default BirthCompanion;

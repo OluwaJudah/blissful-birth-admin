@@ -81,6 +81,21 @@ export const columns: ColumnDef<IMotherInfo>[] = [
     enableSorting: false,
   },
   {
+    accessorKey: "packageType",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Patient Package" />
+    ),
+    cell: ({ row }) => {
+      let packageStr = "N/A";
+      const packageMap = { anc: "Antenatal Care", full: "Full Package" };
+      const packageType = row.original.packageType as keyof typeof packageMap;
+      if (packageType) packageStr = packageMap[packageType];
+
+      return <div>{packageStr}</div>;
+    },
+    enableSorting: false,
+  },
+  {
     id: "actions",
     cell: DataTableRowActions,
   },

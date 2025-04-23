@@ -1,13 +1,18 @@
-import { AccountForm } from "@/components/user/settings/components/account-form";
-import ContentSection from "@/components/user/settings/components/content-section";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import ProfileTabs from "@/components/user/settings/components/profile-tabs";
 
-export default function SettingsProfile() {
+export default async function SettingsProfile({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+
   return (
-    <ContentSection
-      title="Profile"
-      desc="This is how others will see you on the site."
-    >
-      <AccountForm />
-    </ContentSection>
+    <div className="flex flex-1 flex-col">
+      <ScrollArea className="faded-bottom -mx-4 flex-1 scroll-smooth px-4 md:pb-16">
+        <ProfileTabs userId={id} />
+      </ScrollArea>
+    </div>
   );
 }
