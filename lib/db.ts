@@ -32,7 +32,6 @@ async function dbConnect() {
     cached.promise = mongoose
       .connect(MONGODB_URI, {
         dbName: `${CLIENT}-${NODE_ENV}`, // Replace with your DB name
-        bufferCommands: false,
       })
       .then((mongoose) => mongoose.connection);
   }
