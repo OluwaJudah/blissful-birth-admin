@@ -2,7 +2,6 @@ import { getMedicalHistory } from "@/data/mother-info";
 
 const MedicalHistory = async ({ userId }: { userId: string }) => {
   const medicalHistory = await getMedicalHistory(userId);
-  console.log({ medicalHistory });
   if (!medicalHistory) return null;
 
   const {
