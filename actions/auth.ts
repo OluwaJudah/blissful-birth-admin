@@ -98,5 +98,5 @@ export async function loginUser(
 
 export async function logout() {
   deleteSession();
-  redirect("/");
+  redirect("/login");
 }
