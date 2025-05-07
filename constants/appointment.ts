@@ -2,18 +2,21 @@ export const COMPLETED_APPOINTMENT = "completed";
 export const defaultValueMotherReportForm = {
   _id: "",
   motherWeight: 0,
-  motherUrine: 0,
-  motherPalpation: 0,
   motherBloodPressure: "",
+  motherPulse: 0,
+  motherLeucosite: "",
+  motherGlucose: "",
+  motherProtein: "",
+  motherPalpation: 0,
   motherFh: 0,
   motherNote: "",
 };
 
 export const defaultValueBabyReportForm = {
   _id: "",
-  babyWeight: 0,
   babyHeight: 0,
   babyHeartRate: 0,
+  babyPresentation: "",
   babyPosition: "",
   babyNote: "",
 };
@@ -26,21 +29,24 @@ export const motherReportFormData: any[] = [
     placeholder: "Please enter the mother's weight in kilograms",
   },
   {
-    name: "motherUrine",
-    label: "Urine (l)",
+    name: "motherPulse",
+    label: "Pulse (bpm)",
     type: "number",
-    placeholder: "Please enter the mother's urine in litres",
-  },
-  {
-    name: "motherPalpation",
-    label: "Palpation (l)",
-    type: "number",
-    placeholder: "Please enter the mother's palpation in litres",
+    placeholder: "Please enter the mother's weight in kilograms",
   },
   {
     name: "motherBloodPressure",
     label: "Blood Pressure (mm/Hg)",
     placeholder: "Please enter the mother's pressure in mmHg. E.g 120/80",
+  },
+];
+
+export const motherReportOtherFormData = [
+  {
+    name: "motherPalpation",
+    label: "Palpation (l)",
+    type: "number",
+    placeholder: "Please enter the mother's palpation in litres",
   },
   {
     name: "motherFh",
@@ -50,22 +56,67 @@ export const motherReportFormData: any[] = [
   },
 ];
 
-export const babyReportFormData: any[] = [
+export const urineOptions = [
+  { label: "Clear", value: "clear" },
+  { label: "Trace", value: "trace" },
+  { label: "+1", value: "+1" },
+  { label: "+2", value: "+2" },
+  { label: "+3", value: "+3" },
+];
+
+export const motherReportSelectFormData = [
   {
-    name: "babyWeight",
-    label: "Weight (kg)",
-    type: "number",
-    placeholder: "Please enter the baby's weight in kilograms",
+    name: "motherLeucosite",
+    label: "Leucosite (L)",
+    placeholder: "Select Urine Leucosite value",
   },
   {
+    name: "motherGlucose",
+    label: "Glucose (G)",
+    placeholder: "Select Urine Glucose value",
+  },
+  {
+    name: "motherProtein",
+    label: "Protein (P)",
+    placeholder: "Select Urine Protein value",
+  },
+];
+
+export const babyReportSelectFormData = [
+  {
+    name: "babyPresentation",
+    label: "Presentation",
+    placeholder: "Select Baby Presentation",
+    options: [
+      { label: "Vertex", value: "vertex" },
+      { label: "Breech", value: "breech" },
+      { label: "Transverse", value: "transverse" },
+      { label: "Unsure", value: "unsure" },
+    ],
+  },
+  {
+    name: "motherPosition",
+    label: "Position",
+    placeholder: "Select Baby Position",
+    options: [
+      { label: "LOA", value: "loa" },
+      { label: "ROA", value: "roa" },
+      { label: "Posterior", value: "posterior" },
+      { label: "Unsure", value: "unsure" },
+    ],
+  },
+];
+
+export const babyReportFormData: any[] = [
+  {
     name: "babyHeight",
-    label: "Height (cm)",
+    label: "SFH(Height) (cm)",
     type: "number",
     placeholder: "Please enter the baby's height in centimetres",
   },
   {
     name: "babyHeartRate",
-    label: "Heart Rate (bpm)",
+    label: "SFH(Heart Rate) (bpm)",
     type: "number",
     placeholder: "Please enter the baby's heart rate in bpm",
   },
