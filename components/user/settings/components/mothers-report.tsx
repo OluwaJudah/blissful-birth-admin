@@ -18,11 +18,18 @@ import {
   MotherReportFormSchema,
 } from "@/definitions/appointment";
 import ValidatedInput from "@/components/ui/validated-input";
-import { motherReportFormData } from "@/constants/appointment";
+import {
+  motherReportFormData,
+  motherReportOtherFormData,
+  motherReportSelectFormData,
+  urineOptions,
+} from "@/constants/appointment";
 import { startTransition, useActionState, useRef } from "react";
 import { submitMotherReport } from "@/actions/appointment";
 import { usePathname } from "next/navigation";
 import { Toaster } from "@/components/ui/toaster";
+import { LoaderCircle } from "lucide-react";
+import SelectInput from "@/components/ui/select-input";
 
 export function MotherReportForm({
   appointmentId,
@@ -87,6 +94,31 @@ export function MotherReportForm({
             />
           ))}
 
+          {motherReportSelectFormData.map(({ name, label, placeholder }) => (
+            <SelectInput
+              key={name}
+              {...{
+                name,
+                label,
+                form,
+                isPending,
+                options: urineOptions,
+                placeholder,
+              }}
+            />
+          ))}
+
+          {motherReportOtherFormData.map((data) => (
+            <ValidatedInput
+              key={data.name}
+              name={data.name}
+              label={data.label}
+              type={data.type}
+              placeholder={data.placeholder}
+              form={form}
+            />
+          ))}
+
           <FormField
             control={form.control}
             name="motherNote"
@@ -105,12 +137,15 @@ export function MotherReportForm({
             )}
           />
           <div className="w-[80px] mx-auto">
-            <Button
-              className={`${isPending ? "bg-gray-500" : "bg-gray-900"}`}
-              type="submit"
-            >
-              Submit
-            </Button>
+            {isPending ? (
+              <Button className="bg-gray-500 w-[78px]" type="button">
+                <LoaderCircle className="animate-spin" />
+              </Button>
+            ) : (
+              <Button className="bg-gray-900" type="submit">
+                Submit
+              </Button>
+            )}
           </div>
         </form>
       </Form>

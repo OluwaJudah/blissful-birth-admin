@@ -35,9 +35,12 @@ export async function submitMotherReport(
 
   const {
     motherWeight,
-    motherUrine,
-    motherPalpation,
     motherBloodPressure,
+    motherPulse,
+    motherLeucosite,
+    motherGlucose,
+    motherProtein,
+    motherPalpation,
     motherFh,
     motherNote,
   } = validatedFields.data;
@@ -46,9 +49,12 @@ export async function submitMotherReport(
     await updateMotherReportData(
       {
         motherWeight,
-        motherUrine,
-        motherPalpation,
         motherBloodPressure,
+        motherPulse,
+        motherLeucosite,
+        motherGlucose,
+        motherProtein,
+        motherPalpation,
         motherFh,
         motherNote,
       },
@@ -67,9 +73,9 @@ const updateMotherReportData = async (
   await dbConnect();
 
   if (!Types.ObjectId.isValid(appointmentId)) {
-    throw new Error('Invalid appointment ID');
+    throw new Error("Invalid appointment ID");
   }
-  
+
   const motherReport = await MotherReport.findOneAndUpdate(
     { appointmentId: new Types.ObjectId(appointmentId) }, // Filter
     { $set: { ...data } },
@@ -100,15 +106,20 @@ export async function submitBabyReport(
     return state;
   }
 
-  const { babyWeight, babyHeight, babyHeartRate, babyPosition, babyNote } =
-    validatedFields.data;
+  const {
+    babyHeight,
+    babyHeartRate,
+    babyPosition,
+    babyPresentation,
+    babyNote,
+  } = validatedFields.data;
 
   try {
     await updateBabyReportData(
       {
-        babyWeight,
         babyHeight,
         babyHeartRate,
+        babyPresentation,
         babyPosition,
         babyNote,
       },
@@ -129,7 +140,7 @@ const updateBabyReportData = async (
   await dbConnect();
 
   if (!Types.ObjectId.isValid(appointmentId)) {
-    throw new Error('Invalid appointment ID');
+    throw new Error("Invalid appointment ID");
   }
 
   const babyReport = await BabyReport.findOneAndUpdate(
@@ -151,7 +162,7 @@ const updateAppointmentStatus = async (
   await dbConnect();
 
   if (!Types.ObjectId.isValid(appointmentId)) {
-    throw new Error('Invalid appointment ID');
+    throw new Error("Invalid appointment ID");
   }
 
   const appointment = await Appointment.findByIdAndUpdate(

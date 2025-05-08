@@ -27,7 +27,6 @@ const AppointmentEntry = ({
       <h2 className="mb-1 font-semibold">
         Week {pregnancyWeeks} - {trimesterStr} Trimester
       </h2>
-
       <div className="rounded-lg border flex justify-between items-center gap-3 p-4 hover:shadow-md">
         <div className="flex items-center gap-3">
           <div className="flex items-center justify-between">
@@ -44,7 +43,6 @@ const AppointmentEntry = ({
           </div>
         </div>
         <div className="flex gap-3">
-          {" "}
           <Badge variant="outline">{status}</Badge>
           <IconChevronRight />
         </div>

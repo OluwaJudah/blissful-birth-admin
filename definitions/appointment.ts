@@ -22,18 +22,18 @@ export type IAppointmentData = {
 
 export type IBabyReport = {
   _id?: string;
-  babyWeight: number;
   babyHeight: number;
   babyHeartRate: number;
+  babyPresentation: string;
   babyPosition: string;
   babyNote: string;
 };
 
 export type BabyReportFormState = {
   errors?: {
-    babyWeight?: string[];
     babyHeight?: string[];
     babyHeartRate?: string[];
+    babyPresentation?: string[];
     babyPosition?: string[];
     babyNote?: string[];
   };
@@ -41,17 +41,17 @@ export type BabyReportFormState = {
 };
 
 export const babyReportFormSchema = z.object({
-  babyWeight: z.coerce.number().min(1, {
-    message: "Baby's Weight must be greater than 0.",
-  }),
   babyHeight: z.coerce.number().min(1, {
     message: "Baby's Height must be greater than 0.",
   }),
   babyHeartRate: z.coerce.number().min(1, {
     message: "Baby's Heart Rate must be greater than 0.",
   }),
+  babyPresentation: z.string().min(1, {
+    message: "Baby's Position must be Vertex, Breech, Transverse or Unsure.",
+  }),
   babyPosition: z.string().min(1, {
-    message: "Baby's Position must be Vertex, Breech or Transverse.",
+    message: "Baby's Position must be LOA, ROA, Posterior or Unsure.",
   }),
   babyNote: z.string(),
 });
@@ -61,9 +61,12 @@ export type BabyReportFormSchema = z.infer<typeof babyReportFormSchema>;
 export type IMotherReport = {
   _id?: string;
   motherWeight: number;
-  motherUrine: number;
-  motherPalpation: number;
   motherBloodPressure: string;
+  motherPulse: number;
+  motherLeucosite: string;
+  motherGlucose: string;
+  motherProtein: string;
+  motherPalpation: number;
   motherFh: number;
   motherNote: string;
 };
@@ -71,9 +74,12 @@ export type IMotherReport = {
 export type MotherReportFormState = {
   errors?: {
     motherWeight?: string[];
-    motherUrine?: string[];
-    motherPalpation?: string[];
     motherBloodPressure?: string[];
+    motherPulse?: string[];
+    motherLeucosite?: string[];
+    motherGlucose?: string[];
+    motherProtein?: string[];
+    motherPalpation?: string[];
     motherFh?: string[];
     motherNote?: string[];
   };
@@ -84,14 +90,23 @@ export const motherReportFormSchema = z.object({
   motherWeight: z.coerce.number().min(1, {
     message: "Mother's Weight must be greater than 0.",
   }),
-  motherUrine: z.coerce.number().min(1, {
-    message: "Mother's Urine must be greater than 0.",
+  motherBloodPressure: z.string().regex(/^\d{2,3}\/\d{2,3}$/, {
+    message: "Please follow the pattern of mm/Hg. E.g 120/80",
+  }),
+  motherPulse: z.coerce.number().min(1, {
+    message: "Mother's Pulse must be greater than 0.",
+  }),
+  motherLeucosite: z.string().min(1, {
+    message: "Mother's Leucosite must be (Clear, Trace, +1, +2, +3).",
+  }),
+  motherGlucose: z.string().min(1, {
+    message: "Mother's Glucose must be (Clear, Trace, +1, +2, +3).",
+  }),
+  motherProtein: z.string().min(1, {
+    message: "Mother's Protein must be (Clear, Trace, +1, +2, +3).",
   }),
   motherPalpation: z.coerce.number().min(1, {
     message: "Mother's Palpation must be greater than 0.",
-  }),
-  motherBloodPressure: z.string().regex(/^\d{2,3}\/\d{2,3}$/, {
-    message: "Please follow the pattern of mm/Hg. E.g 120/80",
   }),
   motherFh: z.coerce.number().min(1, {
     message: "Mother's FH must be greater than 0.",

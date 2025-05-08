@@ -9,9 +9,9 @@ interface BabyReport extends Document, Omit<IBabyReport, "_id"> {
 
 const BabyReportSchema = new Schema<BabyReport>(
   {
-    babyWeight: { type: Number, required: true },
     babyHeight: { type: Number, required: true },
     babyHeartRate: { type: Number, required: true },
+    babyPresentation: { type: String, required: true },
     babyPosition: { type: String, required: true },
     babyNote: { type: String },
     appointmentId: {

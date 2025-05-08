@@ -10,9 +10,12 @@ interface MotherReport extends Document, Omit<IMotherReport, "_id"> {
 const MotherReportSchema = new Schema<MotherReport>(
   {
     motherWeight: { type: Number, required: true },
-    motherUrine: { type: Number, required: true },
-    motherPalpation: { type: Number, required: true },
+    motherPulse: { type: Number, required: true },
     motherBloodPressure: { type: String, required: true },
+    motherLeucosite: { type: String, required: true },
+    motherGlucose: { type: String, required: true },
+    motherProtein: { type: String, required: true },  
+    motherPalpation: { type: Number, required: true },
     motherFh: { type: Number, required: true },
     motherNote: { type: String },
     appointmentId: {

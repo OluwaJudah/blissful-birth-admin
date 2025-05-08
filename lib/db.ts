@@ -2,7 +2,7 @@
 import mongoose from "mongoose";
 
 const MONGODB_URI = process.env.MONGODB_URI || "";
-const NODE_ENV = process.env.NODE_ENV || "";
+const ENV = process.env.ENV || "";
 const CLIENT = process.env.CLIENT || "";
 
 if (!MONGODB_URI) {
@@ -31,7 +31,7 @@ async function dbConnect() {
   if (!cached.conn) {
     cached.promise = mongoose
       .connect(MONGODB_URI, {
-        dbName: `${CLIENT}-${NODE_ENV}`, // Replace with your DB name
+        dbName: `${CLIENT}-${ENV}`, // Replace with your DB name
       })
       .then((mongoose) => mongoose.connection);
   }

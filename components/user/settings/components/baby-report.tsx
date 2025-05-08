@@ -24,12 +24,17 @@ import {
   babyReportFormSchema,
   IBabyReport,
 } from "@/definitions/appointment";
-import { babyReportFormData } from "@/constants/appointment";
+import {
+  babyReportFormData,
+  babyReportSelectFormData,
+} from "@/constants/appointment";
 import ValidatedInput from "@/components/ui/validated-input";
 import { startTransition, useActionState, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { submitBabyReport } from "@/actions/appointment";
 import { Toaster } from "@/components/ui/toaster";
+import { LoaderCircle } from "lucide-react";
+import SelectInput from "@/components/ui/select-input";
 
 // This can come from your database or API.
 export function BabyReportForm({
@@ -96,28 +101,23 @@ export function BabyReportForm({
               form={form}
             />
           ))}
-          <FormField
-            control={form.control}
-            name="babyPosition"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Position</FormLabel>
-                <Select onValueChange={field.onChange} {...field}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a baby position" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="Vertex">Vertex</SelectItem>
-                    <SelectItem value="Breech">Breech</SelectItem>
-                    <SelectItem value="Transverse">Transverse</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+
+          {babyReportSelectFormData.map(
+            ({ name, label, options, placeholder }) => (
+              <SelectInput
+                key={name}
+                {...{
+                  name,
+                  label,
+                  form,
+                  isPending,
+                  options,
+                  placeholder,
+                }}
+              />
+            )
+          )}
+
           <FormField
             control={form.control}
             name="babyNote"
@@ -136,7 +136,15 @@ export function BabyReportForm({
             )}
           />
           <div className="w-[80px] mx-auto">
-            <Button type="submit">Submit</Button>
+            {isPending ? (
+              <Button className="bg-gray-500 w-[78px]" type="button">
+                <LoaderCircle className="animate-spin" />
+              </Button>
+            ) : (
+              <Button className="bg-gray-900" type="submit">
+                Submit
+              </Button>
+            )}
           </div>
         </form>
       </Form>
