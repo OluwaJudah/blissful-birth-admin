@@ -1,6 +1,6 @@
 export const COMPLETED_APPOINTMENT = "completed";
 export const defaultValueMotherReportForm = {
-  _id: "",
+  id: "",
   motherWeight: 0,
   motherBloodPressure: "",
   motherPulse: 0,
@@ -13,7 +13,7 @@ export const defaultValueMotherReportForm = {
 };
 
 export const defaultValueBabyReportForm = {
-  _id: "",
+  id: "",
   babyHeight: 0,
   babyHeartRate: 0,
   babyPresentation: "",
@@ -95,7 +95,7 @@ export const babyReportSelectFormData = [
     ],
   },
   {
-    name: "motherPosition",
+    name: "babyPosition",
     label: "Position",
     placeholder: "Select Baby Position",
     options: [

@@ -20,18 +20,12 @@ export default async function AppointmentTabs({
   appointmentId: string;
 }) {
   let motherReport = defaultValueMotherReportForm;
-  const data = await getMotherReport(
-    appointmentId,
-    "_id motherWeight motherUrine motherPalpation motherBloodPressure motherFh motherNote"
-  );
-  if (data) motherReport = { ...data, _id: data._id.toString() };
+  const data = await getMotherReport(appointmentId);
+  if (data) motherReport = data;
 
   let babyReport = defaultValueBabyReportForm;
-  const babyData = await getBabyReport(
-    appointmentId,
-    "_id babyWeight babyHeight babyHeartRate babyPosition babyNote"
-  );
-  if (babyData) babyReport = { ...babyData, _id: babyData._id.toString() };
+  const babyData = await getBabyReport(appointmentId);
+  if (babyData) babyReport = babyData;
 
   return (
     <>

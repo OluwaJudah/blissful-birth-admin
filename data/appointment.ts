@@ -58,19 +58,61 @@ export const getMotherAppointments = async (userId: string, fields = "") => {
 export const getMotherReport = async (appointmentId: string, fields = "") => {
   await dbConnect();
 
-  const motherReport = await MotherReport.findOne(
+  const motherReport = (await MotherReport.findOne(
     { appointmentId: new Types.ObjectId(appointmentId) },
-    fields
-  ).lean();
-  return motherReport;
+    { __v: 0, createdAt: 0, updatedAt: 0 }
+  ).lean()) as any;
+
+  const {
+    motherBloodPressure,
+    motherFh,
+    motherGlucose,
+    motherLeucosite,
+    motherNote,
+    motherPalpation,
+    motherProtein,
+    motherPulse,
+    motherWeight,
+    _id,
+  } = motherReport;
+
+  return {
+    motherBloodPressure,
+    motherFh,
+    motherGlucose,
+    motherLeucosite,
+    motherNote,
+    motherPalpation,
+    motherProtein,
+    motherPulse,
+    motherWeight,
+    id: _id.toString(),
+  };
 };
 
 export const getBabyReport = async (appointmentId: string, fields = "") => {
   await dbConnect();
 
-  const motherReport = await BabyReport.findOne(
+  const babyReport = (await BabyReport.findOne(
     { appointmentId: new Types.ObjectId(appointmentId) },
-    fields
-  ).lean();
-  return motherReport;
+    { __v: 0, createdAt: 0, updatedAt: 0 }
+  ).lean()) as any;
+
+  const {
+    babyHeight,
+    babyHeartRate,
+    babyPresentation,
+    babyPosition,
+    babyNote,
+    _id,
+  } = babyReport;
+
+  return {
+    babyHeight,
+    babyHeartRate,
+    babyPresentation,
+    babyPosition,
+    babyNote,
+    id: _id.toString(),
+  };
 };
