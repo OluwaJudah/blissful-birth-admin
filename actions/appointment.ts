@@ -6,6 +6,8 @@ import {
   GenerateAppointmentsFormState,
   motherReportFormSchema,
   MotherReportFormState,
+  rescheduleAppointmentFormSchema,
+  RescheduleAppointmentFormState,
 } from "@/definitions/appointment";
 import { revalidatePath } from "next/cache";
 
@@ -80,4 +82,24 @@ export async function generateAppointments(
 
   const { edd } = validatedFields.data;
   console.log({ edd });
+}
+
+export async function rescheduleAppointment(
+  prevState: RescheduleAppointmentFormState | undefined,
+  formData: FormData
+) {
+  const validatedFields = rescheduleAppointmentFormSchema.safeParse(
+    Object.fromEntries(formData)
+  );
+
+  if (!validatedFields.success) {
+    const state: RescheduleAppointmentFormState = {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Oops, I think there's a mistake with your inputs.",
+    };
+    return state;
+  }
+
+  const { date } = validatedFields.data;
+  console.log({ date });
 }
