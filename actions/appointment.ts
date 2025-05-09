@@ -2,6 +2,8 @@
 import {
   babyReportFormSchema,
   BabyReportFormState,
+  generateAppointmentsFormSchema,
+  GenerateAppointmentsFormState,
   motherReportFormSchema,
   MotherReportFormState,
 } from "@/definitions/appointment";
@@ -27,7 +29,6 @@ export async function submitMotherReport(
 
   const {
     motherWeight,
-    motherUrine,
     motherPalpation,
     motherBloodPressure,
     motherFh,
@@ -55,8 +56,28 @@ export async function submitBabyReport(
     return state;
   }
 
-  const { babyWeight, babyHeight, babyHeartRate, babyPosition, babyNote } =
+  const { babyHeight, babyHeartRate, babyPosition, babyNote } =
     validatedFields.data;
 
   revalidatePath(pathname);
+}
+
+export async function generateAppointments(
+  prevState: GenerateAppointmentsFormState | undefined,
+  formData: FormData
+) {
+  const validatedFields = generateAppointmentsFormSchema.safeParse(
+    Object.fromEntries(formData)
+  );
+
+  if (!validatedFields.success) {
+    const state: GenerateAppointmentsFormState = {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Oops, I think there's a mistake with your inputs.",
+    };
+    return state;
+  }
+
+  const { edd } = validatedFields.data;
+  console.log({ edd });
 }
