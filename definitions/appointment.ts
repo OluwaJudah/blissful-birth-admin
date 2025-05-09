@@ -125,3 +125,37 @@ export type IMedicalHistory = {
   familyHistory: string;
   tbSymptomsScreen: string;
 };
+
+export type GenerateAppointmentsFormState = {
+  errors?: {
+    edd?: string[];
+  };
+  message?: string | null;
+};
+
+export const generateAppointmentsFormSchema = z.object({
+  edd: z.string().refine((val) => !isNaN(Date.parse(val)), {
+    message: "Invalid date format",
+  }),
+});
+
+export type GenerateAppointmentsFormSchema = z.infer<
+  typeof generateAppointmentsFormSchema
+>;
+
+export type RescheduleAppointmentFormState = {
+  errors?: {
+    date?: string[];
+  };
+  message?: string | null;
+};
+
+export const rescheduleAppointmentFormSchema = z.object({
+  date: z.string().refine((val) => !isNaN(Date.parse(val)), {
+    message: "Invalid date format",
+  }),
+});
+
+export type RescheduleAppointmentFormSchema = z.infer<
+  typeof rescheduleAppointmentFormSchema
+>;

@@ -2,11 +2,15 @@
 import { COMPLETED_APPOINTMENT } from "@/constants/appointment";
 import {
   babyReportFormSchema,
+  GenerateAppointmentsFormState,
+  generateAppointmentsFormSchema,
   BabyReportFormState,
   IBabyReport,
   IMotherReport,
   motherReportFormSchema,
   MotherReportFormState,
+  RescheduleAppointmentFormState,
+  rescheduleAppointmentFormSchema,
 } from "@/definitions/appointment";
 import dbConnect from "@/lib/db";
 import Appointment from "@/models/appointment";
@@ -159,6 +163,66 @@ const updateAppointmentStatus = async (
   status: string,
   appointmentId: string
 ) => {
+  await dbConnect();
+
+  if (!Types.ObjectId.isValid(appointmentId)) {
+    throw new Error("Invalid appointment ID");
+  }
+
+  const appointment = await Appointment.findByIdAndUpdate(
+    appointmentId, // Filter
+    { $set: { status } },
+    {
+      new: true, // Return the updated document
+      runValidators: true, // Apply schema validations
+    }
+  );
+  return appointment;
+};
+
+export async function generateAppointments(
+  prevState: GenerateAppointmentsFormState | undefined,
+  formData: FormData
+) {
+  const validatedFields = generateAppointmentsFormSchema.safeParse(
+    Object.fromEntries(formData)
+  );
+
+  if (!validatedFields.success) {
+    const state: GenerateAppointmentsFormState = {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Oops, I think there's a mistake with your inputs.",
+    };
+    return state;
+  }
+
+  const { edd } = validatedFields.data;
+  console.log({ edd });
+}
+
+export async function rescheduleAppointment(
+  appointmentId: string,
+  prevState: RescheduleAppointmentFormState | undefined,
+  formData: FormData
+) {
+  const validatedFields = rescheduleAppointmentFormSchema.safeParse(
+    Object.fromEntries(formData)
+  );
+
+  if (!validatedFields.success) {
+    const state: RescheduleAppointmentFormState = {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Oops, I think there's a mistake with your inputs.",
+    };
+    return state;
+  }
+
+  const { date } = validatedFields.data;
+  console.log({ date });
+  await updateAppointmentDate(date, appointmentId);
+}
+
+const updateAppointmentDate = async (status: string, appointmentId: string) => {
   await dbConnect();
 
   if (!Types.ObjectId.isValid(appointmentId)) {

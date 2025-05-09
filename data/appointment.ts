@@ -63,6 +63,8 @@ export const getMotherReport = async (appointmentId: string, fields = "") => {
     { __v: 0, createdAt: 0, updatedAt: 0 }
   ).lean()) as any;
 
+  if (!motherReport) return null;
+
   const {
     motherBloodPressure,
     motherFh,
@@ -97,6 +99,8 @@ export const getBabyReport = async (appointmentId: string, fields = "") => {
     { appointmentId: new Types.ObjectId(appointmentId) },
     { __v: 0, createdAt: 0, updatedAt: 0 }
   ).lean()) as any;
+
+  if (!babyReport) return null;
 
   const {
     babyHeight,
