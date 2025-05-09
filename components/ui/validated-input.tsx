@@ -14,27 +14,36 @@ const ValidatedInput = ({
   form,
   placeholder,
   min,
+  classLabel,
+  classInput,
+  classForm,
 }: {
   name: string;
   form: any;
   label: string;
   type?: string;
   placeholder?: string;
-  min?: number;
+  min?: string;
+  classLabel?: string;
+  classInput?: string;
+  classForm?: string;
 }) => {
   return (
     <FormField
       control={form.control}
       name={name}
       render={({ field }) => (
-        <FormItem>
-          <FormLabel>{label}</FormLabel>
+        <FormItem className={classForm ? classForm : ""}>
+          <FormLabel className={classLabel ? classLabel : ""}>
+            {label}
+          </FormLabel>
           <FormControl>
             <Input
               type={type ? type : ""}
-              min={min ? min : 0}
+              min={min ? min : ""}
               placeholder={placeholder}
               {...field}
+              className={classInput ? classInput : ""}
             />
           </FormControl>
           <FormMessage />
