@@ -100,6 +100,6 @@ export async function rescheduleAppointment(
     return state;
   }
 
-  const { date } = validatedFields.data;
-  console.log({ date });
+  const { date, time } = validatedFields.data;
+  console.log({ date, time });
 }

@@ -9,15 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { startTransition, useActionState, useRef } from "react";
 import { User } from "./data/schema";
@@ -27,6 +19,9 @@ import {
   RescheduleAppointmentFormSchema,
 } from "@/definitions/appointment";
 import { LoaderCircle } from "lucide-react";
+import ValidatedInput from "@/components/ui/validated-input";
+import SelectInput from "@/components/ui/select-input";
+import { timeSlotOptions } from "@/constants/appointment";
 
 interface Props {
   currentRow?: User;
@@ -50,8 +45,11 @@ export function UsersActionDialog({ open, onOpenChange }: Props) {
     resolver: zodResolver(rescheduleAppointmentFormSchema),
     defaultValues: {
       date: "",
+      time: "",
     },
   });
+  const minDate = new Date();
+  const formatDate = (date: Date) => date.toISOString().split("T")[0];
 
   return (
     <Dialog
@@ -85,27 +83,25 @@ export function UsersActionDialog({ open, onOpenChange }: Props) {
               id="user-form"
               className="space-y-4 p-0.5"
             >
-              <FormField
-                control={form.control}
+              <ValidatedInput
                 name="date"
-                render={({ field }) => (
-                  <FormItem className="grid grid-cols-6 items-center gap-x-4 gap-y-1 space-y-0">
-                    <FormLabel className="col-span-2 text-right">
-                      Rescheduled Date
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="E.g 1000"
-                        className="col-span-4 flex flex-col justify-center"
-                        autoComplete="off"
-                        type="date"
-                        disabled={isPending}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="col-span-4 col-start-3" />
-                  </FormItem>
-                )}
+                label="Rescheduled Date"
+                type="date"
+                placeholder=""
+                form={form}
+                min={formatDate(minDate)}
+                classInput="col-span-4 flex flex-col justify-center"
+              />
+
+              <SelectInput
+                name="time"
+                label="Reschedule Time"
+                placeholder="Please select an available time slot"
+                options={timeSlotOptions}
+                {...{
+                  form,
+                  isPending,
+                }}
               />
             </form>
           </Form>
