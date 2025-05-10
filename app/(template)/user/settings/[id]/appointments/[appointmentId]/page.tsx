@@ -4,13 +4,16 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { AppointmmentPrimaryButton } from "@/components/user/settings/appointments/[appointmentId]/appointment-button";
 import { UsersDialogs } from "@/components/user/settings/appointments/[appointmentId]/users-dialogs";
+import { getAppointment } from "@/data/appointment";
+import { COMPLETED_APPOINTMENT } from "@/constants/appointment";
 
-export default async function SettingsProfile({
+export default async function Appointments({
   params,
 }: {
   params: Promise<{ appointmentId: string }>;
 }) {
   const { appointmentId } = await params;
+  const appointment = await getAppointment(appointmentId);
 
   return (
     <UsersProvider>
@@ -22,7 +25,9 @@ export default async function SettingsProfile({
               Manage all appointment details and report here.
             </p>
           </div>
-          <AppointmmentPrimaryButton />
+          {appointment && appointment.status !== COMPLETED_APPOINTMENT && (
+            <AppointmmentPrimaryButton />
+          )}
         </div>
         <Separator className="my-4 flex-none" />
         <ScrollArea className="faded-bottom -mx-4 flex-1 scroll-smooth px-4 md:pb-16">

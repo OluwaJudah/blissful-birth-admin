@@ -42,6 +42,13 @@ export const getAppointments = async () => {
   );
 };
 
+export const getAppointment = async (id: string, fields = "") => {
+  await dbConnect();
+
+  const appointment = await Appointment.findById(id, fields);
+  return appointment ? appointment : null;
+};
+
 export const getMotherAppointments = async (userId: string, fields = "") => {
   await dbConnect();
 
@@ -49,7 +56,7 @@ export const getMotherAppointments = async (userId: string, fields = "") => {
     { userId: new Types.ObjectId(userId) },
     fields
   )
-    .sort({ createdAt: -1 })
+    .sort({ pregnancyWeeks: 1 })
     .lean();
 
   return appointments;
@@ -57,6 +64,10 @@ export const getMotherAppointments = async (userId: string, fields = "") => {
 
 export const getMotherReport = async (appointmentId: string, fields = "") => {
   await dbConnect();
+
+  if (!Types.ObjectId.isValid(appointmentId)) {
+    throw new Error("Invalid appointment ID");
+  }
 
   const motherReport = (await MotherReport.findOne(
     { appointmentId: new Types.ObjectId(appointmentId) },
