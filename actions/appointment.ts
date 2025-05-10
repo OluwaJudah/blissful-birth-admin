@@ -22,6 +22,7 @@ import {
 import dbConnect from "@/lib/db";
 import Appointment from "@/models/appointment";
 import BabyReport from "@/models/baby-report";
+import MotherInfo from "@/models/mother-info";
 import MotherReport from "@/models/mother-report";
 import { getUpcomingAppointmentMondays } from "@/utils";
 import { Types } from "mongoose";
@@ -313,6 +314,18 @@ export async function createAppointmentSlots(edd: string, userId: string) {
     availableSlots.push(appointment);
   });
 
-  await Appointment.insertMany(availableSlots);
-  return availableSlots;
+  try {
+    await Appointment.insertMany(availableSlots);
+  } catch (err) {
+    throw Error(`Error: Failed to create all patient's appointment`);
+  }
+
+  try {
+    await MotherInfo.findOneAndUpdate({
+      userId: new Types.ObjectId(userId),
+      $set: { status: "onboarded" },
+    });
+  } catch (err) {
+    throw Error(`Error: Failed to update patient's status`);
+  }
 }

@@ -1,6 +1,7 @@
 export const COMPLETED_APPOINTMENT = "completed";
 export const PENDING_APPOINTMENT = "pending";
 export const APPOINTMENT = "appointment";
+export const PATIENT_ONBOARDED = "onboarded";
 export const MAX_PER_SLOT = 4;
 export const SLOT_TIMES = ["09:00", "09:30", "10:00", "10:30"];
 export const appointmentWeeks:any[] = [

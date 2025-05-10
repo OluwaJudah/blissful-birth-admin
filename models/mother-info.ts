@@ -20,6 +20,7 @@ const MotherInfoSchema = new Schema<MotherInfo>(
     lastMenstrualDate: { type: Date, required: true },
     contactNumber: { type: String, required: true },
     email: { type: String },
+    status: { type: String, required: true },
     countryOfOrigin: { type: String, required: true },
     occupation: { type: String },
     packageType: { type: String },

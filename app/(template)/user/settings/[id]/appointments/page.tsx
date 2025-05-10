@@ -5,6 +5,8 @@ import { AppointmmentPrimaryButton } from "@/components/user/settings/appointmen
 import AppointmentEntry from "@/components/user/settings/appointments/AppointmentEntry";
 import { getMotherAppointments } from "@/data/appointment";
 import { UsersDialogs } from "@/components/user/settings/appointments/users-dialogs";
+import { getMotherDetails } from "@/data/mother-info";
+import { PATIENT_ONBOARDED } from "@/constants/appointment";
 
 export default async function SettingsAccount({
   params,
@@ -13,6 +15,7 @@ export default async function SettingsAccount({
 }) {
   const { id } = await params;
   const appointments = await getMotherAppointments(id, "");
+  const motherInfo = await getMotherDetails(id);
 
   return (
     <UsersProvider>
@@ -25,7 +28,9 @@ export default async function SettingsAccount({
               timezone.
             </p>
           </div>
-          <AppointmmentPrimaryButton />
+          {motherInfo && motherInfo.status !== PATIENT_ONBOARDED && (
+            <AppointmmentPrimaryButton />
+          )}
         </div>
         <Separator className="my-4 flex-none" />
         <ScrollArea className="faded-bottom -mx-4 flex-1 scroll-smooth px-4 md:pb-16">
