@@ -27,9 +27,12 @@ import {
   GenerateAppointmentsFormSchema,
 } from "@/definitions/appointment";
 import { LoaderCircle } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { useUsers } from "./context/users-context";
 
 interface Props {
   currentRow?: User;
+  userId: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
@@ -39,11 +42,24 @@ const initialState = {
   errors: {},
 };
 
-export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
+export function UsersActionDialog({
+  userId,
+  currentRow,
+  open,
+  onOpenChange,
+}: Props) {
+  const { setOpen } = useUsers();
   const isEdit = !!currentRow;
   const formRef = useRef<HTMLFormElement>(null);
+  const pathname = usePathname();
+  const generateAppointmentsWithUserId = generateAppointments.bind(
+    null,
+    userId,
+    pathname
+  );
+
   const [state, formAction, isPending] = useActionState(
-    generateAppointments,
+    generateAppointmentsWithUserId,
     initialState
   );
 
@@ -84,6 +100,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
                   const formData = new FormData(formRef.current!);
                   startTransition(() => {
                     formAction(formData);
+                    setOpen("");
                   });
                 })(evt);
               }}
@@ -119,14 +136,13 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
         <div className="flex justify-center">
           {isPending ? (
             <Button type="button" className="w-[120px] bg-gray-500">
-              <LoaderCircle className="animate-spin"/>
+              <LoaderCircle className="animate-spin" />
             </Button>
           ) : (
-            <Button type="submit" form="user-form" >
+            <Button type="submit" form="user-form">
               Save changes
             </Button>
           )}
-
         </div>
       </DialogContent>
     </Dialog>

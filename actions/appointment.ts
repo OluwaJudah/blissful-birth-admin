@@ -1,5 +1,11 @@
 "use server";
-import { COMPLETED_APPOINTMENT } from "@/constants/appointment";
+import {
+  APPOINTMENT,
+  COMPLETED_APPOINTMENT,
+  MAX_PER_SLOT,
+  PENDING_APPOINTMENT,
+  SLOT_TIMES,
+} from "@/constants/appointment";
 import {
   babyReportFormSchema,
   GenerateAppointmentsFormState,
@@ -11,11 +17,13 @@ import {
   MotherReportFormState,
   RescheduleAppointmentFormState,
   rescheduleAppointmentFormSchema,
+  IAppointment,
 } from "@/definitions/appointment";
 import dbConnect from "@/lib/db";
 import Appointment from "@/models/appointment";
 import BabyReport from "@/models/baby-report";
 import MotherReport from "@/models/mother-report";
+import { getUpcomingAppointmentMondays } from "@/utils";
 import { Types } from "mongoose";
 import { revalidatePath } from "next/cache";
 
@@ -180,26 +188,6 @@ const updateAppointmentStatus = async (
   return appointment;
 };
 
-export async function generateAppointments(
-  prevState: GenerateAppointmentsFormState | undefined,
-  formData: FormData
-) {
-  const validatedFields = generateAppointmentsFormSchema.safeParse(
-    Object.fromEntries(formData)
-  );
-
-  if (!validatedFields.success) {
-    const state: GenerateAppointmentsFormState = {
-      errors: validatedFields.error.flatten().fieldErrors,
-      message: "Oops, I think there's a mistake with your inputs.",
-    };
-    return state;
-  }
-
-  const { edd } = validatedFields.data;
-  console.log({ edd });
-}
-
 export async function rescheduleAppointment(
   appointmentId: string,
   prevState: RescheduleAppointmentFormState | undefined,
@@ -218,11 +206,14 @@ export async function rescheduleAppointment(
   }
 
   const { date, time } = validatedFields.data;
-  console.log({ date, time });
-  await updateAppointmentDate(date, appointmentId);
+  await updateAppointmentDate(date, time, appointmentId);
 }
 
-const updateAppointmentDate = async (status: string, appointmentId: string) => {
+const updateAppointmentDate = async (
+  date: string,
+  time: string,
+  appointmentId: string
+) => {
   await dbConnect();
 
   if (!Types.ObjectId.isValid(appointmentId)) {
@@ -231,7 +222,7 @@ const updateAppointmentDate = async (status: string, appointmentId: string) => {
 
   const appointment = await Appointment.findByIdAndUpdate(
     appointmentId, // Filter
-    { $set: { status } },
+    { $set: { date: new Date(date), time } },
     {
       new: true, // Return the updated document
       runValidators: true, // Apply schema validations
@@ -239,3 +230,89 @@ const updateAppointmentDate = async (status: string, appointmentId: string) => {
   );
   return appointment;
 };
+
+export async function generateAppointments(
+  userId: string,
+  pathname: string,
+  prevState: GenerateAppointmentsFormState | undefined,
+  formData: FormData
+) {
+  const validatedFields = generateAppointmentsFormSchema.safeParse(
+    Object.fromEntries(formData)
+  );
+
+  if (!validatedFields.success) {
+    const state: GenerateAppointmentsFormState = {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Oops, I think there's a mistake with your inputs.",
+    };
+    return state;
+  }
+
+  const { edd } = validatedFields.data;
+  await createAppointmentSlots(edd, userId);
+  revalidatePath(pathname);
+}
+
+export async function createAppointmentSlots(edd: string, userId: string) {
+  const weekDates = getUpcomingAppointmentMondays(edd);
+  const today = new Date(weekDates[0].mondayDate);
+  const endDate = new Date(weekDates[weekDates.length - 1].mondayDate);
+
+  await dbConnect();
+  // 1. Aggregate existing appointment counts per date/time
+  const usage = await Appointment.aggregate([
+    {
+      $match: {
+        date: { $gte: today, $lt: endDate },
+      },
+    },
+    {
+      $group: {
+        _id: { date: "$date", time: "$time" },
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+
+  // 2. Build a map for quick lookup: { 'YYYY-MM-DD': { '09:00': count } }
+  const usageMap: Record<string, Record<string, number>> = {};
+
+  usage.forEach(({ _id, count }) => {
+    const dateKey = new Date(_id.date).toISOString().split("T")[0];
+    const time = _id.time;
+
+    if (!usageMap[dateKey]) usageMap[dateKey] = {};
+    usageMap[dateKey][time] = count;
+  });
+  // 3. Build available slots per day
+  const availableSlots: any[] = [];
+
+  weekDates.forEach((a) => {
+    const date = new Date(a.mondayDate);
+    const dateKey = date.toISOString().split("T")[0];
+    const takenSlots = usageMap[dateKey] || {};
+
+    const available = SLOT_TIMES.filter((time) => {
+      const count = takenSlots[time] || 0;
+      return count < MAX_PER_SLOT;
+    });
+
+    let appointment = {
+      pregnancyWeeks: a.week,
+      status: PENDING_APPOINTMENT,
+      date: new Date(dateKey),
+      note: "",
+      userId: new Types.ObjectId(userId),
+      time: "None",
+      type: APPOINTMENT,
+    };
+
+    if (available.length > 0) appointment.time = available[0]; // Select the first available
+
+    availableSlots.push(appointment);
+  });
+
+  await Appointment.insertMany(availableSlots);
+  return availableSlots;
+}

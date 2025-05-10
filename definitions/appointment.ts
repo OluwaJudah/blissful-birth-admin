@@ -3,7 +3,7 @@ import { z } from "zod";
 export type IAppointment = {
   type: string;
   time: string;
-  date: string;
+  date: Date;
   status: string;
   note: string;
   pregnancyWeeks: number;

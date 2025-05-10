@@ -1,3 +1,5 @@
+import { appointmentWeeks } from "@/constants/appointment";
+
 export const calculateTrimester = (pregnancyWeeks: number) => {
   if (pregnancyWeeks <= 12) return 0;
   else if (pregnancyWeeks <= 27) return 1;
@@ -46,4 +48,41 @@ export const getTuesdays = (year: number, month: number) => {
     let date = new Date(dateStr);
     return date.getMonth() === month; // May is month index 4 (0-based index)
   });
+};
+
+export const getUpcomingAppointmentMondays = (
+  eddStr: string
+): { week: number; mondayDate: string }[] => {
+  const edd = new Date(eddStr);
+  const startDate = new Date(edd.getTime() - 280 * 24 * 60 * 60 * 1000); // 280 days before EDD
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Normalize for date-only comparison
+
+  const results: {
+    week: number;
+    mondayDate: string;
+  }[] = [];
+
+  for (const week of appointmentWeeks) {
+    const weekStart = new Date(
+      startDate.getTime() + (week - 1) * 7 * 24 * 60 * 60 * 1000
+    );
+
+    // Adjust to Monday
+    const day = weekStart.getDay(); // 0 = Sunday, 1 = Monday, etc.
+    const diffToMonday = day === 0 ? 1 : (8 - day) % 7;
+    const monday = new Date(weekStart);
+    monday.setDate(weekStart.getDate() + diffToMonday);
+
+    if (monday >= today) {
+      const formattedDate = monday.toISOString().split("T")[0]; // YYYY-MM-DD
+
+      results.push({
+        week,
+        mondayDate: formattedDate,
+      });
+    }
+  }
+
+  return results;
 };
