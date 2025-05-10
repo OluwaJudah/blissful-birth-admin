@@ -27,23 +27,27 @@ export default async function SettingsAccount({
           </div>
           <AppointmmentPrimaryButton />
         </div>
-      <Separator className="my-4 flex-none" />
-      <ScrollArea className="faded-bottom -mx-4 flex-1 scroll-smooth px-4 md:pb-16">
-        <div className="-mx-1 px-1.5 flex flex-col gap-3 lg:max-w-xl">
-          {appointments.map(({ _id, date, time, status, pregnancyWeeks }) => (
-            <AppointmentEntry
-              key={_id.toString()}
-              id={_id.toString()}
-              date={date}
-              time={time}
-              status={status}
-              pregnancyWeeks={pregnancyWeeks}
-              userId={id}
-            />
-          ))}
+        <Separator className="my-4 flex-none" />
+        <ScrollArea className="faded-bottom -mx-4 flex-1 scroll-smooth px-4 md:pb-16">
+          <div className="-mx-1 px-1.5 flex flex-col gap-3 lg:max-w-xl">
+            {appointments.map(({ _id, date, time, status, pregnancyWeeks }) => (
+              <AppointmentEntry
+                key={_id.toString()}
+                id={_id.toString()}
+                date={date.toLocaleDateString("en-GB", {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                })}
+                time={time}
+                status={status}
+                pregnancyWeeks={pregnancyWeeks}
+                userId={id}
+              />
+            ))}
           </div>
         </ScrollArea>
-        <UsersDialogs />
+        <UsersDialogs userId={id} />
       </div>
     </UsersProvider>
   );
