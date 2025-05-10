@@ -2,7 +2,6 @@ import UsersProvider from "@/components/user/settings/appointments/context/users
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { AppointmmentPrimaryButton } from "@/components/user/settings/appointments/appointment-button";
-import { UsersDialogs } from "@/components/user/settings/appointments/users-dialogs";
 
 export default function SettingsAccount() {
   return (
@@ -20,10 +19,8 @@ export default function SettingsAccount() {
         </div>
         <Separator className="my-4 flex-none" />
         <ScrollArea className="faded-bottom -mx-4 flex-1 scroll-smooth px-4 md:pb-16">
-          <div className="-mx-1 px-1.5 flex flex-col gap-3 lg:max-w-xl">
-          </div>
+          <div className="-mx-1 px-1.5 flex flex-col gap-3 lg:max-w-xl"></div>
         </ScrollArea>
-        <UsersDialogs />
       </div>
     </UsersProvider>
   );
