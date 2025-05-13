@@ -200,6 +200,11 @@ export const getAppointmentsForFilter = async (fromDate = "", toDate = "") => {
       },
     },
 
+    // Sort by time within each date group
+    {
+      $sort: { "_id.date": 1, "_id.time": 1 },
+    },
+    
     // Group by date to create slot structure
     {
       $group: {
