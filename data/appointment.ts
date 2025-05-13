@@ -27,15 +27,14 @@ export const getAppointments = async () => {
 
   return appointments.map(
     ({ _id, date, time, status, pregnancyWeeks, userId, motherinfo }) => {
-      const { fullName, surname } = motherinfo;
       return {
         id: _id,
         date,
         time,
         status,
         pregnancyWeeks,
-        fullName,
-        surname,
+        fullName: motherinfo && motherinfo.fullName ? motherinfo.fullName : "",
+        surname: motherinfo && motherinfo.surname ? motherinfo.surname : "",
         userId,
       };
     }
