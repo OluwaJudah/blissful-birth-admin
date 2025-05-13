@@ -50,11 +50,6 @@ export const sidebarData: SidebarData = {
           url: "/appointments",
           icon: IconCalendarEvent,
         },
-        {
-          title: "Appointments",
-          url: "/appointments-table",
-          icon: IconCalendarEvent,
-        },
       ],
     },
   ],
