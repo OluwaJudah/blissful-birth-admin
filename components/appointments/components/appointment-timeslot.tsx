@@ -13,7 +13,7 @@ const AppointmentTimeslot = ({
       <h2 className="font-semibold">Timeslot: {time}</h2>
       <div className="flex flex-col gap-1">
         {appointments.map((a) => (
-          <AppointmentDetails key={a.id} {...{ ...a }} />
+          <AppointmentDetails key={a._id} {...{ ...a }} />
         ))}
       </div>
     </>

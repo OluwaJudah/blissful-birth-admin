@@ -57,6 +57,15 @@ export const getUpcomingAppointmentMondays = (
   const startDate = new Date(edd.getTime() - 280 * 24 * 60 * 60 * 1000); // 280 days before EDD
   const today = new Date();
   today.setHours(0, 0, 0, 0); // Normalize for date-only comparison
+  // Get last Tuesday of current month
+  const now = new Date();
+  const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+  let lastTuesday = new Date(lastDayOfMonth);
+  while (lastTuesday.getDay() !== 2) {
+    // 2 = Tuesday
+    lastTuesday.setDate(lastTuesday.getDate() - 1);
+  }
 
   const results: {
     week: number;
@@ -74,7 +83,7 @@ export const getUpcomingAppointmentMondays = (
     const monday = new Date(weekStart);
     monday.setDate(weekStart.getDate() + diffToMonday);
 
-    if (monday >= today) {
+    if (monday >= lastTuesday) {
       const formattedDate = monday.toISOString().split("T")[0]; // YYYY-MM-DD
 
       results.push({
@@ -85,4 +94,55 @@ export const getUpcomingAppointmentMondays = (
   }
 
   return results;
+};
+
+export const getAppointmentMondaysAfterLastTuesday = (
+  eddStr: string
+): any[] => {
+  const appointmentWeeks = [
+    8, 13, 18, 21, 24, 28, 30, 32, 34, 36, 37, 38, 39, 40,
+  ];
+
+  const edd = new Date(eddStr);
+  const startDate = new Date(edd.getTime() - 280 * 24 * 60 * 60 * 1000); // start of Week 1
+
+  // Get last Tuesday of current month
+  const now = new Date();
+  const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+  let lastTuesday = new Date(lastDayOfMonth);
+  while (lastTuesday.getDay() !== 2) {
+    // 2 = Tuesday
+    lastTuesday.setDate(lastTuesday.getDate() - 1);
+  }
+
+  const mondayDates: any[] = [];
+
+  for (const week of appointmentWeeks) {
+    const weekStart = new Date(
+      startDate.getTime() + (week - 1) * 7 * 24 * 60 * 60 * 1000
+    );
+
+    // Align to Monday
+    const day = weekStart.getDay(); // Sunday = 0, Monday = 1, etc.
+    const diffToMonday = day === 0 ? 1 : (8 - day) % 7;
+    const monday = new Date(weekStart);
+    monday.setDate(weekStart.getDate() + diffToMonday);
+
+    // Include only Mondays after the last Tuesday of the current month
+    if (monday > lastTuesday) {
+      const formatted = monday.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      });
+
+      mondayDates.push({
+        week,
+        mondayDate: formatted,
+      });
+    }
+  }
+
+  return mondayDates;
 };

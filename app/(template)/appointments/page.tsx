@@ -9,7 +9,7 @@ import AppointmentsDateFilter from "@/components/appointments/components/appoint
 export default async function Appointments() {
   const today = new Date();
   const dateStr = today.toISOString().split("T")[0];
-  today.setDate(today.getDay() + 120)
+  today.setDate(today.getDay() + 120);
   const thirtyDayStr = today.toISOString().split("T")[0];
   const appointments = await getAppointmentsForFilter(dateStr, thirtyDayStr);
 

@@ -3,8 +3,24 @@ export const PENDING_APPOINTMENT = "pending";
 export const APPOINTMENT = "appointment";
 export const PATIENT_ONBOARDED = "onboarded";
 export const MAX_PER_SLOT = 4;
-export const SLOT_TIMES = ["09:00", "09:30", "10:00", "10:30"];
-export const appointmentWeeks:any[] = [
+export const SLOT_TIMES = [
+  "09:00",
+  "09:30",
+  "10:00",
+  "10:30",
+  "11:00",
+  "11:30",
+  "12:00",
+  "12:30",
+  "13:00",
+  "13:30",
+  "14:00",
+  "14:30",
+  "15:00",
+  "15:30",
+  "16:00",
+];
+export const appointmentWeeks: any[] = [
   8, 13, 18, 21, 24, 28, 30, 32, 34, 36, 37, 38, 39, 40,
 ];
 

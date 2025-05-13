@@ -132,10 +132,7 @@ export const getBabyReport = async (appointmentId: string, fields = "") => {
   };
 };
 
-export const getAppointmentsForFilter = async (
-  fromDate = "",
-  toDate = ""
-) => {
+export const getAppointmentsForFilter = async (fromDate = "", toDate = "") => {
   await dbConnect();
 
   const matchStage: any = {};
@@ -158,7 +155,7 @@ export const getAppointmentsForFilter = async (
         as: "user",
       },
     },
-    { $unwind: "$user" },
+    { $unwind: { path: "$user", preserveNullAndEmptyArrays: false } },
 
     // Join with Profile
     {
@@ -169,21 +166,36 @@ export const getAppointmentsForFilter = async (
         as: "motherinfo",
       },
     },
-    { $unwind: "$motherinfo" },
+    { $unwind: { path: "$motherinfo", preserveNullAndEmptyArrays: false } },
 
-    // Group by date and time
+    // Group by unique appointment to remove duplicates
+    {
+      $group: {
+        _id: "$_id",
+        userId: { $first: "$userId" },
+        date: { $first: "$date" },
+        status: { $first: "$status" },
+        time: { $first: "$time" },
+        pregnancyWeeks: { $first: "$pregnancyWeeks" },
+        fullName: { $first: "$motherinfo.fullName" },
+        surname: { $first: "$motherinfo.surname" },
+      },
+    },
+
+    // Regroup by date and time
     {
       $group: {
         _id: { date: "$date", time: "$time" },
         appointments: {
           $push: {
-            id: { $toString: "$_id" },
+            _id: { $toString: "$_id" },
             userId: { $toString: "$userId" },
             date: { $toString: "$date" },
             status: "$status",
+            time: "$time",
             pregnancyWeeks: "$pregnancyWeeks",
-            fullName: "$motherinfo.fullName",
-            surname: "$motherinfo.surname",
+            fullName: "$fullName",
+            surname: "$surname",
           },
         },
       },

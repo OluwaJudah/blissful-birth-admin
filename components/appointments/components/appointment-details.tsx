@@ -5,7 +5,7 @@ import Link from "next/link";
 import React from "react";
 
 const AppointmentDetails = ({
-  id,
+  _id,
   userId,
   date,
   fullName,
@@ -13,7 +13,7 @@ const AppointmentDetails = ({
   status,
   pregnancyWeeks,
 }: {
-  id: string;
+  _id: string;
   userId: string;
   date: string;
   fullName: string;
@@ -30,7 +30,7 @@ const AppointmentDetails = ({
 
   return (
     <Link
-      href={`/user/settings/${userId}/appointments/${id}`}
+      href={`/user/settings/${userId}/appointments/${_id}`}
       className="rounded-3xl border flex justify-between items-center gap-3 px-2 py-1 hover:shadow-md"
     >
       <div className="flex items-center gap-3">
