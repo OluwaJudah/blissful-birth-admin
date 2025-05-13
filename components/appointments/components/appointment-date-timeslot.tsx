@@ -9,8 +9,8 @@ const AppointmentDateTimeSlot = ({
 }) => {
   return (
     <>
-      <h2 className="mb-1 font-semibold">{date}</h2>
-      <div className="flex flex-col gap-3">
+      <h2 className="font-semibold">{date}</h2>
+      <div className="flex flex-col gap-1">
         {slots.map((s, index) => (
           <AppointmentTimeslot
             key={index}
