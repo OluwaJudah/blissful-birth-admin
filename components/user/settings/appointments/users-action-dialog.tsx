@@ -54,6 +54,11 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
     },
   });
 
+  const today = new Date();
+  const fortyWeeksLater = new Date();
+  fortyWeeksLater.setDate(today.getDate() + 40 * 7); // 40 weeks = 280 days
+  const formatDate = (date: Date) => date.toISOString().split("T")[0];
+
   return (
     <Dialog
       open={open}
@@ -106,6 +111,8 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
                         autoComplete="off"
                         type="date"
                         disabled={isPending}
+                        min={formatDate(today)}
+                        max={formatDate(fortyWeeksLater)}
                         {...field}
                       />
                     </FormControl>
@@ -119,14 +126,13 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
         <div className="flex justify-center">
           {isPending ? (
             <Button type="button" className="w-[120px] bg-gray-500">
-              <LoaderCircle className="animate-spin"/>
+              <LoaderCircle className="animate-spin" />
             </Button>
           ) : (
-            <Button type="submit" form="user-form" >
+            <Button type="submit" form="user-form">
               Save changes
             </Button>
           )}
-
         </div>
       </DialogContent>
     </Dialog>
