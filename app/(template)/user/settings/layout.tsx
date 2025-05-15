@@ -2,6 +2,7 @@ import {
   IconBellRinging2,
   IconCalendarEvent,
   IconCashRegister,
+  IconHistory,
   IconNotification,
   IconReceiptDollar,
   IconTool,
@@ -35,6 +36,11 @@ const sidebarNavItems = [
     title: "Notifications",
     icon: <IconBellRinging2 size={18} />,
     href: "/user/settings/notifications",
+  },
+  {
+    title: "Medical History",
+    icon: <IconHistory size={18} />,
+    href: "/user/settings/medical-history",
   },
 ];
 
