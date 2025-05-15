@@ -2,8 +2,12 @@ import {
   IconBellRinging2,
   IconCalendarEvent,
   IconCashRegister,
+  IconDropletHalfFilled,
+  IconHistory,
+  IconMedicalCross,
   IconNotification,
   IconReceiptDollar,
+  IconReportMedical,
   IconTool,
   IconUser,
 } from "@tabler/icons-react";
@@ -40,12 +44,21 @@ export default async function RootLayout({
       icon: <IconReceiptDollar size={18} />,
       href: `/user/settings/${id}/payment-history`,
     },
-    /*     {
+    {
       title: "Notifications",
       icon: <IconBellRinging2 size={18} />,
-      href: `/user/settings/${id}/notifications`,
+      href: "/user/settings/notifications",
     },
- */
+    {
+      title: "Medical History",
+      icon: <IconReportMedical size={18} />,
+      href: "/user/settings/medical-history",
+    },
+    {
+      title: "Blood Results",
+      icon: <IconDropletHalfFilled size={18} />,
+      href: "/user/settings/blood-results",
+    },
   ];
 
   return (

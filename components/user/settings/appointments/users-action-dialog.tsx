@@ -70,6 +70,11 @@ export function UsersActionDialog({
     },
   });
 
+  const today = new Date();
+  const fortyWeeksLater = new Date();
+  fortyWeeksLater.setDate(today.getDate() + 40 * 7); // 40 weeks = 280 days
+  const formatDate = (date: Date) => date.toISOString().split("T")[0];
+
   return (
     <Dialog
       open={open}
@@ -123,6 +128,8 @@ export function UsersActionDialog({
                         autoComplete="off"
                         type="date"
                         disabled={isPending}
+                        min={formatDate(today)}
+                        max={formatDate(fortyWeeksLater)}
                         {...field}
                       />
                     </FormControl>
