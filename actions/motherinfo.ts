@@ -1,5 +1,7 @@
 "use server";
 import {
+  bloodResultsFormSchema,
+  BloodResultsFormState,
   medicalHistoryFormSchema,
   MedicalHistoryFormState,
 } from "@/definitions/motherinfo";
@@ -33,6 +35,35 @@ export async function updateMedicalReport(
     conditions,
     familyHistory,
     tbSymptomsScreen,
+  });
+
+  revalidatePath(pathname);
+}
+
+export async function updateBloodResults(
+  userId: string,
+  pathname: string,
+  prevState: BloodResultsFormState | undefined,
+  formData: FormData
+) {
+  const validatedFields = bloodResultsFormSchema.safeParse(
+    Object.fromEntries(formData)
+  );
+
+  if (!validatedFields.success) {
+    const state: BloodResultsFormState = {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Oops, I think there's a mistake with your inputs.",
+    };
+    return state;
+  }
+
+  const { date, rpr, bloodGroup, hepatitis, rubella, glucose, hb, notes } =
+    validatedFields.data;
+
+  console.log({
+    ...{ date, rpr, bloodGroup, hepatitis, rubella, glucose, hb, notes },
+    userId,
   });
 
   revalidatePath(pathname);
