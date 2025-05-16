@@ -125,7 +125,7 @@ export const getMotherInfoWithPaymentSum = async () => {
         userId: 1,
         email: 1,
         surname: 1,
-        firstName: 1,
+        fullName: 1,
         contactNumber: 1,
         packageType: 1,
         paymentSum: 1,
