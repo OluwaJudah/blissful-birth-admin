@@ -7,7 +7,7 @@ export default function BloodResults() {
       title="Blood Results"
       desc="Manage the patient's blood results here."
     >
-      <BloodResultsForm />
+      <></>
     </ContentSection>
   );
 }

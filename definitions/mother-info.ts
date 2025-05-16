@@ -138,7 +138,29 @@ export type ICreateMotherInfo = {
   babyInfo: string;
 };
 
+export const defaultBloodResultsData = {
+  date: new Date(),
+  rpr: "",
+  bloodGroup: "",
+  hepatitis: "",
+  rubella: "",
+  glucose: 0,
+  hb: 0,
+  notes: "",
+};
+
+export const defaultMedicalHistoryData = {
+  details: "",
+  medication: "",
+  operations: "",
+  allergies: "",
+  conditions: "",
+  familyHistory: "",
+  tbSymptomsScreen: "",
+};
+
 export type IMedicalHistory = {
+  id?: string;
   details: string;
   medication: string;
   operations: string;
@@ -146,6 +168,18 @@ export type IMedicalHistory = {
   conditions: string;
   familyHistory: string;
   tbSymptomsScreen: string;
+};
+
+export type IBloodResult = {
+  id?: string;
+  date: Date;
+  rpr: string;
+  bloodGroup: string;
+  hepatitis: string;
+  rubella: string;
+  glucose: number;
+  hb: number;
+  notes: string;
 };
 
 export type IBirthCompanion = {

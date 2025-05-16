@@ -16,28 +16,45 @@ import { startTransition, useActionState, useRef, useState } from "react";
 import { updateMedicalReport } from "@/actions/motherinfo";
 import Selectables, { SelectableType } from "./selectables";
 import { LoaderCircle } from "lucide-react";
+import { IMedicalHistory } from "@/definitions/mother-info";
 
 // This can come from your database or API.
-const defaultValues: Partial<MedicalHistoryFormSchema> = {
-  details: "",
-  medication: "",
-  operations: "",
-  allergies: "",
-};
 
-export function MedicalHistoryForm() {
+export function MedicalHistoryForm({
+  medicalHistory,
+  userId,
+}: {
+  medicalHistory: IMedicalHistory;
+  userId: string;
+}) {
   const initialState = {
     message: "",
     errors: {},
   };
   const pathname = usePathname();
-  const userId = "lfiwjberlkjf23452i4u52";
-  const [conditionList, setConditionList] =
-    useState<SelectableType[]>(conditions);
-  const [familyHistoryList, setFamilyHistoryList] =
-    useState<SelectableType[]>(familyHistory);
-  const [tbSymptomsScreenList, setTbSymptomsScreenList] =
-    useState<SelectableType[]>(tbSymptomsScreen);
+
+  const updateSelectablesArray = (
+    selectableArray: SelectableType[],
+    selectableString: string
+  ) => {
+    const selectableStringArray = selectableString.split(",");
+    const updatedSelectableArray = selectableArray.map((s) => {
+      if (selectableStringArray.includes(s.name))
+        return { name: s.name, isAdded: true };
+      return s;
+    });
+    return updatedSelectableArray;
+  };
+
+  const [conditionList, setConditionList] = useState<SelectableType[]>(
+    updateSelectablesArray(conditions, medicalHistory.conditions)
+  );
+  const [familyHistoryList, setFamilyHistoryList] = useState<SelectableType[]>(
+    updateSelectablesArray(familyHistory, medicalHistory.familyHistory)
+  );
+  const [tbSymptomsScreenList, setTbSymptomsScreenList] = useState<
+    SelectableType[]
+  >(updateSelectablesArray(tbSymptomsScreen, medicalHistory.tbSymptomsScreen));
 
   const filterArraytoStr = (condition: SelectableType[]) =>
     condition
@@ -63,7 +80,7 @@ export function MedicalHistoryForm() {
 
   const form = useForm<MedicalHistoryFormSchema>({
     resolver: zodResolver(medicalHistoryFormSchema),
-    defaultValues,
+    defaultValues: medicalHistory,
   });
 
   const { handleSubmit } = form;

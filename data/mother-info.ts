@@ -2,6 +2,7 @@
 import dbConnect from "@/lib/db";
 import BabyInfo from "@/models/baby-info";
 import BirthCompanion from "@/models/birth-companion";
+import BloodResult from "@/models/blood-result";
 import MedicalHistory from "@/models/medical-history";
 import MotherInfo from "@/models/mother-info";
 import { Types } from "mongoose";
@@ -44,9 +45,64 @@ export const getBabyInfo = async (userId: string) => {
 export const getMedicalHistory = async (userId: string) => {
   await dbConnect();
 
-  return await MedicalHistory.findOne({
-    userId: new Types.ObjectId(userId),
-  }).lean();
+  const medicalHistory = (await MedicalHistory.findOne(
+    {
+      userId: new Types.ObjectId(userId),
+    },
+    { __v: 0, createdAt: 0, updatedAt: 0 }
+  ).lean()) as any;
+
+  if (!medicalHistory) return null;
+
+  const {
+    _id,
+    details,
+    allergies,
+    operations,
+    medication,
+    conditions,
+    familyHistory,
+    tbSymptomsScreen,
+  } = medicalHistory;
+
+  return {
+    id: _id.toString(),
+    details,
+    allergies,
+    operations,
+    medication,
+    conditions,
+    familyHistory,
+    tbSymptomsScreen,
+  };
+};
+
+export const getBloodResult = async (userId: string) => {
+  await dbConnect();
+
+  const bloodResult = (await BloodResult.findOne(
+    {
+      userId: new Types.ObjectId(userId),
+    },
+    { __v: 0, createdAt: 0, updatedAt: 0 }
+  ).lean()) as any;
+
+  if (!bloodResult) return null;
+
+  const { _id, date, rpr, bloodGroup, hepatitis, rubella, glucose, hb, notes } =
+    bloodResult;
+
+  return {
+    id: _id.toString(),
+    date,
+    rpr,
+    bloodGroup,
+    hepatitis,
+    rubella,
+    glucose,
+    hb,
+    notes,
+  };
 };
 
 export const getMotherInfoWithPaymentSum = async () => {

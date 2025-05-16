@@ -1,7 +1,7 @@
 import type { IMedicalHistory } from "@/definitions/mother-info";
 import mongoose, { Schema, Document, Model, Types } from "mongoose";
 
-export interface MedicalHistory extends Document, IMedicalHistory {
+export interface MedicalHistory extends Document, Omit<IMedicalHistory, "id"> {
   userId: Types.ObjectId;
 }
 

@@ -45,19 +45,14 @@ export default async function RootLayout({
       href: `/user/settings/${id}/payment-history`,
     },
     {
-      title: "Notifications",
-      icon: <IconBellRinging2 size={18} />,
-      href: "/user/settings/notifications",
-    },
-    {
       title: "Medical History",
       icon: <IconReportMedical size={18} />,
-      href: "/user/settings/medical-history",
+      href: `/user/settings/${id}/medical-history`,
     },
     {
       title: "Blood Results",
       icon: <IconDropletHalfFilled size={18} />,
-      href: "/user/settings/blood-results",
+      href: `/user/settings/${id}/blood-results`,
     },
   ];
 

@@ -19,26 +19,21 @@ import { updateBloodResults } from "@/actions/motherinfo";
 import { LoaderCircle } from "lucide-react";
 import SelectInput from "@/components/ui/select-input";
 import ValidatedInput from "@/components/ui/validated-input";
+import { IBloodResult } from "@/definitions/mother-info";
 
 // This can come from your database or API.
-const defaultValues: Partial<BloodResultsFormSchema> = {
-  date: "",
-  rpr: "",
-  bloodGroup: "",
-  hepatitis: "",
-  rubella: "",
-  glucose: 0,
-  hb: 0,
-  notes: "",
-};
-
-export function BloodResultsForm() {
+export function BloodResultsForm({
+  bloodResult,
+  userId,
+}: {
+  bloodResult: IBloodResult;
+  userId: string;
+}) {
   const initialState = {
     message: "",
     errors: {},
   };
   const pathname = usePathname();
-  const userId = "lfiwjberlkjf23452i4u52";
 
   const updateBloodResultsWithUserId = updateBloodResults.bind(
     null,
@@ -55,7 +50,10 @@ export function BloodResultsForm() {
 
   const form = useForm<BloodResultsFormSchema>({
     resolver: zodResolver(bloodResultsFormSchema),
-    defaultValues,
+    defaultValues: {
+      ...bloodResult,
+      date: bloodResult.date?.toISOString().split('T')[0]
+    },
   });
 
   const { handleSubmit } = form;

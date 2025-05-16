@@ -7,7 +7,7 @@ export default function MedicalHistory() {
       title="Medical History"
       desc="Manage the patient's medical history."
     >
-      <MedicalHistoryForm />
+      <></>
     </ContentSection>
   );
 }

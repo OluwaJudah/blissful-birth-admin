@@ -116,16 +116,6 @@ export const motherReportFormSchema = z.object({
 
 export type MotherReportFormSchema = z.infer<typeof motherReportFormSchema>;
 
-export type IMedicalHistory = {
-  details: string;
-  medication: string;
-  operations: string;
-  allergies: string;
-  conditions: string;
-  familyHistory: string;
-  tbSymptomsScreen: string;
-};
-
 export type GenerateAppointmentsFormState = {
   errors?: {
     edd?: string[];
