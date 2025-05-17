@@ -82,8 +82,8 @@ export const motherReportOtherFormData = [
 ];
 
 export const urineOptions = [
-  { label: "Clear", value: "clear" },
-  { label: "Trace", value: "trace" },
+  { label: "Clear", value: "Clear" },
+  { label: "Trace", value: "Trace" },
   { label: "+1", value: "+1" },
   { label: "+2", value: "+2" },
   { label: "+3", value: "+3" },
@@ -113,21 +113,21 @@ export const babyReportSelectFormData = [
     label: "Presentation",
     placeholder: "Select Baby Presentation",
     options: [
-      { label: "Vertex", value: "vertex" },
-      { label: "Breech", value: "breech" },
-      { label: "Transverse", value: "transverse" },
-      { label: "Unsure", value: "unsure" },
+      { label: "Vertex", value: "Vertex" },
+      { label: "Breech", value: "Breech" },
+      { label: "Transverse", value: "Transverse" },
+      { label: "Unsure", value: "Unsure" },
     ],
   },
   {
-    name: "motherPosition",
+    name: "babyPosition",
     label: "Position",
     placeholder: "Select Baby Position",
     options: [
-      { label: "LOA", value: "loa" },
-      { label: "ROA", value: "roa" },
-      { label: "Posterior", value: "posterior" },
-      { label: "Unsure", value: "unsure" },
+      { label: "LOA", value: "LOA" },
+      { label: "ROA", value: "ROA" },
+      { label: "Posterior", value: "Posterior" },
+      { label: "Unsure", value: "Unsure" },
     ],
   },
 ];
@@ -141,7 +141,7 @@ export const babyReportFormData: any[] = [
   },
   {
     name: "babyHeartRate",
-    label: "SFH(Heart Rate) (bpm)",
+    label: "FRH(Heart Rate) (bpm)",
     type: "number",
     placeholder: "Please enter the baby's heart rate in bpm",
   },
