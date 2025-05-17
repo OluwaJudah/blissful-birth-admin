@@ -50,9 +50,7 @@ export const babyReportFormSchema = z.object({
   babyPresentation: z.string().min(1, {
     message: "Baby's Position must be Vertex, Breech, Transverse or Unsure.",
   }),
-  babyPosition: z.string().min(1, {
-    message: "Baby's Position must be LOA, ROA, Posterior or Unsure.",
-  }),
+  babyPosition: z.string(),
   babyNote: z.string(),
 });
 
