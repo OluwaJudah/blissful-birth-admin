@@ -84,14 +84,7 @@ export function MotherReportForm({
           className="space-y-8"
         >
           {motherReportFormData.map((data) => (
-            <ValidatedInput
-              key={data.name}
-              name={data.name}
-              label={data.label}
-              type={data.type}
-              placeholder={data.placeholder}
-              form={form}
-            />
+            <ValidatedInput key={data.name} {...{ ...data }} form={form} />
           ))}
 
           {motherReportSelectFormData.map(({ name, label, placeholder }) => (

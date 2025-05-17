@@ -23,11 +23,16 @@ const ValidatedInput = ({
   label: string;
   type?: string;
   placeholder?: string;
-  min?: string;
+  min?: any;
   classLabel?: string;
   classInput?: string;
   classForm?: string;
 }) => {
+  let minValue = "";
+  if (type === "number" && !min) minValue = "0";
+  if (type === "number" && min) minValue = min;
+  else if (min) minValue = min;
+
   return (
     <FormField
       control={form.control}
@@ -40,7 +45,7 @@ const ValidatedInput = ({
           <FormControl>
             <Input
               type={type ? type : ""}
-              min={min ? min : ""}
+              min={minValue}
               placeholder={placeholder}
               {...field}
               className={classInput ? classInput : ""}
