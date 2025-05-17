@@ -53,9 +53,9 @@ export const getMotherAppointments = async (userId: string, fields = "") => {
 
   const appointments = await Appointment.find(
     { userId: new Types.ObjectId(userId) },
-    fields
+    { __v: 0, createdAt: 0, updatedAt: 0 }
   )
-    .sort({ pregnancyWeeks: 1 })
+    .sort({ date: 1 })
     .lean();
 
   return appointments;
@@ -204,7 +204,7 @@ export const getAppointmentsForFilter = async (fromDate = "", toDate = "") => {
     {
       $sort: { "_id.date": 1, "_id.time": 1 },
     },
-    
+
     // Group by date to create slot structure
     {
       $group: {
