@@ -18,6 +18,7 @@ const MotherInfoSchema = new Schema<MotherInfo>(
     idPassportNo: { type: String, required: true },
     dateOfBirth: { type: Date, required: true },
     lastMenstrualDate: { type: Date, required: true },
+    edd: { type: Date },
     contactNumber: { type: String, required: true },
     email: { type: String },
     status: { type: String, required: true },

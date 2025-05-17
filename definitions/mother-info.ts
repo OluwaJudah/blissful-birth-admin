@@ -198,6 +198,7 @@ export type IBirthCompanion = {
 
 export type IMotherInfo = IBirthCompanion & {
   lastMenstrualDate: Date;
+  edd?: Date;
   paymentSum?: number;
   packageType?: string;
   status: string;

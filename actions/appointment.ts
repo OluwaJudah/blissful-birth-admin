@@ -3,9 +3,11 @@ import {
   APPOINTMENT,
   COMPLETED_APPOINTMENT,
   MAX_PER_SLOT,
+  PATIENT_ONBOARDED,
   PENDING_APPOINTMENT,
   SLOT_TIMES,
 } from "@/constants/appointment";
+import { FIRST_APPOINTMENT } from "@/constants/user";
 import {
   babyReportFormSchema,
   GenerateAppointmentsFormState,
@@ -321,9 +323,21 @@ export async function createAppointmentSlots(edd: string, userId: string) {
   }
 
   try {
+    await Appointment.findOneAndUpdate(
+      {
+        userId: new Types.ObjectId(userId),
+        type: FIRST_APPOINTMENT,
+      },
+      { $set: { status: COMPLETED_APPOINTMENT } }
+    );
+  } catch (err) {
+    throw Error(`Error: Failed to update first appointment`);
+  }
+
+  try {
     await MotherInfo.findOneAndUpdate({
       userId: new Types.ObjectId(userId),
-      $set: { status: "onboarded" },
+      $set: { status: PATIENT_ONBOARDED, edd: new Date(edd) },
     });
   } catch (err) {
     throw Error(`Error: Failed to update patient's status`);
