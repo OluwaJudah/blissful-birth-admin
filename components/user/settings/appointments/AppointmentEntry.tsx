@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { trimesters } from "@/constants/user";
+import { APPOINTMENT, trimesters } from "@/constants/user";
 import { calculateTrimester } from "@/utils";
 import { IconCalendarEvent, IconChevronRight } from "@tabler/icons-react";
 import Link from "next/link";
@@ -9,6 +9,7 @@ const AppointmentEntry = ({
   date,
   time,
   status,
+  type,
   pregnancyWeeks,
   userId,
 }: {
@@ -16,17 +17,23 @@ const AppointmentEntry = ({
   date: string;
   time: string;
   status: string;
+  type: string;
   pregnancyWeeks: number;
   userId: string;
 }) => {
   const trimester = calculateTrimester(pregnancyWeeks);
   const trimesterStr = trimesters[trimester];
+  const label =
+    type === APPOINTMENT
+      ? `Week ${pregnancyWeeks} - ${trimesterStr} Trimester`
+      : "FIRST APPOINTMENT";
+
+  const url =
+    type === APPOINTMENT ? `/user/settings/${userId}/appointments/${id}` : "#";
 
   return (
-    <Link href={`/user/settings/${userId}/appointments/${id}`}>
-      <h2 className="mb-1 font-semibold">
-        Week {pregnancyWeeks} - {trimesterStr} Trimester
-      </h2>
+    <Link href={url}>
+      <h2 className="mb-1 font-semibold">{label}</h2>
       <div className="rounded-lg border flex justify-between items-center gap-3 p-4 hover:shadow-md">
         <div className="flex items-center gap-3">
           <div className="flex items-center justify-between">
@@ -44,7 +51,7 @@ const AppointmentEntry = ({
         </div>
         <div className="flex gap-3">
           <Badge variant="outline">{status}</Badge>
-          <IconChevronRight />
+          {type === APPOINTMENT && <IconChevronRight />}
         </div>
       </div>
     </Link>
