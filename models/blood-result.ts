@@ -13,6 +13,7 @@ const BloodResultSchema = new Schema<BloodResult>(
     bloodGroup: { type: String },
     hepatitis: { type: String },
     rubella: { type: String },
+    hiv: { type: String },
     glucose: { type: Number },
     hb: { type: Number },
     notes: { type: String },

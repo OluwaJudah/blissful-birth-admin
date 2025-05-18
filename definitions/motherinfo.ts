@@ -26,6 +26,7 @@ export type BloodResultsFormState = {
     bloodGroup?: string[];
     hepatitis?: string[];
     rubella?: string[];
+    hiv?: string[];
     glucose?: string[];
     hb?: string[];
     notes?: string[];
@@ -39,6 +40,7 @@ export const bloodResultsFormSchema = z.object({
   bloodGroup: z.string(),
   hepatitis: z.string(),
   rubella: z.string(),
+  hiv: z.string(),
   glucose: z.coerce.number(),
   hb: z.coerce.number(),
   notes: z.string(),

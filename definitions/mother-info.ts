@@ -144,6 +144,7 @@ export const defaultBloodResultsData = {
   bloodGroup: "",
   hepatitis: "",
   rubella: "",
+  hiv: "",
   glucose: 0,
   hb: 0,
   notes: "",
@@ -177,6 +178,7 @@ export type IBloodResult = {
   bloodGroup: string;
   hepatitis: string;
   rubella: string;
+  hiv: string;
   glucose: number;
   hb: number;
   notes: string;

@@ -74,7 +74,7 @@ export async function updateBloodResults(
     return state;
   }
 
-  const { date, rpr, bloodGroup, hepatitis, rubella, glucose, hb, notes } =
+  const { date, rpr, bloodGroup, hepatitis, rubella, hiv, glucose, hb, notes } =
     validatedFields.data;
 
   try {
@@ -85,6 +85,7 @@ export async function updateBloodResults(
         bloodGroup,
         hepatitis,
         rubella,
+        hiv,
         glucose,
         hb,
         notes,

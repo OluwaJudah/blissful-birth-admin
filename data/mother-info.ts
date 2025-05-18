@@ -89,7 +89,7 @@ export const getBloodResult = async (userId: string) => {
 
   if (!bloodResult) return null;
 
-  const { _id, date, rpr, bloodGroup, hepatitis, rubella, glucose, hb, notes } =
+  const { _id, date, rpr, bloodGroup, hepatitis, rubella, hiv, glucose, hb, notes } =
     bloodResult;
 
   return {
@@ -99,6 +99,7 @@ export const getBloodResult = async (userId: string) => {
     bloodGroup,
     hepatitis,
     rubella,
+    hiv,
     glucose,
     hb,
     notes,

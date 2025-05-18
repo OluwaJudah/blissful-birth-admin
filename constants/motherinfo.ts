@@ -42,6 +42,11 @@ export const bloodResultsSelectFormData = [
     label: "Rubella",
     placeholder: "Select Rubella",
   },
+  {
+    name: "hiv",
+    label: "HIV",
+    placeholder: "Select HIV status",
+  },
 ];
 
 export const bloodInputFormData: any[] = [
