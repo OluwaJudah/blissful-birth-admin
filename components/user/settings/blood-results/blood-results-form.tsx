@@ -52,14 +52,14 @@ export function BloodResultsForm({
     resolver: zodResolver(bloodResultsFormSchema),
     defaultValues: {
       ...bloodResult,
-      date: bloodResult.date?.toISOString().split('T')[0]
+      date: bloodResult.date?.toISOString().split("T")[0],
     },
   });
 
   const { handleSubmit } = form;
   const options = [
-    { label: "Positive", value: "pos" },
-    { label: "Negative", value: "neg" },
+    { label: "Positive", value: "Positive" },
+    { label: "Negative", value: "Negative" },
   ];
 
   return (
