@@ -8,7 +8,6 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import MotherInfo from "./mother-info";
 import BirthCompanion from "./birth-companion";
-import MedicalHistory from "./medical-history";
 
 export default async function ProfileTabs({ userId }: { userId: string }) {
   return (
@@ -45,20 +44,6 @@ export default async function ProfileTabs({ userId }: { userId: string }) {
             </CardHeader>
             <CardContent className="space-y-2">
               <BirthCompanion userId={userId} />
-            </CardContent>
-          </Card>
-        </TabsContent>
-        <TabsContent value="medical-history">
-          <Card>
-            <CardHeader>
-              <CardTitle>Medical History</CardTitle>
-              <CardDescription>
-                View Mother's Medical history information details here according
-                to the profile.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <MedicalHistory userId={userId} />
             </CardContent>
           </Card>
         </TabsContent>
