@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { APPOINTMENT, trimesters } from "@/constants/user";
+import { FIRST_APPOINTMENT, trimesters } from "@/constants/user";
 import { calculateTrimester } from "@/utils";
 import { IconCalendarEvent, IconChevronRight } from "@tabler/icons-react";
 import Link from "next/link";
@@ -24,12 +24,13 @@ const AppointmentEntry = ({
   const trimester = calculateTrimester(pregnancyWeeks);
   const trimesterStr = trimesters[trimester];
   const label =
-    type === APPOINTMENT
-      ? `Week ${pregnancyWeeks} - ${trimesterStr} Trimester`
-      : "FIRST APPOINTMENT";
+    type === FIRST_APPOINTMENT
+      ? "FIRST APPOINTMENT"
+      : `Week ${pregnancyWeeks} - ${trimesterStr} Trimester`;
 
-  const url =
-    type === APPOINTMENT ? `/user/settings/${userId}/appointments/${id}` : "#";
+  let url = `/user/settings/${userId}/appointments/${id}`;
+
+  if (type === FIRST_APPOINTMENT) url += "?first=true";
 
   return (
     <Link href={url}>
@@ -51,7 +52,7 @@ const AppointmentEntry = ({
         </div>
         <div className="flex gap-3">
           <Badge variant="outline">{status}</Badge>
-          {type === APPOINTMENT && <IconChevronRight />}
+          <IconChevronRight />
         </div>
       </div>
     </Link>

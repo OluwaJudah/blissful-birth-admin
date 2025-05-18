@@ -23,7 +23,7 @@ import {
 } from "@/constants/appointment";
 import ValidatedInput from "@/components/ui/validated-input";
 import { startTransition, useActionState, useRef } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { submitBabyReport } from "@/actions/appointment";
 import { Toaster } from "@/components/ui/toaster";
 import { LoaderCircle } from "lucide-react";
@@ -42,6 +42,8 @@ export function BabyReportForm({
     errors: {},
   };
   const pathname = usePathname();
+  const searchParam = useSearchParams();
+  const isFirstAppointment = searchParam.get("first") || "";
 
   const submitBabyReportWithAppointmentId = submitBabyReport.bind(
     null,
@@ -128,17 +130,19 @@ export function BabyReportForm({
               </FormItem>
             )}
           />
-          <div className="w-[80px] mx-auto">
-            {isPending ? (
-              <Button className="bg-gray-500 w-[78px]" type="button">
-                <LoaderCircle className="animate-spin" />
-              </Button>
-            ) : (
-              <Button className="bg-gray-900" type="submit">
-                Submit
-              </Button>
-            )}
-          </div>
+          {isFirstAppointment === "" && (
+            <div className="w-[80px] mx-auto">
+              {isPending ? (
+                <Button className="bg-gray-500 w-[78px]" type="button">
+                  <LoaderCircle className="animate-spin" />
+                </Button>
+              ) : (
+                <Button className="bg-gray-900" type="submit">
+                  Submit
+                </Button>
+              )}
+            </div>
+          )}
         </form>
       </Form>
       <Toaster />
