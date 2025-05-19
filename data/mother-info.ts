@@ -6,6 +6,7 @@ import BloodResult from "@/models/blood-result";
 import MedicalHistory from "@/models/medical-history";
 import MotherInfo from "@/models/mother-info";
 import { Types } from "mongoose";
+import { revalidatePath } from "next/cache";
 
 export const getMothers = async () => {
   await dbConnect();
@@ -89,8 +90,18 @@ export const getBloodResult = async (userId: string) => {
 
   if (!bloodResult) return null;
 
-  const { _id, date, rpr, bloodGroup, hepatitis, rubella, hiv, glucose, hb, notes } =
-    bloodResult;
+  const {
+    _id,
+    date,
+    rpr,
+    bloodGroup,
+    hepatitis,
+    rubella,
+    hiv,
+    glucose,
+    hb,
+    notes,
+  } = bloodResult;
 
   return {
     id: _id.toString(),
@@ -134,5 +145,6 @@ export const getMotherInfoWithPaymentSum = async () => {
     },
   ]);
 
+  revalidatePath("/clients");
   return mothers;
 };
