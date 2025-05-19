@@ -1,4 +1,5 @@
 export const CLIENT = "client";
+export const ADMIN = "admin";
 export const CREDENTIALS = "credentials";
 export const FIRST_APPOINTMENT = "first_appointment";
 export const APPOINTMENT = "appointment";

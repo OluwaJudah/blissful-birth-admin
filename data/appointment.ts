@@ -1,4 +1,5 @@
 "use server";
+import { CLIENT } from "@/constants/user";
 import dbConnect from "@/lib/db";
 import Appointment from "@/models/appointment";
 import BabyReport from "@/models/baby-report";
@@ -155,7 +156,7 @@ export const getAppointmentsForFilter = async (fromDate = "", toDate = "") => {
       },
     },
     { $unwind: { path: "$user", preserveNullAndEmptyArrays: false } },
-
+    { $match: { "user.role": CLIENT } },
     // Join with Profile
     {
       $lookup: {
