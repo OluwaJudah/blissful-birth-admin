@@ -17,6 +17,7 @@ import { updateMedicalReport } from "@/actions/motherinfo";
 import Selectables, { SelectableType } from "./selectables";
 import { LoaderCircle } from "lucide-react";
 import { IMedicalHistory } from "@/definitions/mother-info";
+import { Toaster } from "@/components/ui/toaster";
 
 // This can come from your database or API.
 
@@ -86,68 +87,74 @@ export function MedicalHistoryForm({
   const { handleSubmit } = form;
 
   return (
-    <Form {...form}>
-      <form
-        ref={formRef}
-        onSubmit={(evt) => {
-          evt.preventDefault();
+    <>
+      {" "}
+      <Form {...form}>
+        <form
+          ref={formRef}
+          onSubmit={(evt) => {
+            evt.preventDefault();
 
-          handleSubmit(() => {
-            const formData = new FormData(formRef.current!);
-            startTransition(() => {
-              formAction(formData);
-              toast({
-                description:
-                  "Success!! You've updated the Baby's Report successfully.",
+            handleSubmit(() => {
+              const formData = new FormData(formRef.current!);
+              startTransition(() => {
+                formAction(formData);
+                toast({
+                  description:
+                    "Success!! You've updated the Medical History successfully.",
+                });
               });
-            });
-          })(evt);
-        }}
-        className="space-y-2"
-      >
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col">
-            <div className="text-sm font-medium leading-none">Conditions</div>
-            <Selectables list={conditionList} setList={setConditionList} />
-          </div>
-          <div className="flex flex-col">
-            <div className="text-sm font-medium leading-none">
-              Family History
+            })(evt);
+          }}
+          className="space-y-2"
+        >
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col">
+              <div className="text-sm font-medium leading-none">Conditions</div>
+              <Selectables list={conditionList} setList={setConditionList} />
             </div>
-            <Selectables
-              list={familyHistoryList}
-              setList={setFamilyHistoryList}
-            />
+            <div className="flex flex-col">
+              <div className="text-sm font-medium leading-none">
+                Family History
+              </div>
+              <Selectables
+                list={familyHistoryList}
+                setList={setFamilyHistoryList}
+              />
+            </div>
+            <div className="flex flex-col">
+              <div className="text-sm font-medium leading-none">
+                TB Symptoms
+              </div>
+              <Selectables
+                list={tbSymptomsScreenList}
+                setList={setTbSymptomsScreenList}
+              />
+            </div>
           </div>
-          <div className="flex flex-col">
-            <div className="text-sm font-medium leading-none">TB Symptoms</div>
-            <Selectables
-              list={tbSymptomsScreenList}
-              setList={setTbSymptomsScreenList}
+          {medicalHistoryFormData.map((data) => (
+            <ValidatedTextArea
+              key={data.name}
+              name={data.name}
+              label={data.label}
+              placeholder={data.placeholder}
+              form={form}
             />
+          ))}
+          <div className="w-[138px] mx-auto">
+            {isPending ? (
+              <Button className="bg-gray-500 w-[138px]" type="button">
+                <LoaderCircle className="animate-spin" />
+              </Button>
+            ) : (
+              <Button className="bg-gray-900" type="submit">
+                Update account
+              </Button>
+            )}
           </div>
-        </div>
-        {medicalHistoryFormData.map((data) => (
-          <ValidatedTextArea
-            key={data.name}
-            name={data.name}
-            label={data.label}
-            placeholder={data.placeholder}
-            form={form}
-          />
-        ))}
-        <div className="w-[138px] mx-auto">
-          {isPending ? (
-            <Button className="bg-gray-500 w-[138px]" type="button">
-              <LoaderCircle className="animate-spin" />
-            </Button>
-          ) : (
-            <Button className="bg-gray-900" type="submit">
-              Update account
-            </Button>
-          )}
-        </div>
-      </form>
-    </Form>
+        </form>
+      </Form>
+      <Toaster />
+    </>
   );
 }
