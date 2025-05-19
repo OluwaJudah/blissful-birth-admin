@@ -10,6 +10,7 @@ import { UsersTable } from "@/components/users/components/users-table";
 import UsersProvider from "@/components/users/context/users-context";
 import { getMotherInfoWithPaymentSum } from "@/data/mother-info";
 import { IMotherInfo } from "@/definitions/mother-info";
+export const revalidate = 60;
 
 export default async function Users() {
   // Parse user list

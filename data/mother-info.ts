@@ -145,6 +145,5 @@ export const getMotherInfoWithPaymentSum = async () => {
     },
   ]);
 
-  revalidatePath("/clients");
   return mothers;
 };
