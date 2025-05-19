@@ -13,12 +13,11 @@ export default async function ProfileTabs({ userId }: { userId: string }) {
   return (
     <>
       <Tabs defaultValue="mother" className="w-full">
-        <TabsList className="grid w-1/2 grid-cols-4 px-2 flex justify-between mx-auto">
+        <TabsList className="grid w-1/3 grid-cols-4 px-2 flex justify-between mx-auto">
           <TabsTrigger value="mother">Mother's Information </TabsTrigger>
           <TabsTrigger value="birth-companion">
             Birth Companion & Baby
           </TabsTrigger>
-          <TabsTrigger value="medical-history">Medical History</TabsTrigger>
         </TabsList>
         <TabsContent value="mother">
           <Card>
