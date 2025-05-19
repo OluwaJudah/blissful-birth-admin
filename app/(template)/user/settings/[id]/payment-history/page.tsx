@@ -29,16 +29,20 @@ export default async function PaymentHistory({
         </div>
         <Separator className="my-4 flex-none" />
         <ScrollArea className="faded-bottom -mx-4 flex-1 scroll-smooth px-4 md:pb-16">
-          <div className="-mx-1 px-1.5 flex flex-col gap-3 lg:max-w-xl">
-            {paymentEntries?.map(({ id, type, amount, createdAt }) => (
-              <PaymentEntry
-                key={id}
-                id={id}
-                type={type}
-                amount={amount}
-                createdAt={createdAt}
-              />
-            ))}
+          <div className="-mx-1 px-1.5 flex flex-col gap-3 w-full">
+            {paymentEntries && paymentEntries.length < 0 ? (
+              paymentEntries?.map(({ id, type, amount, createdAt }) => (
+                <PaymentEntry
+                  key={id}
+                  id={id}
+                  type={type}
+                  amount={amount}
+                  createdAt={createdAt}
+                />
+              ))
+            ) : (
+              <div className="w-full text-center">No Payment Entry Available</div>
+            )}
           </div>
         </ScrollArea>
         <UsersDialogs userId={id} />
