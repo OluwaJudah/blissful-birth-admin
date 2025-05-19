@@ -13,12 +13,19 @@ const MotherInfo = async ({ userId }: { userId: string }) => {
     idPassportNo,
     dateOfBirth,
     lastMenstrualDate,
+    edd,
     contactNumber,
     email,
     countryOfOrigin,
     occupation,
     packageType,
   } = mother;
+
+  let eddStr = "N/A";
+  if (edd) {
+    const date = new Date(edd);
+    eddStr = date.toDateString();
+  }
 
   return (
     <div className="grid grid-cols-4 gap-y-4 gap-x-8 h-[350px]">
@@ -61,6 +68,10 @@ const MotherInfo = async ({ userId }: { userId: string }) => {
       <div className="">
         <div className="text-sm font-bold">Last Menstrual Cycle</div>
         <div className="">{lastMenstrualDate.toDateString()}</div>
+      </div>
+      <div className="">
+        <div className="text-sm font-bold">Expected Delivery Date (EDD)</div>
+        <div className="">{eddStr}</div>
       </div>
       <div className="col-span-4">
         <div className="w-1/3">
