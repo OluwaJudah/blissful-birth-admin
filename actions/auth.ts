@@ -60,7 +60,7 @@ export async function loginUser(
   const validatedFields = loginUserformSchema.safeParse(
     Object.fromEntries(formData)
   );
-  console.log({ validatedFields });
+
   if (!validatedFields.success) {
     const state: LoginUserState = {
       errors: validatedFields.error.flatten().fieldErrors,
