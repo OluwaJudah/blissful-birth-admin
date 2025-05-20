@@ -7,6 +7,7 @@ import { getMotherAppointments } from "@/data/appointment";
 import { UsersDialogs } from "@/components/user/settings/appointments/users-dialogs";
 import { getMotherDetails } from "@/data/mother-info";
 import { PATIENT_ONBOARDED } from "@/constants/appointment";
+export const revalidate = 0;
 
 export default async function SettingsAccount({
   params,
