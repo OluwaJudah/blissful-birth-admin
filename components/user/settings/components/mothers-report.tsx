@@ -20,7 +20,6 @@ import {
 import ValidatedInput from "@/components/ui/validated-input";
 import {
   motherReportFormData,
-  motherReportOtherFormData,
   motherReportSelectFormData,
   urineOptions,
 } from "@/constants/appointment";
@@ -100,17 +99,6 @@ export function MotherReportForm({
                 options: urineOptions,
                 placeholder,
               }}
-            />
-          ))}
-
-          {motherReportOtherFormData.map((data) => (
-            <ValidatedInput
-              key={data.name}
-              name={data.name}
-              label={data.label}
-              type={data.type}
-              placeholder={data.placeholder}
-              form={form}
             />
           ))}
 

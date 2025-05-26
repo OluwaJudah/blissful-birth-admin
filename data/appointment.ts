@@ -78,11 +78,9 @@ export const getMotherReport = async (appointmentId: string, fields = "") => {
 
   const {
     motherBloodPressure,
-    motherFh,
     motherGlucose,
     motherLeucosite,
     motherNote,
-    motherPalpation,
     motherProtein,
     motherPulse,
     motherWeight,
@@ -91,11 +89,9 @@ export const getMotherReport = async (appointmentId: string, fields = "") => {
 
   return {
     motherBloodPressure,
-    motherFh,
     motherGlucose,
     motherLeucosite,
     motherNote,
-    motherPalpation,
     motherProtein,
     motherPulse,
     motherWeight,

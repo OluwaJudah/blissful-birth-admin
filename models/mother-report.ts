@@ -15,8 +15,6 @@ const MotherReportSchema = new Schema<MotherReport>(
     motherLeucosite: { type: String, required: true },
     motherGlucose: { type: String, required: true },
     motherProtein: { type: String, required: true },  
-    motherPalpation: { type: Number, required: true },
-    motherFh: { type: Number, required: true },
     motherNote: { type: String },
     appointmentId: {
       type: Schema.Types.ObjectId,
