@@ -29,9 +29,16 @@ const ValidatedInput = ({
   classForm?: string;
 }) => {
   let minValue = "";
-  if (type === "number" && !min) minValue = "0";
-  if (type === "number" && min) minValue = min;
-  else if (min) minValue = min;
+  let stepValue = "";
+  if (type === "number" && !min) {
+    minValue = "0.0";
+    stepValue = ".01";
+  }
+
+  if (type === "number" && min) {
+    minValue = min;
+    stepValue = ".01";
+  } else if (min) minValue = min;
 
   return (
     <FormField
@@ -46,6 +53,7 @@ const ValidatedInput = ({
             <Input
               type={type ? type : ""}
               min={minValue}
+              step={stepValue}
               placeholder={placeholder}
               {...field}
               className={classInput ? classInput : ""}
