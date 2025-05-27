@@ -20,6 +20,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { updateClientPackage } from "@/actions/mother-info";
 import { Toaster } from "@/components/ui/toaster";
 import { toast } from "@/hooks/use-toast";
+import { useState } from "react";
+import { LoaderCircle } from "lucide-react";
 
 const ClientPackage = ({
   motherId,
@@ -28,6 +30,7 @@ const ClientPackage = ({
   motherId: string;
   packageType: string;
 }) => {
+  const [isPending, setIsPending] = useState(false);
   const packageFormSchema = z.object({
     packageType: z.string().min(2, {
       message: "Name must be at least 2 characters.",
@@ -43,11 +46,13 @@ const ClientPackage = ({
 
   const handleStringToInt = async (value: string) => {
     try {
+      setIsPending(true);
       await updateClientPackage(value, motherId);
       toast({
         description:
           "Success!! You've updated the Mother's Report successfully.",
       });
+      setIsPending(false);
     } catch (err) {
       console.log("Error updating mother info");
       throw Error("Error updating mother info");
@@ -64,22 +69,23 @@ const ClientPackage = ({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Package (Antenatal / Full Package)</FormLabel>
-                <Select
-                  onValueChange={handleStringToInt}
-                  defaultValue={packageType}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a package for client" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="anc">
-                      Antenatal Care
-                    </SelectItem>
-                    <SelectItem value="full">Full Package</SelectItem>
-                  </SelectContent>
-                </Select>
+                <div className="flex gap-3 items-center">
+                  <Select
+                    onValueChange={handleStringToInt}
+                    defaultValue={packageType}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a package for client" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="anc">Antenatal Care</SelectItem>
+                      <SelectItem value="full">Full Package</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  {isPending && <LoaderCircle className="animate-spin" />}
+                </div>
                 <FormMessage />
               </FormItem>
             )}
