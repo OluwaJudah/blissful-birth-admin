@@ -112,9 +112,7 @@ export type GenerateAppointmentsFormState = {
 };
 
 export const generateAppointmentsFormSchema = z.object({
-  edd: z.string().refine((val) => !isNaN(Date.parse(val)), {
-    message: "Invalid date format",
-  }),
+  edd: z.string().min(1, "Please select date"),
 });
 
 export type GenerateAppointmentsFormSchema = z.infer<

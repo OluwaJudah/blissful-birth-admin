@@ -110,7 +110,6 @@ export function UsersActionDialog({
                 })(evt);
               }}
               id="user-form"
-              // onSubmit={form.handleSubmit(onSubmit)}
               className="space-y-4 p-0.5"
             >
               <FormField

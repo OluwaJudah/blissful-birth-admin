@@ -14,6 +14,7 @@ const ValidatedInput = ({
   form,
   placeholder,
   min,
+  max,
   classLabel,
   classInput,
   classForm,
@@ -24,6 +25,7 @@ const ValidatedInput = ({
   type?: string;
   placeholder?: string;
   min?: any;
+  max?: any;
   classLabel?: string;
   classInput?: string;
   classForm?: string;
@@ -53,6 +55,7 @@ const ValidatedInput = ({
             <Input
               type={type ? type : ""}
               min={minValue}
+              max={max ? max : ""}
               step={stepValue}
               placeholder={placeholder}
               {...field}

@@ -29,6 +29,7 @@ import MotherReport from "@/models/mother-report";
 import { getUpcomingAppointmentMondays } from "@/utils";
 import { Types } from "mongoose";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function submitMotherReport(
   appointmentId: string,
@@ -251,6 +252,7 @@ export async function generateAppointments(
   const { edd } = validatedFields.data;
   await createAppointmentSlots(edd, userId);
   revalidatePath(pathname);
+  redirect(pathname);
 }
 
 export async function createAppointmentSlots(edd: string, userId: string) {
