@@ -19,14 +19,13 @@ import {
   MotherReportFormState,
   RescheduleAppointmentFormState,
   rescheduleAppointmentFormSchema,
-  IAppointment,
 } from "@/definitions/appointment";
 import dbConnect from "@/lib/db";
 import Appointment from "@/models/appointment";
 import BabyReport from "@/models/baby-report";
 import MotherInfo from "@/models/mother-info";
 import MotherReport from "@/models/mother-report";
-import { getUpcomingAppointmentMondays } from "@/utils";
+import { getAppointmentMondaysAfterLastTuesday } from "@/utils";
 import { Types } from "mongoose";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -256,7 +255,7 @@ export async function generateAppointments(
 }
 
 export async function createAppointmentSlots(edd: string, userId: string) {
-  const weekDates = getUpcomingAppointmentMondays(edd);
+  const weekDates = getAppointmentMondaysAfterLastTuesday(edd);
   const today = new Date(weekDates[0].mondayDate);
   const endDate = new Date(weekDates[weekDates.length - 1].mondayDate);
 

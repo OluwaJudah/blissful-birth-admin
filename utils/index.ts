@@ -96,26 +96,40 @@ export const getUpcomingAppointmentMondays = (
   return results;
 };
 
+function getLastTuesdayFromCurrentOrNextMonth() {
+  const today = new Date();
+
+  function getLastTuesday(year: number, month: number) {
+    const lastDay = new Date(year, month + 1, 0); // last day of month
+    while (lastDay.getDay() !== 2) {
+      lastDay.setDate(lastDay.getDate() - 1);
+    }
+    return lastDay;
+  }
+
+  const currentYear = today.getFullYear();
+  const currentMonth = today.getMonth();
+
+  let lastTuesday = getLastTuesday(currentYear, currentMonth);
+
+  // If it's before today, move to next month
+  if (lastTuesday < today) {
+    const nextMonth = currentMonth === 11 ? 0 : currentMonth + 1;
+    const nextYear = currentMonth === 11 ? currentYear + 1 : currentYear;
+    lastTuesday = getLastTuesday(nextYear, nextMonth);
+  }
+
+  return lastTuesday;
+}
+
 export const getAppointmentMondaysAfterLastTuesday = (
   eddStr: string
 ): any[] => {
-  const appointmentWeeks = [
-    8, 13, 18, 21, 24, 28, 30, 32, 34, 36, 37, 38, 39, 40,
-  ];
-
   const edd = new Date(eddStr);
   const startDate = new Date(edd.getTime() - 280 * 24 * 60 * 60 * 1000); // start of Week 1
 
   // Get last Tuesday of current month
-  const now = new Date();
-  const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-
-  let lastTuesday = new Date(lastDayOfMonth);
-  while (lastTuesday.getDay() !== 2) {
-    // 2 = Tuesday
-    lastTuesday.setDate(lastTuesday.getDate() - 1);
-  }
-
+  let lastTuesday = getLastTuesdayFromCurrentOrNextMonth();
   const mondayDates: any[] = [];
 
   for (const week of appointmentWeeks) {
