@@ -11,8 +11,8 @@ const AppointmentSchema = new Schema<Appointment>(
   {
     date: { type: Date, required: true },
     time: { type: String, required: true },
-    status: { type: String, required: true },
-    type: { type: String, required: true },
+    status: { type: String },// required: true },
+    type: { type: String },// required: true },
     note: { type: String },
     pregnancyWeeks: { type: Number, required: true },
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },

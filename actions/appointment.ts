@@ -7,7 +7,7 @@ import {
   PENDING_APPOINTMENT,
   SLOT_TIMES,
 } from "@/constants/appointment";
-import { FIRST_APPOINTMENT } from "@/constants/user";
+import { FIRST_APPOINTMENT, pregnancyWeeks } from "@/constants/user";
 import {
   babyReportFormSchema,
   GenerateAppointmentsFormState,
@@ -25,7 +25,8 @@ import Appointment from "@/models/appointment";
 import BabyReport from "@/models/baby-report";
 import MotherInfo from "@/models/mother-info";
 import MotherReport from "@/models/mother-report";
-import { getAppointmentMondaysAfterLastTuesday } from "@/utils";
+import User from "@/models/user";
+import { getAppointmentMondaysAfterLastTuesday, parseDate } from "@/utils";
 import { Types } from "mongoose";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -340,3 +341,44 @@ export async function createAppointmentSlots(edd: string, userId: string) {
     throw Error(`Error: Failed to update patient's status`);
   }
 }
+
+export const uploadAppointmentsExcel = async (jsonData: any[]) => {
+  const users: { [key: string]: any[] } = {};
+  const arrayUserId: { [key: string]: string } = {};
+
+  await dbConnect();
+  // Excel json array
+  jsonData.forEach(async (data) => {
+    if (!users[data.name]) {
+      users[data.name] = [];
+
+      // Create User profile
+      const user = await User.create({});
+      arrayUserId[data.name] = user.id;
+
+      // Create Mother profile
+      const strNames = data.name.toString().split(" ");
+      await MotherInfo.create({
+        userId: new Types.ObjectId(user.id),
+        surname: strNames[1],
+        fullName: strNames[0],
+        status: "uploaded",
+      });
+    }
+
+    // Create appointments array
+    users[data.name].push({
+      date: parseDate(data.dueDate),
+      time: data.timeSlot,
+      pregnancyWeeks: data.weeks,
+      userId: new Types.ObjectId(arrayUserId[data.name]),
+    });
+  });
+
+  // Inserting appointments entries to db
+  for (const x in users) {
+    Appointment.insertMany(users[x]);
+  }
+
+  revalidatePath("/clients");
+};
