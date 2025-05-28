@@ -74,17 +74,17 @@ const MotherInfo = async ({ userId }: { userId: string }) => {
         <div className="">{eddStr || "N/A"}</div>
       </div>
       <div className="col-span-4">
+        <div className="w-2/3">
+          <div className="text-sm font-bold">Registration Link: </div>
+          <div>https://blissful-birth.vercel.app/regsiter/{userId}</div>
+        </div>
+      </div>
+      <div className="col-span-4">
         <div className="w-1/3">
           <ClientPackage
             motherId={_id.toString()}
             packageType={packageType || ""}
           />
-        </div>
-      </div>
-      <div className="col-span-4">
-        <div className="w-2/3">
-          <div className="text-sm font-bold">Registration Link: </div>
-          <div>https://blissful-birth.vercel.app/regsiter/{userId}</div>
         </div>
       </div>
     </div>
