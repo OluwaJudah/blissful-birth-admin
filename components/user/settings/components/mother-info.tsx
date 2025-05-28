@@ -43,15 +43,15 @@ const MotherInfo = async ({ userId }: { userId: string }) => {
       </div>
       <div className="">
         <div className="text-sm font-bold">ID / Passport</div>
-        <div className="">{idPassportNo}</div>
+        <div className="">{idPassportNo || "N/A"}</div>
       </div>
       <div className="">
         <div className="text-sm font-bold">Date of Birth</div>
-        <div className="">{dateOfBirth.toDateString()}</div>
+        <div className="">{dateOfBirth?.toDateString() || "N/A"}</div>
       </div>
       <div className="">
         <div className="text-sm font-bold">Contact Number</div>
-        <div className="">{contactNumber}</div>
+        <div className="">{contactNumber || "N/A"}</div>
       </div>
       <div className="">
         <div className="text-sm font-bold">Email Address</div>
@@ -59,7 +59,7 @@ const MotherInfo = async ({ userId }: { userId: string }) => {
       </div>
       <div className="">
         <div className="text-sm font-bold">Country Of Origin</div>
-        <div className="">{countryOfOrigin}</div>
+        <div className="">{countryOfOrigin || "N/A"}</div>
       </div>
       <div className="">
         <div className="text-sm font-bold">Occupation</div>
@@ -67,11 +67,11 @@ const MotherInfo = async ({ userId }: { userId: string }) => {
       </div>
       <div className="">
         <div className="text-sm font-bold">Last Menstrual Cycle</div>
-        <div className="">{lastMenstrualDate.toDateString()}</div>
+        <div className="">{lastMenstrualDate?.toDateString() || "N/A"}</div>
       </div>
       <div className="">
         <div className="text-sm font-bold">Expected Delivery Date (EDD)</div>
-        <div className="">{eddStr}</div>
+        <div className="">{eddStr || "N/A"}</div>
       </div>
       <div className="col-span-4">
         <div className="w-1/3">
@@ -79,6 +79,12 @@ const MotherInfo = async ({ userId }: { userId: string }) => {
             motherId={_id.toString()}
             packageType={packageType || ""}
           />
+        </div>
+      </div>
+      <div className="col-span-4">
+        <div className="w-2/3">
+          <div className="text-sm font-bold">Registration Link: </div>
+          <div>https://blissful-birth.vercel.app/regsiter/{userId}</div>
         </div>
       </div>
     </div>
