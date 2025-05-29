@@ -11,6 +11,7 @@ type Person = {
   dueDate: string;
   timeSlot: string;
   number: string;
+  status: string;
 };
 
 export function UsersPrimaryButtons() {
@@ -38,12 +39,13 @@ export function UsersPrimaryButtons() {
       });
 
       uploadAppointmentsExcel(
-        jsonData.map(({ name, weeks, dueDate, timeSlot, number }) => ({
+        jsonData.map(({ name, weeks, dueDate, timeSlot, number, status }) => ({
           name,
           weeks,
           dueDate,
           timeSlot,
           number,
+          status,
         }))
       );
     };

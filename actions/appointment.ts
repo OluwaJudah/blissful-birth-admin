@@ -358,6 +358,7 @@ export const uploadAppointmentsExcel = async (jsonData: any[]) => {
       pregnancyWeeks: data.weeks,
       number: data.number,
       userId: new Types.ObjectId(arrayUserId[data.name]),
+      status: data.status,
     });
   });
 
