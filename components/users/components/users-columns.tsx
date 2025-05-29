@@ -61,7 +61,7 @@ export const columns: ColumnDef<IMotherInfo>[] = [
       <DataTableColumnHeader column={column} title="Email" />
     ),
     cell: ({ row }) => (
-      <div className="w-fit text-nowrap">{row.getValue("email")}</div>
+      <div className="w-fit text-nowrap">{row.getValue("email") || "N/A"}</div>
     ),
   },
   {
@@ -69,7 +69,7 @@ export const columns: ColumnDef<IMotherInfo>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Phone Number" />
     ),
-    cell: ({ row }) => <div>{row.original.contactNumber}</div>,
+    cell: ({ row }) => <div>{row.original.contactNumber || "N/A"}</div>,
     enableSorting: false,
   },
   {
@@ -77,7 +77,7 @@ export const columns: ColumnDef<IMotherInfo>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Total Payment" />
     ),
-    cell: ({ row }) => <div>R {row.original.paymentSum}</div>,
+    cell: ({ row }) => <div>R {row.original.paymentSum || "N/A"}</div>,
     enableSorting: false,
   },
   {
