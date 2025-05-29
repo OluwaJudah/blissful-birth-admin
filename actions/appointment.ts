@@ -349,35 +349,37 @@ export const uploadAppointmentsExcel = async (jsonData: any[]) => {
   await dbConnect();
   // Excel json array
   jsonData.forEach(async (data) => {
-    if (!users[data.name]) {
-      users[data.name] = [];
-
-      // Create User profile
-      const user = await User.create({});
-      arrayUserId[data.name] = user.id;
-
-      // Create Mother profile
-      const strNames = data.name.toString().split(" ");
-      await MotherInfo.create({
-        userId: new Types.ObjectId(user.id),
-        surname: strNames[1],
-        fullName: strNames[0],
-        status: "uploaded",
-      });
-    }
+    if (!users[data.name]) users[data.name] = [];
 
     // Create appointments array
     users[data.name].push({
       date: parseDate(data.dueDate),
       time: data.timeSlot,
       pregnancyWeeks: data.weeks,
+      number: data.number,
       userId: new Types.ObjectId(arrayUserId[data.name]),
     });
   });
 
   // Inserting appointments entries to db
   for (const x in users) {
-    Appointment.insertMany(users[x]);
+    // Create User profile
+    const user = await User.create({});
+    const appointment = users[x];
+
+    // Create Mother profile
+    const strNames = x.toString().split(" ");
+    await MotherInfo.create({
+      userId: new Types.ObjectId(user.id),
+      surname: strNames[1],
+      fullName: strNames[0],
+      contactNumber: appointment[0].number,
+      status: "uploaded",
+    });
+
+    Appointment.insertMany(
+      users[x].map((a) => ({ ...a, userId: new Types.ObjectId(user.id) }))
+    );
   }
 
   revalidatePath("/clients");
