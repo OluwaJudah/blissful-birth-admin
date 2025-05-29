@@ -359,6 +359,7 @@ export const uploadAppointmentsExcel = async (jsonData: any[]) => {
       number: data.number,
       userId: new Types.ObjectId(arrayUserId[data.name]),
       status: data.status,
+      type: APPOINTMENT
     });
   });
 
