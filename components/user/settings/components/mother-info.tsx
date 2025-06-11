@@ -76,7 +76,7 @@ const MotherInfo = async ({ userId }: { userId: string }) => {
       <div className="col-span-4">
         <div className="w-2/3">
           <div className="text-sm font-bold">Registration Link: </div>
-          <div>https://blissful-birth.vercel.app/regsiter?id={userId}</div>
+          <div>https://blissful-birth.vercel.app/register?id={userId}</div>
         </div>
       </div>
       <div className="col-span-4">

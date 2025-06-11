@@ -11,7 +11,7 @@ import { createUser } from "./user";
 import { getUser, isUserExists } from "@/data/user";
 import bcrypt from "bcrypt";
 
-export async function regsiterUser(
+export async function registerUser(
   prevState: RegisterUserState | undefined,
   formData: FormData
 ) {
