@@ -32,6 +32,7 @@ export const defaultValueMotherReportForm = {
   motherLeucosite: "",
   motherGlucose: "",
   motherProtein: "",
+  motherBlood: "",
   motherNote: "",
 };
 
@@ -86,6 +87,11 @@ export const motherReportSelectFormData = [
   {
     name: "motherProtein",
     label: "Protein (P)",
+    placeholder: "Select Urine Protein value",
+  },
+  {
+    name: "motherBlood",
+    label: "Blood (B)",
     placeholder: "Select Urine Protein value",
   },
 ];

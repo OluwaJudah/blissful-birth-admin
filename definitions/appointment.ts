@@ -64,6 +64,7 @@ export type IMotherReport = {
   motherLeucosite: string;
   motherGlucose: string;
   motherProtein: string;
+  motherBlood: string;
   motherNote: string;
 };
 
@@ -75,6 +76,7 @@ export type MotherReportFormState = {
     motherLeucosite?: string[];
     motherGlucose?: string[];
     motherProtein?: string[];
+    motherBlood?: string[];
     motherNote?: string[];
   };
   message?: string | null;
@@ -98,6 +100,9 @@ export const motherReportFormSchema = z.object({
   }),
   motherProtein: z.string().min(1, {
     message: "Mother's Protein must be (Clear, Trace, +1, +2, +3).",
+  }),
+  motherBlood: z.string().min(1, {
+    message: "Mother's Blood must be (Clear, Trace, +1, +2, +3).",
   }),
   motherNote: z.string(),
 });

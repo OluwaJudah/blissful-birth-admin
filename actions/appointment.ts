@@ -56,6 +56,7 @@ export async function submitMotherReport(
     motherLeucosite,
     motherGlucose,
     motherProtein,
+    motherBlood,
     motherNote,
   } = validatedFields.data;
 
@@ -68,6 +69,7 @@ export async function submitMotherReport(
         motherLeucosite,
         motherGlucose,
         motherProtein,
+        motherBlood,
         motherNote,
       },
       appointmentId

@@ -13,6 +13,7 @@ import {
   defaultValueBabyReportForm,
   defaultValueMotherReportForm,
 } from "@/constants/appointment";
+import { Suspense } from "react";
 
 export default async function AppointmentTabs({
   appointmentId,
@@ -61,10 +62,12 @@ export default async function AppointmentTabs({
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-              <BabyReportForm
-                appointmentId={appointmentId}
-                babyReport={babyReport}
-              />
+              <Suspense fallback={<>Loading ...</>}>
+                <BabyReportForm
+                  appointmentId={appointmentId}
+                  babyReport={babyReport}
+                />
+              </Suspense>
             </CardContent>
           </Card>
         </TabsContent>
