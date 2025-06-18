@@ -2,6 +2,7 @@ import { MedicalHistoryForm } from "@/components/user/settings/medical-history/m
 import ContentSection from "@/components/user/settings/medical-history/content-section";
 import { getMedicalHistory } from "@/data/mother-info";
 import { defaultMedicalHistoryData } from "@/definitions/mother-info";
+import { Suspense } from "react";
 
 export default async function MedicalHistory({
   params,
@@ -18,7 +19,9 @@ export default async function MedicalHistory({
       title="Medical History"
       desc="Manage the patient's medical history."
     >
-      <MedicalHistoryForm medicalHistory={medicalHistory} userId={id} />
+      <Suspense fallback={<>Loading...</>}>
+        <MedicalHistoryForm medicalHistory={medicalHistory} userId={id} />
+      </Suspense>
     </ContentSection>
   );
 }

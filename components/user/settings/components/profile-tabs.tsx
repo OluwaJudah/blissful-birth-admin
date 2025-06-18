@@ -8,6 +8,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import MotherInfo from "./mother-info";
 import BirthCompanion from "./birth-companion";
+import { Suspense } from "react";
 
 export default async function ProfileTabs({ userId }: { userId: string }) {
   return (
@@ -28,7 +29,9 @@ export default async function ProfileTabs({ userId }: { userId: string }) {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-              <MotherInfo userId={userId} />
+              <Suspense fallback={<>Loading...</>}>
+                <MotherInfo userId={userId} />
+              </Suspense>
             </CardContent>
           </Card>
         </TabsContent>
@@ -42,7 +45,9 @@ export default async function ProfileTabs({ userId }: { userId: string }) {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-              <BirthCompanion userId={userId} />
+              <Suspense fallback={<>Loading...</>}>
+                <BirthCompanion userId={userId} />
+              </Suspense>
             </CardContent>
           </Card>
         </TabsContent>

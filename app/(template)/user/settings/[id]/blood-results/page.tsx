@@ -2,6 +2,7 @@ import ContentSection from "@/components/user/settings/medical-history/content-s
 import { BloodResultsForm } from "@/components/user/settings/blood-results/blood-results-form";
 import { defaultBloodResultsData } from "@/definitions/mother-info";
 import { getBloodResult } from "@/data/mother-info";
+import { Suspense } from "react";
 
 export default async function BloodResults({
   params,
@@ -18,7 +19,9 @@ export default async function BloodResults({
       title="Blood Results"
       desc="Manage the patient's blood results here."
     >
-      <BloodResultsForm bloodResult={bloodResults} userId={id} />
+      <Suspense fallback={<>Loading...</>}>
+        <BloodResultsForm bloodResult={bloodResults} userId={id} />
+      </Suspense>
     </ContentSection>
   );
 }
