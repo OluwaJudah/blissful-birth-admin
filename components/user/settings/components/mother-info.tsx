@@ -14,6 +14,9 @@ const MotherInfo = async ({ userId }: { userId: string }) => {
     dateOfBirth,
     lastMenstrualDate,
     edd,
+    age,
+    g,
+    p,
     contactNumber,
     email,
     countryOfOrigin,
@@ -28,7 +31,7 @@ const MotherInfo = async ({ userId }: { userId: string }) => {
   }
 
   return (
-    <div className="grid grid-cols-4 gap-y-4 gap-x-8 h-[350px]">
+    <div className="grid grid-cols-4 gap-y-4 gap-x-8 h-[450px]">
       <div className="">
         <div className="text-sm font-bold">Full Name</div>
         <div className="">{fullName}</div>
@@ -72,6 +75,18 @@ const MotherInfo = async ({ userId }: { userId: string }) => {
       <div className="">
         <div className="text-sm font-bold">Expected Delivery Date (EDD)</div>
         <div className="">{eddStr || "N/A"}</div>
+      </div>
+      <div className="">
+        <div className="text-sm font-bold">Age</div>
+        <div className="">{age || "N/A"}</div>
+      </div>
+      <div className="">
+        <div className="text-sm font-bold">G</div>
+        <div className="">{g || "N/A"}</div>
+      </div>
+      <div className="">
+        <div className="text-sm font-bold">P</div>
+        <div className="">{p || "N/A"}</div>
       </div>
       <div className="col-span-4">
         <div className="w-2/3">
