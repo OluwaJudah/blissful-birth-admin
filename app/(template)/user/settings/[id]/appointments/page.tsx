@@ -1,12 +1,9 @@
 import UsersProvider from "@/components/user/settings/appointments/context/users-context";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { AppointmmentPrimaryButton } from "@/components/user/settings/appointments/appointment-button";
 import AppointmentEntry from "@/components/user/settings/appointments/AppointmentEntry";
 import { getMotherAppointments } from "@/data/appointment";
 import { UsersDialogs } from "@/components/user/settings/appointments/users-dialogs";
-import { getMotherDetails } from "@/data/mother-info";
-import { PATIENT_ONBOARDED } from "@/constants/appointment";
 import { Suspense } from "react";
 export const revalidate = 0;
 
@@ -16,8 +13,7 @@ export default async function SettingsAccount({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const appointments = await getMotherAppointments(id, "");
-  const motherInfo = await getMotherDetails(id);
+  const appointments = await getMotherAppointments(id);
 
   return (
     <UsersProvider>
