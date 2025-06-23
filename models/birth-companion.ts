@@ -1,4 +1,4 @@
-import type { IBirthCompanion, IMotherInfo } from "@/definitions/mother-info";
+import type { IBirthCompanion } from "@/definitions/mother-info";
 import mongoose, { Schema, Document, Model, Types } from "mongoose";
 
 interface BirthCompanion
