@@ -344,46 +344,84 @@ export async function createAppointmentSlots(edd: string, userId: string) {
   }
 }
 
-export const uploadAppointmentsExcel = async (jsonData: any[]) => {
-  const users: { [key: string]: any[] } = {};
-  const arrayUserId: { [key: string]: string } = {};
+export const uploadAppointments = async (jsonData: any[]) => {
+  const motherDetails = jsonData[0];
+  const appointmentArray = jsonData.slice(1);
 
   await dbConnect();
-  // Excel json array
-  jsonData.forEach(async (data) => {
-    if (!users[data.name]) users[data.name] = [];
 
-    // Create appointments array
-    users[data.name].push({
-      date: parseDate(data.dueDate),
-      time: data.timeSlot,
-      pregnancyWeeks: data.weeks,
-      number: data.number,
-      userId: new Types.ObjectId(arrayUserId[data.name]),
-      status: data.status,
-      type: APPOINTMENT
-    });
+  const user = await User.create({});
+
+  const appointment = await Appointment.create({
+    userId: new Types.ObjectId(user.id),
+    date: parseDate(motherDetails.date),
+    time: motherDetails.time,
+    pregnancyWeeks: motherDetails.pregnancyWeeks,
+    status: COMPLETED_APPOINTMENT,
+    type: APPOINTMENT,
   });
 
-  // Inserting appointments entries to db
-  for (const x in users) {
-    // Create User profile
-    const user = await User.create({});
-    const appointment = users[x];
+  // Create Mother profile
+  await MotherInfo.create({
+    userId: new Types.ObjectId(user.id),
+    surname: motherDetails.surname,
+    fullName: motherDetails.fullName,
+    idPassportNo: motherDetails.idPassportNo,
+    contactNumber: motherDetails.contactNumber,
+    status: "uploaded",
+    edd: parseDate(motherDetails.edd),
+    age: motherDetails.age,
+    g: motherDetails.g,
+    p: motherDetails.p,
+  });
 
-    // Create Mother profile
-    const strNames = x.toString().split(" ");
-    await MotherInfo.create({
+  await MotherReport.create({
+    userId: new Types.ObjectId(user.id),
+    motherWeight: motherDetails.motherWeight,
+    motherPulse: motherDetails.motherPulse,
+    motherBloodPressure: motherDetails.motherBloodPressure,
+    motherLeucosite: motherDetails.motherLeucosite,
+    motherGlucose: motherDetails.motherGlucose,
+    motherProtein: motherDetails.motherProtein,
+    motherBlood: motherDetails.motherBlood,
+    appointmentId: new Types.ObjectId(appointment.id),
+  });
+
+  await BabyReport.create({
+    userId: new Types.ObjectId(user.id),
+    babyHeight: motherDetails.babyHeight,
+    babyHeartRate: motherDetails.babyHeartRate,
+    babyPresentation: motherDetails.babyPresentation,
+    babyPosition: motherDetails.babyPosition,
+    appointmentId: new Types.ObjectId(appointment.id),
+  });
+
+  Appointment.insertMany(
+    appointmentArray.map((a) => ({
       userId: new Types.ObjectId(user.id),
-      surname: strNames[1],
-      fullName: strNames[0],
-      contactNumber: appointment[0].number,
-      status: "uploaded",
-    });
+      date: parseDate(a.date),
+      time: a.time,
+      pregnancyWeeks: a.pregnancyWeeks,
+      status: PENDING_APPOINTMENT,
+      type: APPOINTMENT,
+    }))
+  );
+};
 
-    Appointment.insertMany(
-      users[x].map((a) => ({ ...a, userId: new Types.ObjectId(user.id) }))
-    );
+export const uploadAppointmentsExcel = async (jsonData: any[]) => {
+  const users: { [key: string]: any[] } = {};
+  // Excel json array
+  jsonData.forEach(async (data) => {
+    if (!users[data.idPassportNo]) users[data.idPassportNo] = [];
+
+    // Create appointments array
+    users[data.idPassportNo].push(data);
+  });
+
+  // console.log({ length: users.length, users });
+  // Inserting appointments entries to db
+  for (const id in users) {
+    uploadAppointments(users[id]);
   }
 
   revalidatePath("/clients");

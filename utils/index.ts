@@ -162,6 +162,14 @@ export const getAppointmentMondaysAfterLastTuesday = (
 };
 
 export const parseDate = (dateStr: string): Date => {
-  const [day, month, year] = dateStr.split('/').map(Number);
-  return new Date(year, month - 1, day); // Month is 0-based
+  if (dateStr === "") return new Date();
+
+  const [day, month, year] = dateStr.split("/").map(Number);
+
+  if (!day || !month || !year) throw new Error("Invalid date format");
+
+  const parsed = new Date(year, month - 1, day); // Month is 0-based
+  if (isNaN(parsed.getTime())) throw new Error("Invalid date value");
+
+  return parsed;
 };
