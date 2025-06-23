@@ -63,3 +63,17 @@ export const pregnancyWeeks = [
   "Week 39: Full term! Baby ready for life outside the womb.",
   "Week 40: Estimated due date! Labor could begin any time.",
 ];
+
+const adminUser = {
+  username: "blissfuladmin.com",
+  password: "$2b$10$EC7lxhH3mfHotHgMs9x5aOtmUSsHj9BYGDNuCIDs7ICCPLJlnfUPa",
+  authType: "credentials",
+  role: "admin",
+  createdAt: {
+    $date: "2025-06-08T14:55:20.738Z",
+  },
+  updatedAt: {
+    $date: "2025-06-08T14:55:20.738Z",
+  },
+  __v: 0,
+};
