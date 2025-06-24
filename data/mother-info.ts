@@ -141,8 +141,10 @@ export const getMotherInfoWithPaymentSum = async () => {
         contactNumber: 1,
         packageType: 1,
         paymentSum: 1,
+        edd: 1,
       },
     },
+    { $sort: { edd: -1 } },
   ]);
 
   return mothers;
