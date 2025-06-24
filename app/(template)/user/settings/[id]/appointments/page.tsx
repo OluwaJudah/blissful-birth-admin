@@ -5,6 +5,10 @@ import AppointmentEntry from "@/components/user/settings/appointments/Appointmen
 import { getMotherAppointments } from "@/data/appointment";
 import { UsersDialogs } from "@/components/user/settings/appointments/users-dialogs";
 import { Suspense } from "react";
+import { AppointmmentPrimaryButton } from "@/components/user/settings/appointments/appointment-button";
+import { PATIENT_ONBOARDED } from "@/constants/appointment";
+import { getMotherDetails } from "@/data/mother-info";
+
 export const revalidate = 0;
 
 export default async function SettingsAccount({
@@ -14,6 +18,7 @@ export default async function SettingsAccount({
 }) {
   const { id } = await params;
   const appointments = await getMotherAppointments(id);
+  const motherInfo = await getMotherDetails(id);
 
   return (
     <UsersProvider>
@@ -26,6 +31,10 @@ export default async function SettingsAccount({
               timezone.
             </p>
           </div>
+          {motherInfo && motherInfo.status !== PATIENT_ONBOARDED && (
+            <AppointmmentPrimaryButton />
+          )}
+
         </div>
         <Separator className="my-4 flex-none" />
         <ScrollArea className="faded-bottom -mx-4 flex-1 scroll-smooth px-4 md:pb-16">

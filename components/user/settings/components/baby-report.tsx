@@ -130,19 +130,17 @@ export function BabyReportForm({
               </FormItem>
             )}
           />
-          {isFirstAppointment === "" && (
-            <div className="w-[80px] mx-auto">
-              {isPending ? (
-                <Button className="bg-gray-500 w-[78px]" type="button">
-                  <LoaderCircle className="animate-spin" />
-                </Button>
-              ) : (
-                <Button className="bg-gray-900" type="submit">
-                  Submit
-                </Button>
-              )}
-            </div>
-          )}
+          <div className="w-[80px] mx-auto">
+            {isPending ? (
+              <Button className="bg-gray-500 w-[78px]" type="button">
+                <LoaderCircle className="animate-spin" />
+              </Button>
+            ) : (
+              <Button className="bg-gray-900" type="submit">
+                Submit
+              </Button>
+            )}
+          </div>
         </form>
       </Form>
       <Toaster />
