@@ -89,14 +89,14 @@ export const getMotherReport = async (appointmentId: string, fields = "") => {
   } = motherReport;
 
   return {
-    motherBloodPressure,
-    motherGlucose,
-    motherLeucosite,
+    motherBloodPressure: motherBloodPressure ? motherBloodPressure : "",
+    motherGlucose: motherGlucose ? motherGlucose : "",
+    motherLeucosite: motherLeucosite ? motherLeucosite : "",
     motherNote,
-    motherProtein,
-    motherBlood,
-    motherPulse,
-    motherWeight,
+    motherProtein: motherProtein ? motherProtein : "",
+    motherBlood: motherBlood ? motherBlood : "",
+    motherPulse: motherPulse ? motherPulse : 0,
+    motherWeight: motherWeight ? motherWeight : 0,
     id: _id.toString(),
   };
 };
@@ -121,10 +121,10 @@ export const getBabyReport = async (appointmentId: string, fields = "") => {
   } = babyReport;
 
   return {
-    babyHeight,
-    babyHeartRate,
-    babyPresentation,
-    babyPosition,
+    babyHeight: babyHeight ? babyHeight : 0,
+    babyHeartRate: babyHeartRate ? babyHeartRate : 0,
+    babyPresentation: babyPresentation ? babyPresentation : "",
+    babyPosition: babyPosition ? babyPosition : "",
     babyNote,
     id: _id.toString(),
   };
