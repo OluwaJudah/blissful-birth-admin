@@ -44,12 +44,8 @@ export const babyReportFormSchema = z.object({
   babyHeight: z.coerce.number().min(1, {
     message: "Baby's Height must be greater than 0.",
   }),
-  babyHeartRate: z.coerce.number().min(1, {
-    message: "Baby's Heart Rate must be greater than 0.",
-  }),
-  babyPresentation: z.string().min(1, {
-    message: "Baby's Position must be Vertex, Breech, Transverse or Unsure.",
-  }),
+  babyHeartRate: z.coerce.number(),
+  babyPresentation: z.string(),
   babyPosition: z.string(),
   babyNote: z.string(),
 });
