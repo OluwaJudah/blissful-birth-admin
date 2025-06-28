@@ -6,6 +6,7 @@ import { AppointmmentPrimaryButton } from "@/components/user/settings/appointmen
 import { UsersDialogs } from "@/components/user/settings/appointments/[appointmentId]/users-dialogs";
 import { getAppointment } from "@/data/appointment";
 import { COMPLETED_APPOINTMENT } from "@/constants/appointment";
+import { Suspense } from "react";
 
 export default async function Appointments({
   params,
@@ -25,9 +26,11 @@ export default async function Appointments({
               Manage all appointment details and report here.
             </p>
           </div>
-          {appointment && appointment.status !== COMPLETED_APPOINTMENT && (
-            <AppointmmentPrimaryButton />
-          )}
+          <Suspense fallback={<>Loading ...</>}>
+            {appointment && appointment.status !== COMPLETED_APPOINTMENT && (
+              <AppointmmentPrimaryButton />
+            )}
+          </Suspense>
         </div>
         <Separator className="my-4 flex-none" />
         <ScrollArea className="faded-bottom -mx-4 flex-1 scroll-smooth px-4 md:pb-16">

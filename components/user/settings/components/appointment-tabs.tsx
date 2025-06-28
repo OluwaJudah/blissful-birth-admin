@@ -45,10 +45,12 @@ export default async function AppointmentTabs({
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-              <MotherReportForm
-                appointmentId={appointmentId}
-                motherReport={motherReport}
-              />
+              <Suspense fallback={<>Loading ...</>}>
+                <MotherReportForm
+                  appointmentId={appointmentId}
+                  motherReport={motherReport}
+                />
+              </Suspense>
             </CardContent>
           </Card>
         </TabsContent>
