@@ -335,10 +335,10 @@ export async function createAppointmentSlots(edd: string, userId: string) {
   }
 
   try {
-    await MotherInfo.findOneAndUpdate({
-      userId: new Types.ObjectId(userId),
-      $set: { status: PATIENT_ONBOARDED, edd: new Date(edd) },
-    });
+    await MotherInfo.findOneAndUpdate(
+      { userId: new Types.ObjectId(userId) },
+      { $set: { status: PATIENT_ONBOARDED, edd: new Date(edd) } }
+    );
   } catch (err) {
     throw Error(`Error: Failed to update patient's status`);
   }
