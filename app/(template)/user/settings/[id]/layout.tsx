@@ -18,6 +18,7 @@ import { Header } from "@/components/layout/header";
 import { ProfileDropdown } from "@/components/profile-dropdown";
 import { Search } from "@/components/search";
 import { ThemeSwitch } from "@/components/theme-switch";
+import { getMotherDetails } from "@/data/mother-info";
 
 export default async function RootLayout({
   params,
@@ -27,6 +28,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const { id } = await params;
+  const motherInfo = await getMotherDetails(id);
 
   const sidebarNavItems = [
     {
@@ -68,7 +70,7 @@ export default async function RootLayout({
       <Main fixed>
         <div className="space-y-0.5">
           <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
-            User Profile
+            Patient Profile - {motherInfo?.fullName} {motherInfo?.surname}
           </h1>
           <p className="text-muted-foreground">
             Manage your account settings and set e-mail preferences.

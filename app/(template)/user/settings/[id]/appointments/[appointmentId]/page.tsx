@@ -7,6 +7,8 @@ import { UsersDialogs } from "@/components/user/settings/appointments/[appointme
 import { getAppointment } from "@/data/appointment";
 import { COMPLETED_APPOINTMENT } from "@/constants/appointment";
 import { Suspense } from "react";
+import { calculateTrimester } from "@/utils";
+import { trimesters } from "@/constants/user";
 
 export default async function Appointments({
   params,
@@ -15,13 +17,18 @@ export default async function Appointments({
 }) {
   const { appointmentId } = await params;
   const appointment = await getAppointment(appointmentId);
+  const pregnancyWeeks = appointment?.pregnancyWeeks;
+  const trimester = calculateTrimester(appointment?.pregnancyWeeks || 0);
+  const trimesterStr = trimesters[trimester];
 
   return (
     <UsersProvider>
       <div className="flex flex-1 flex-col">
         <div className="flex justify-between">
           <div className="flex-none">
-            <h3 className="text-lg font-medium">Appoinment Details</h3>
+            <h3 className="text-lg font-medium">
+              Appointment - Week {pregnancyWeeks} ({trimesterStr} Trimester)
+            </h3>
             <p className="text-sm text-muted-foreground">
               Manage all appointment details and report here.
             </p>
