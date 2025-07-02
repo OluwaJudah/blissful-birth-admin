@@ -8,7 +8,7 @@ import { getAppointmentsForFilter } from "@/data/appointment";
 const AppointmentsDateFilter = ({ appointments }: { appointments: any[] }) => {
   const today = new Date();
   const dateStr = today.toISOString().split("T")[0];
-  today.setDate(today.getDay() + 120);
+  today.setDate(today.getDay() + 7);
   const thirtyDayStr = today.toISOString().split("T")[0];
 
   const [fromDate, setFromDate] = useState(dateStr);

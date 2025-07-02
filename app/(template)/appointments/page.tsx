@@ -5,11 +5,12 @@ import { Search } from "@/components/search";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { getAppointmentsForFilter } from "@/data/appointment";
 import AppointmentsDateFilter from "@/components/appointments/components/appointments-date-filter";
+import { Suspense } from "react";
 
 export default async function Appointments() {
   const today = new Date();
   const dateStr = today.toISOString().split("T")[0];
-  today.setDate(today.getDay() + 120);
+  today.setDate(today.getDay() + 7);
   const thirtyDayStr = today.toISOString().split("T")[0];
   const appointments = await getAppointmentsForFilter(dateStr, thirtyDayStr);
 
@@ -33,7 +34,9 @@ export default async function Appointments() {
           </div>
         </div>
         <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0">
-          <AppointmentsDateFilter appointments={appointments} />
+          <Suspense fallback={<>Loading...</>}>
+            <AppointmentsDateFilter appointments={appointments} />
+          </Suspense>
         </div>
       </Main>
     </>
