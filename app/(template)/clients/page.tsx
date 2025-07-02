@@ -10,6 +10,7 @@ import { UsersTable } from "@/components/users/components/users-table";
 import UsersProvider from "@/components/users/context/users-context";
 import { getMotherInfoWithPaymentSum } from "@/data/mother-info";
 import { IMotherInfo } from "@/definitions/mother-info";
+import { Suspense } from "react";
 export const revalidate = 0;
 
 export default async function Users() {
@@ -36,7 +37,9 @@ export default async function Users() {
           <UsersPrimaryButtons />
         </div>
         <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0">
-          <UsersTable data={clients} columns={columns} />
+          <Suspense fallback={<>Loading...</>}>
+            <UsersTable data={clients} columns={columns} />
+          </Suspense>
         </div>
       </Main>
 
