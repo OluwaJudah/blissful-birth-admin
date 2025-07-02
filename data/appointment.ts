@@ -56,7 +56,7 @@ export const getMotherAppointments = async (userId: string, fields = "") => {
     { userId: new Types.ObjectId(userId) },
     { __v: 0, createdAt: 0, updatedAt: 0 }
   )
-    .sort({ weeks: 1 })
+    .sort({ pregnancyWeeks: 1 })
     .lean();
 
   return appointments;
