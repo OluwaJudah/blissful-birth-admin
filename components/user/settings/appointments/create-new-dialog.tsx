@@ -9,32 +9,25 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { startTransition, useActionState, useRef } from "react";
 import { User } from "./data/schema";
-import { rescheduleAppointment } from "@/actions/appointment";
+import { createAppointment, generateAppointments } from "@/actions/appointment";
 import {
-  rescheduleAppointmentFormSchema,
-  RescheduleAppointmentFormSchema,
+  createAppointmentFormSchema,
+  CreateAppointmentFormSchema,
 } from "@/definitions/appointment";
 import { LoaderCircle } from "lucide-react";
-import { timeSlotOptions } from "@/constants/appointment";
+import { usePathname } from "next/navigation";
+import { useUsers } from "./context/users-context";
 import SelectInput from "@/components/ui/select-input";
 import ValidatedInput from "@/components/ui/validated-input";
-import { useUsers } from "./context/users-context";
+import { timeSlotOptions } from "@/constants/appointment";
 
 interface Props {
-  appointmentId: string;
   currentRow?: User;
+  userId: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
@@ -44,30 +37,36 @@ const initialState = {
   errors: {},
 };
 
-export function UsersActionDialog({
-  appointmentId,
+export function CreateNewActionDialog({
+  userId,
+  currentRow,
   open,
   onOpenChange,
 }: Props) {
   const { setOpen } = useUsers();
   const formRef = useRef<HTMLFormElement>(null);
-  const rescheduleAppointmentWithAppointmentId = rescheduleAppointment.bind(
+  const pathname = usePathname();
+  const createAppointmentWithUserId = createAppointment.bind(
     null,
-    appointmentId
+    userId,
+    pathname
   );
+
   const [state, formAction, isPending] = useActionState(
-    rescheduleAppointmentWithAppointmentId,
+    createAppointmentWithUserId,
     initialState
   );
 
-  const form = useForm<RescheduleAppointmentFormSchema>({
-    resolver: zodResolver(rescheduleAppointmentFormSchema),
-    defaultValues: {
-      date: "",
-    },
+  const form = useForm<CreateAppointmentFormSchema>({
+    resolver: zodResolver(createAppointmentFormSchema),
+    defaultValues: { pregnancyWeeks: 1, date: "", time: "" },
   });
-  const minDate = new Date();
+
+  const today = new Date();
+  const fortyWeeksLater = new Date();
+  fortyWeeksLater.setDate(today.getDate() + 40 * 7); // 40 weeks = 280 days
   const formatDate = (date: Date) => date.toISOString().split("T")[0];
+  const minDate = new Date();
 
   return (
     <Dialog
@@ -79,9 +78,9 @@ export function UsersActionDialog({
     >
       <DialogContent className="sm:max-w-lg">
         <DialogHeader className="text-left">
-          <DialogTitle>Reschedule Appointments</DialogTitle>
+          <DialogTitle>Create Appointments</DialogTitle>
           <DialogDescription>
-            Reschedule date for this appointment. Click submit when you&apos;re
+            Create new the appointments for patient. Click save when you&apos;re
             done.
           </DialogDescription>
         </DialogHeader>
@@ -103,8 +102,18 @@ export function UsersActionDialog({
               className="space-y-4 p-0.5"
             >
               <ValidatedInput
+                name="pregnancyWeeks"
+                label="Pregnancy Week"
+                type="number"
+                placeholder="Please enter pregnancy weeks"
+                form={form}
+                min="1"
+                classInput="col-span-4 flex flex-col justify-center"
+              />
+
+              <ValidatedInput
                 name="date"
-                label="Rescheduled Date"
+                label="Date"
                 type="date"
                 placeholder=""
                 form={form}
@@ -114,7 +123,7 @@ export function UsersActionDialog({
 
               <SelectInput
                 name="time"
-                label="Reschedule Time"
+                label="Time"
                 placeholder="Please select an available time slot"
                 options={timeSlotOptions}
                 {...{
@@ -132,7 +141,7 @@ export function UsersActionDialog({
             </Button>
           ) : (
             <Button type="submit" form="user-form">
-              Save changes
+              Submit
             </Button>
           )}
         </div>

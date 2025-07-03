@@ -8,6 +8,7 @@ import { Suspense } from "react";
 import { AppointmmentPrimaryButton } from "@/components/user/settings/appointments/appointment-button";
 import { PATIENT_ONBOARDED } from "@/constants/appointment";
 import { getMotherDetails } from "@/data/mother-info";
+import { CreateAppointmmentButton } from "@/components/user/settings/appointments/create-appointment-button";
 
 export const revalidate = 0;
 
@@ -31,10 +32,12 @@ export default async function SettingsAccount({
               timezone.
             </p>
           </div>
-          {motherInfo && motherInfo.status !== PATIENT_ONBOARDED && (
-            <AppointmmentPrimaryButton />
-          )}
-
+          <div className="flex gap-1">
+            <CreateAppointmmentButton />
+            {motherInfo && motherInfo.status !== PATIENT_ONBOARDED && (
+              <AppointmmentPrimaryButton />
+            )}
+          </div>
         </div>
         <Separator className="my-4 flex-none" />
         <ScrollArea className="faded-bottom -mx-4 flex-1 scroll-smooth px-4 md:pb-16">
@@ -51,7 +54,7 @@ export default async function SettingsAccount({
                       year: "numeric",
                     })}
                     time={time}
-                    status={status}
+                    status={status || ""}
                     pregnancyWeeks={pregnancyWeeks}
                     userId={id}
                     type={type}

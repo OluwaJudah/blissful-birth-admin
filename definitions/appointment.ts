@@ -4,8 +4,8 @@ export type IAppointment = {
   type: string;
   time: string;
   date: Date;
-  status: string;
-  note: string;
+  status?: string;
+  note?: string;
   pregnancyWeeks: number;
 };
 
@@ -137,4 +137,27 @@ export const rescheduleAppointmentFormSchema = z.object({
 
 export type RescheduleAppointmentFormSchema = z.infer<
   typeof rescheduleAppointmentFormSchema
+>;
+
+export type CreateAppointmentFormState = {
+  errors?: {
+    pregnancyWeeks?: string[];
+    date?: string[];
+    time?: string[];
+  };
+  message?: string | null;
+};
+
+export const createAppointmentFormSchema = z.object({
+  pregnancyWeeks: z.coerce.number().min(1, {
+    message: "Baby's Height must be greater than 0.",
+  }),
+  date: z.string().refine((val) => !isNaN(Date.parse(val)), {
+    message: "Invalid date format",
+  }),
+  time: z.string().min(1, "Please select a Time Slot "),
+});
+
+export type CreateAppointmentFormSchema = z.infer<
+  typeof createAppointmentFormSchema
 >;

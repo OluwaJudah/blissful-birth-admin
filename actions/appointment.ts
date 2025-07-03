@@ -19,6 +19,8 @@ import {
   MotherReportFormState,
   RescheduleAppointmentFormState,
   rescheduleAppointmentFormSchema,
+  CreateAppointmentFormState,
+  createAppointmentFormSchema,
 } from "@/definitions/appointment";
 import dbConnect from "@/lib/db";
 import Appointment from "@/models/appointment";
@@ -252,12 +254,51 @@ export async function generateAppointments(
   }
 
   const { edd } = validatedFields.data;
-  await createAppointmentSlots(edd, userId);
+  await generateAppointmentSlots(edd, userId);
   revalidatePath(pathname);
   redirect(pathname);
 }
 
-export async function createAppointmentSlots(edd: string, userId: string) {
+export async function createAppointment(
+  userId: string,
+  pathname: string,
+  prevState: CreateAppointmentFormState | undefined,
+  formData: FormData
+) {
+  const validatedFields = createAppointmentFormSchema.safeParse(
+    Object.fromEntries(formData)
+  );
+
+  if (!validatedFields.success) {
+    const state: CreateAppointmentFormState = {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Oops, I think there's a mistake with your inputs.",
+    };
+    return state;
+  }
+
+  const { date, time, pregnancyWeeks } = validatedFields.data;
+
+  await dbConnect();
+  try {
+    await Appointment.create({
+      date: new Date(date),
+      time,
+      pregnancyWeeks,
+      type: APPOINTMENT,
+      userId: new Types.ObjectId(userId),
+      status: PENDING_APPOINTMENT,
+      note: "",
+    });
+  } catch (e) {
+    throw new Error("Error: Failed to create appointment");
+  }
+
+  revalidatePath(pathname);
+  redirect(pathname);
+}
+
+export async function generateAppointmentSlots(edd: string, userId: string) {
   const weekDates = getAppointmentMondaysAfterLastTuesday(edd);
   const today = new Date(weekDates[0].mondayDate);
   const endDate = new Date(weekDates[weekDates.length - 1].mondayDate);
