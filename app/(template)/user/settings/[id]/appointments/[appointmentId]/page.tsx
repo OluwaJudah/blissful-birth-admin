@@ -2,10 +2,9 @@ import AppointmentTabs from "@/components/user/settings/components/appointment-t
 import UsersProvider from "@/components/user/settings/appointments/[appointmentId]/context/users-context";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { AppointmmentPrimaryButton } from "@/components/user/settings/appointments/[appointmentId]/appointment-button";
+import { RescheduleAppointmmentButton } from "@/components/user/settings/appointments/[appointmentId]/appointment-button";
 import { UsersDialogs } from "@/components/user/settings/appointments/[appointmentId]/users-dialogs";
 import { getAppointment } from "@/data/appointment";
-import { COMPLETED_APPOINTMENT } from "@/constants/appointment";
 import { Suspense } from "react";
 import { calculateTrimester } from "@/utils";
 import { trimesters } from "@/constants/user";
@@ -34,9 +33,7 @@ export default async function Appointments({
             </p>
           </div>
           <Suspense fallback={<>Loading ...</>}>
-            {appointment && appointment.status !== COMPLETED_APPOINTMENT && (
-              <AppointmmentPrimaryButton />
-            )}
+            <RescheduleAppointmmentButton />
           </Suspense>
         </div>
         <Separator className="my-4 flex-none" />
@@ -45,7 +42,14 @@ export default async function Appointments({
             <AppointmentTabs appointmentId={appointmentId} />{" "}
           </div>
         </ScrollArea>
-        <UsersDialogs appointmentId={appointmentId} />
+        <UsersDialogs
+          appointmentId={appointmentId}
+          appointmentData={{
+            time: appointment?.time || "",
+            pregnancyWeeks: appointment?.pregnancyWeeks || 0,
+            date: appointment?.date || new Date(),
+          }}
+        />
       </div>
     </UsersProvider>
   );

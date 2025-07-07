@@ -57,7 +57,7 @@ export default async function SettingsAccount({
                     status={status || ""}
                     pregnancyWeeks={pregnancyWeeks}
                     userId={id}
-                    type={type}
+                    type={type || ""}
                   />
                 )
               )}

@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export type IAppointment = {
-  type: string;
+  type?: string;
   time: string;
   date: Date;
   status?: string;
@@ -118,25 +118,6 @@ export const generateAppointmentsFormSchema = z.object({
 
 export type GenerateAppointmentsFormSchema = z.infer<
   typeof generateAppointmentsFormSchema
->;
-
-export type RescheduleAppointmentFormState = {
-  errors?: {
-    date?: string[];
-    time?: string[];
-  };
-  message?: string | null;
-};
-
-export const rescheduleAppointmentFormSchema = z.object({
-  date: z.string().refine((val) => !isNaN(Date.parse(val)), {
-    message: "Invalid date format",
-  }),
-  time: z.string().min(1, "Please select a Time Slot "),
-});
-
-export type RescheduleAppointmentFormSchema = z.infer<
-  typeof rescheduleAppointmentFormSchema
 >;
 
 export type CreateAppointmentFormState = {

@@ -2,8 +2,6 @@ import AppointmentTabs from "@/components/user/settings/components/appointment-t
 import UsersProvider from "@/components/user/settings/appointments/[appointmentId]/context/users-context";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { AppointmmentPrimaryButton } from "@/components/user/settings/appointments/[appointmentId]/appointment-button";
-import { UsersDialogs } from "@/components/user/settings/appointments/[appointmentId]/users-dialogs";
 
 export default async function SettingsProfile({
   params,
@@ -22,7 +20,6 @@ export default async function SettingsProfile({
               Manage all appointment details and report here.
             </p>
           </div>
-          <AppointmmentPrimaryButton />
         </div>
         <Separator className="my-4 flex-none" />
         <ScrollArea className="faded-bottom -mx-4 flex-1 scroll-smooth px-4 md:pb-16">
@@ -30,7 +27,6 @@ export default async function SettingsProfile({
             <AppointmentTabs appointmentId={appointmentId} />{" "}
           </div>
         </ScrollArea>
-        <UsersDialogs appointmentId={appointmentId} />
       </div>
     </UsersProvider>
   );
