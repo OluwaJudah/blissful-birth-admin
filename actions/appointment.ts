@@ -17,10 +17,9 @@ import {
   IMotherReport,
   motherReportFormSchema,
   MotherReportFormState,
-  RescheduleAppointmentFormState,
-  rescheduleAppointmentFormSchema,
   CreateAppointmentFormState,
   createAppointmentFormSchema,
+  IAppointment,
 } from "@/definitions/appointment";
 import dbConnect from "@/lib/db";
 import Appointment from "@/models/appointment";
@@ -194,28 +193,30 @@ const updateAppointmentStatus = async (
 
 export async function rescheduleAppointment(
   appointmentId: string,
-  prevState: RescheduleAppointmentFormState | undefined,
+  prevState: CreateAppointmentFormState | undefined,
   formData: FormData
 ) {
-  const validatedFields = rescheduleAppointmentFormSchema.safeParse(
+  const validatedFields = createAppointmentFormSchema.safeParse(
     Object.fromEntries(formData)
   );
 
   if (!validatedFields.success) {
-    const state: RescheduleAppointmentFormState = {
+    const state: CreateAppointmentFormState = {
       errors: validatedFields.error.flatten().fieldErrors,
       message: "Oops, I think there's a mistake with your inputs.",
     };
     return state;
   }
 
-  const { date, time } = validatedFields.data;
-  await updateAppointmentDate(date, time, appointmentId);
+  const { date, time, pregnancyWeeks } = validatedFields.data;
+  await updateAppointmentDate(
+    { date: new Date(date), pregnancyWeeks, time },
+    appointmentId
+  );
 }
 
 const updateAppointmentDate = async (
-  date: string,
-  time: string,
+  appointment: IAppointment,
   appointmentId: string
 ) => {
   await dbConnect();
@@ -224,15 +225,15 @@ const updateAppointmentDate = async (
     throw new Error("Invalid appointment ID");
   }
 
-  const appointment = await Appointment.findByIdAndUpdate(
+  const response = await Appointment.findByIdAndUpdate(
     appointmentId, // Filter
-    { $set: { date: new Date(date), time } },
+    { $set: { ...appointment } },
     {
       new: true, // Return the updated document
       runValidators: true, // Apply schema validations
     }
   );
-  return appointment;
+  return response;
 };
 
 export async function generateAppointments(

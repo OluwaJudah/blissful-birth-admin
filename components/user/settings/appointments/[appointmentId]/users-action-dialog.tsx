@@ -9,22 +9,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { startTransition, useActionState, useRef } from "react";
-import { User } from "./data/schema";
 import { rescheduleAppointment } from "@/actions/appointment";
 import {
-  rescheduleAppointmentFormSchema,
-  RescheduleAppointmentFormSchema,
+  createAppointmentFormSchema,
+  CreateAppointmentFormSchema,
+  IAppointment,
 } from "@/definitions/appointment";
 import { LoaderCircle } from "lucide-react";
 import { timeSlotOptions } from "@/constants/appointment";
@@ -34,7 +26,7 @@ import { useUsers } from "./context/users-context";
 
 interface Props {
   appointmentId: string;
-  currentRow?: User;
+  appointmentData: IAppointment;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
@@ -46,6 +38,7 @@ const initialState = {
 
 export function UsersActionDialog({
   appointmentId,
+  appointmentData,
   open,
   onOpenChange,
 }: Props) {
@@ -60,10 +53,13 @@ export function UsersActionDialog({
     initialState
   );
 
-  const form = useForm<RescheduleAppointmentFormSchema>({
-    resolver: zodResolver(rescheduleAppointmentFormSchema),
+  const form = useForm<CreateAppointmentFormSchema>({
+    resolver: zodResolver(createAppointmentFormSchema),
     defaultValues: {
-      date: "",
+      ...appointmentData,
+      date: appointmentData.date
+        ? new Date(appointmentData.date).toISOString().split("T")[0]
+        : "",
     },
   });
   const minDate = new Date();
@@ -102,6 +98,16 @@ export function UsersActionDialog({
               id="user-form"
               className="space-y-4 p-0.5"
             >
+              <ValidatedInput
+                name="pregnancyWeeks"
+                label="Pregnancy Week"
+                type="number"
+                placeholder="Please enter pregnancy weeks"
+                form={form}
+                min="1"
+                classInput="col-span-4 flex flex-col justify-center"
+              />
+
               <ValidatedInput
                 name="date"
                 label="Rescheduled Date"
