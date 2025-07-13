@@ -114,7 +114,6 @@ export function UsersActionDialog({
                 type="date"
                 placeholder=""
                 form={form}
-                min={formatDate(minDate)}
                 classInput="col-span-4 flex flex-col justify-center"
               />
 
