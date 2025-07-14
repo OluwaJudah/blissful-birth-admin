@@ -29,10 +29,10 @@ export const defaultValueMotherReportForm = {
   motherWeight: 0,
   motherBloodPressure: "",
   motherPulse: 0,
-  motherLeucosite: "",
-  motherGlucose: "",
-  motherProtein: "",
-  motherBlood: "",
+  motherLeucosite: "Clear",
+  motherGlucose: "Clear",
+  motherProtein: "Clear",
+  motherBlood: "Clear",
   motherNote: "",
 };
 

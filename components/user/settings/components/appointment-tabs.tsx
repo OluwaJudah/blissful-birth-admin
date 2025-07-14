@@ -17,14 +17,19 @@ import { Suspense } from "react";
 
 export default async function AppointmentTabs({
   appointmentId,
+  pregnancyWeeks,
 }: {
   appointmentId: string;
+  pregnancyWeeks: number;
 }) {
   let motherReport = defaultValueMotherReportForm;
   const data = await getMotherReport(appointmentId);
   if (data) motherReport = data;
 
-  let babyReport = defaultValueBabyReportForm;
+  let babyReport = {
+    ...defaultValueBabyReportForm,
+    babyHeight: pregnancyWeeks,
+  };
   const babyData = await getBabyReport(appointmentId);
   if (babyData) babyReport = babyData;
 
