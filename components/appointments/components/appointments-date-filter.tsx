@@ -16,9 +16,13 @@ const AppointmentsDateFilter = ({ appointments }: { appointments: any[] }) => {
   const [toDate, setToDate] = useState(thirtyDayStr);
   const [isLoading, setIsLoading] = useState(false);
   const [appointmentsData, setAppointmentsData] = useState<any[]>([]);
+  const [filteredAppointmentsData, setfilteredAppointmentsData] = useState<
+    any[]
+  >([]);
 
   useEffect(() => {
     setAppointmentsData(appointments);
+    setfilteredAppointmentsData(appointments);
   }, []);
 
   const onChangeFromDate = async (e: any) => {
@@ -28,6 +32,7 @@ const AppointmentsDateFilter = ({ appointments }: { appointments: any[] }) => {
     setIsLoading(true);
     const appointments = await getAppointmentsForFilter(fromDate);
     setAppointmentsData(appointments);
+    setfilteredAppointmentsData(appointments);
     setIsLoading(false);
   };
 
@@ -38,7 +43,40 @@ const AppointmentsDateFilter = ({ appointments }: { appointments: any[] }) => {
     setIsLoading(true);
     const appointments = await getAppointmentsForFilter(fromDate, toDate);
     setAppointmentsData(appointments);
+    setfilteredAppointmentsData(appointments);
     setIsLoading(false);
+  };
+
+  const onChangeFilterUser = async (e: any) => {
+    const search = e.target.value.toLowerCase();
+
+    const filteredData = appointments
+      .map((entry) => {
+        const filteredSlots = entry.slots
+          .map((slot: any) => {
+            const filteredAppointments = slot.appointments.filter(
+              (app: any) => {
+                const fullName = app.fullName.toLowerCase();
+                const surname = app.surname.toLowerCase();
+                return fullName.includes(search) || surname.includes(search);
+              }
+            );
+
+            // Only keep the slot if it has matching appointments
+            return filteredAppointments.length > 0
+              ? { ...slot, appointments: filteredAppointments }
+              : null;
+          })
+          .filter((slot: any) => slot !== null); // remove empty slots
+
+        // Only keep the entry if it has matching slots
+        return filteredSlots.length > 0
+          ? { ...entry, slots: filteredSlots }
+          : null;
+      })
+      .filter((entry) => entry !== null); // remove empty entries
+
+    setfilteredAppointmentsData(filteredData);
   };
 
   const clearFilter = () => {
@@ -76,6 +114,14 @@ const AppointmentsDateFilter = ({ appointments }: { appointments: any[] }) => {
                 onChange={onChangeToDate}
               />
             </div>
+            <div className="flex flex-row items-center gap-3">
+              <div className="text-sm font-medium">Filter User:</div>
+              <Input
+                placeholder="Filter users..."
+                className="w-[200px] flex flex-col justify-center"
+                onChange={onChangeFilterUser}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -85,9 +131,9 @@ const AppointmentsDateFilter = ({ appointments }: { appointments: any[] }) => {
         </div>
       )}
       <div className="flex flex-col gap-2">
-        {appointmentsData &&
-          appointmentsData.length > 0 &&
-          appointmentsData.map((a, index) => {
+        {filteredAppointmentsData &&
+          filteredAppointmentsData.length > 0 &&
+          filteredAppointmentsData.map((a, index) => {
             const dateStr = new Date(a.date);
             return (
               <AppointmentDateTimeSlot
