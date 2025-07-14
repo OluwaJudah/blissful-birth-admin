@@ -102,10 +102,10 @@ export const babyReportSelectFormData = [
     label: "Presentation",
     placeholder: "Select Baby Presentation",
     options: [
+      { label: "Unsure", value: "Unsure" },
       { label: "Vertex", value: "Vertex" },
       { label: "Breech", value: "Breech" },
       { label: "Transverse", value: "Transverse" },
-      { label: "Unsure", value: "Unsure" },
     ],
   },
   {
@@ -113,10 +113,10 @@ export const babyReportSelectFormData = [
     label: "Position",
     placeholder: "Select Baby Position",
     options: [
+      { label: "Unsure", value: "Unsure" },
       { label: "LOA", value: "LOA" },
       { label: "ROA", value: "ROA" },
       { label: "Posterior", value: "Posterior" },
-      { label: "Unsure", value: "Unsure" },
     ],
   },
 ];
