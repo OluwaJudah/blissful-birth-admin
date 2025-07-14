@@ -9,8 +9,9 @@ import { Suspense } from "react";
 
 export default async function Appointments() {
   const today = new Date();
+  today.setDate(today.getDate() - 1);
   const dateStr = today.toISOString().split("T")[0];
-  today.setDate(today.getDay() + 7);
+  today.setDate(today.getDate() + 8);
   const thirtyDayStr = today.toISOString().split("T")[0];
   const appointments = await getAppointmentsForFilter(dateStr, thirtyDayStr);
 
