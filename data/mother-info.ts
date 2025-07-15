@@ -147,5 +147,14 @@ export const getMotherInfoWithPaymentSum = async () => {
     { $sort: { edd: -1 } },
   ]);
 
-  return mothers;
+  return mothers.map(
+    ({ _id, fullName, userId, surname, contactNumber, email, paymentSum }) => ({
+      _id,
+      fullName: fullName + " " + surname,
+      userId,
+      contactNumber,
+      email,
+      paymentSum,
+    })
+  );
 };
