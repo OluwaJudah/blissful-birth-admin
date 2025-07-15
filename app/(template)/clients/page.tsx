@@ -34,7 +34,6 @@ export default async function Users() {
             <h2 className="text-2xl font-bold tracking-tight">Clients</h2>
             <p className="text-muted-foreground">Manage your clients here.</p>
           </div>
-          <UsersPrimaryButtons />
         </div>
         <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0">
           <Suspense fallback={<>Loading...</>}>
