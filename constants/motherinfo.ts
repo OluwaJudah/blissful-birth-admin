@@ -24,12 +24,12 @@ export const medicalHistoryFormData: any[] = [
 export const bloodResultsSelectFormData = [
   {
     name: "rpr",
-    label: "RPR",
+    label: "RPR (Syphilis Test)",
     placeholder: "Select RPR",
   },
   {
     name: "bloodGroup",
-    label: "Blood group - Rh factor",
+    label: "Blood group(Rhesus) - Rh factor",
     placeholder: "Select Blood group",
   },
   {
