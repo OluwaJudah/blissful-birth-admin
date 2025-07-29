@@ -6,7 +6,7 @@ import fs from "fs";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await params;
@@ -75,7 +75,7 @@ export async function GET(
   `;
 
     const browser = await puppeteer.connect({
-      browserWSEndpoint: `wss://production-sfo.browserless.io?token=2Sls12L2JlN6woA1b23b13f1baebdb989143f9695fa095b2e`,
+      browserWSEndpoint: `wss://production-sfo.browserless.io?token=${process.env.BROWESERLESS_TOKEN}`,
     });
 
     const page = await browser.newPage();
