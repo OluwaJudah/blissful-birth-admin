@@ -76,12 +76,9 @@ export async function GET(
 
     const isDev = process.env.NODE_ENV === "development";
 
-    const browser = await puppeteer.launch({
-      args: chromium.args,
-      executablePath: await chromium.executablePath(),
-      headless: true,
+    const browser = await puppeteer.connect({
+      browserWSEndpoint: "wss://chrome.browserless.io?token=2Sls12L2JlN6woA1b23b13f1baebdb989143f9695fa095b2e"
     });
-
     const page = await browser.newPage();
     await page.setContent(html, { waitUntil: "domcontentloaded" });
 
