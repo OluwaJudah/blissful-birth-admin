@@ -1,14 +1,14 @@
+// app/api/print-appointments/[id]/route.ts
 import puppeteer from "puppeteer-core";
-import chromium from "@sparticuz/chromium"; // Vercel-compatible binary
+import { NextRequest } from "next/server";
 import { getMotherAppointments } from "@/data/appointment";
 import fs from "fs";
 
 export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  req: NextRequest,
+  { params }: { params: { id: string } }
 ) {
   try {
-    // Fetch appointment details, image, and table rows here
     const { id } = await params;
     const css = fs.readFileSync("./pdf-template.css", "utf8");
 
@@ -74,11 +74,10 @@ export async function GET(
       </html>
   `;
 
-    const isDev = process.env.NODE_ENV === "development";
-
     const browser = await puppeteer.connect({
-      browserWSEndpoint: "wss://chrome.browserless.io?token=2Sls12L2JlN6woA1b23b13f1baebdb989143f9695fa095b2e"
+      browserWSEndpoint: `wss://production-sfo.browserless.io?token=2Sls12L2JlN6woA1b23b13f1baebdb989143f9695fa095b2e`,
     });
+
     const page = await browser.newPage();
     await page.setContent(html, { waitUntil: "domcontentloaded" });
 
@@ -92,11 +91,11 @@ export async function GET(
     return new Response(pdfBuffer, {
       headers: {
         "Content-Type": "application/pdf",
-        "Content-Disposition": `inline; filename="appointment.pdf"`,
+        "Content-Disposition": "inline; filename=appointment.pdf",
       },
     });
-  } catch (err) {
-    console.error("PDF generation failed:", err);
-    return new Response("PDF generation failed", { status: 500 });
+  } catch (error: any) {
+    console.error("PDF generation failed:", error);
+    return new Response("Failed to generate PDF", { status: 500 });
   }
 }
