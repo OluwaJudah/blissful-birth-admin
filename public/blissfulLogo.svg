@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="266" height="74" viewBox="0 0 266 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g id="Blissful Birth Logo">
+    <g id="Baby Icon" transform="translate(0 15)">
+      <path id="Head" d="M0 7C0 3.13401 3.13401 0 7 0C10.866 0 14 3.13401 14 7C14 10.866 10.866 14 7 14C3.13401 14 0 10.866 0 7Z" fill="#7FC5CC" fill-rule="evenodd" transform="translate(13 0)" />
+      <g id="Circled Heart" transform="translate(9 19)">
+        <path id="Oval" d="M0 11.5C0 5.14873 5.14873 0 11.5 0C17.8513 0 23 5.14873 23 11.5C23 17.8513 17.8513 23 11.5 23C5.14873 23 0 17.8513 0 11.5Z" fill="#7FC5CC" fill-rule="evenodd" />
+        <path id="Oval" d="M0 8.5C0 3.80558 3.80558 0 8.5 0C13.1944 0 17 3.80558 17 8.5C17 13.1944 13.1944 17 8.5 17C3.80558 17 0 13.1944 0 8.5Z" fill="#FFFFFF" fill-rule="evenodd" transform="translate(3 3)" />
+        <g id="Heart" transform="translate(6.5 7)">
+          <path id="Triangle" d="M4.99992 6.60008L0 4.76837e-07L9.99985 0L4.99992 6.60008Z" fill="#E13D4F" fill-rule="evenodd" transform="translate(0 2.4)" />
+          <path id="Oval" d="M0 1.95002C0 0.873054 1.15319 0 2.57572 0C3.99825 0 5.15143 0.873054 5.15143 1.95002C5.15143 3.02699 3.99825 3.90004 2.57572 3.90004C1.15319 3.90004 0 3.02699 0 1.95002Z" fill="#E13D4F" fill-rule="evenodd" transform="translate(0 0)" />
+          <path id="Oval" d="M0 1.95002C0 0.873054 1.15319 0 2.57572 0C3.99825 0 5.15143 0.873054 5.15143 1.95002C5.15143 3.02699 3.99825 3.90004 2.57572 3.90004C1.15319 3.90004 0 3.02699 0 1.95002Z" fill="#E13D4F" fill-rule="evenodd" transform="translate(4.849 0)" />
+        </g>
+      </g>
+      <g id="legs" transform="translate(14 40)">
+        <rect id="Rectangle" width="4" height="19" fill="#7FC5CC" fill-rule="evenodd" />
+        <rect id="Rectangle" width="4" height="19" fill="#7FC5CC" fill-rule="evenodd" transform="translate(9 0)" />
+      </g>
+      <g id="hands" transform="translate(0 12.883)">
+        <path id="Rectangle" d="M0 0L24 9.53674e-07L24 5.66997L0 5.66997L0 0Z" fill="#7FC5CC" fill-rule="evenodd" transform="matrix(0.866 0.5 -0.5 0.866 20.329 0)" />
+        <path id="Rectangle" d="M0 1.90735e-06L24 0L24 5.66998L1.90735e-06 5.66998L0 1.90735e-06Z" fill="#7FC5CC" fill-rule="evenodd" transform="matrix(-0.866 0.5 -0.5 -0.866 23.62 4.91)" />
+      </g>
+    </g>
+    <g id="Housed Heart" transform="translate(176 0)">
+      <g id="Box &amp; Heart" transform="translate(5.5 28)">
+        <rect id="Rectangle" width="79" height="46" fill="#7FC5CC" fill-rule="evenodd" />
+        <g id="Circled Heart" transform="translate(28 11.5)">
+          <path id="Oval" d="M0 11.5C0 5.14873 5.14873 0 11.5 0C17.8513 0 23 5.14873 23 11.5C23 17.8513 17.8513 23 11.5 23C5.14873 23 0 17.8513 0 11.5Z" fill="#7FC5CC" fill-rule="evenodd" />
+          <path id="Oval" d="M0 8.5C0 3.80558 3.80558 0 8.5 0C13.1944 0 17 3.80558 17 8.5C17 13.1944 13.1944 17 8.5 17C3.80558 17 0 13.1944 0 8.5Z" fill="#FFFFFF" fill-rule="evenodd" transform="translate(3 3)" />
+          <g id="Heart" transform="translate(6.5 7)">
+            <path id="Triangle" d="M4.99992 6.60008L0 4.76837e-07L9.99985 0L4.99992 6.60008Z" fill="#E13D4F" fill-rule="evenodd" transform="translate(0 2.4)" />
+            <path id="Oval" d="M0 1.95002C0 0.873054 1.15319 0 2.57572 0C3.99825 0 5.15143 0.873054 5.15143 1.95002C5.15143 3.02699 3.99825 3.90004 2.57572 3.90004C1.15319 3.90004 0 3.02699 0 1.95002Z" fill="#E13D4F" fill-rule="evenodd" transform="translate(0 0)" />
+            <path id="Oval" d="M0 1.95002C0 0.873054 1.15319 0 2.57572 0C3.99825 0 5.15143 0.873054 5.15143 1.95002C5.15143 3.02699 3.99825 3.90004 2.57572 3.90004C1.15319 3.90004 0 3.02699 0 1.95002Z" fill="#E13D4F" fill-rule="evenodd" transform="translate(4.849 0)" />
+          </g>
+        </g>
+      </g>
+      <g id="Roof">
+        <path id="Triangle" d="M45 0L90 29L0 29L45 0Z" fill="#7FC5CC" fill-rule="evenodd" />
+        <rect id="Rectangle" width="11" height="24" fill="#7FC5CC" fill-rule="evenodd" transform="translate(67 4)" />
+      </g>
+    </g>
+    <g id="Boxed Heart" transform="translate(69.114 21)">
+      <g id="Box &amp; Heart" transform="translate(0 7)">
+        <rect id="Rectangle" width="79" height="46" fill="#7FC5CC" fill-rule="evenodd" />
+        <g id="Circled Heart" transform="translate(28 11.5)">
+          <path id="Oval" d="M0 11.5C0 5.14873 5.14873 0 11.5 0C17.8513 0 23 5.14873 23 11.5C23 17.8513 17.8513 23 11.5 23C5.14873 23 0 17.8513 0 11.5Z" fill="#7FC5CC" fill-rule="evenodd" />
+          <path id="Oval" d="M0 8.5C0 3.80558 3.80558 0 8.5 0C13.1944 0 17 3.80558 17 8.5C17 13.1944 13.1944 17 8.5 17C3.80558 17 0 13.1944 0 8.5Z" fill="#FFFFFF" fill-rule="evenodd" transform="translate(3 3)" />
+          <g id="Heart" transform="translate(6.5 7)">
+            <path id="Triangle" d="M4.99992 6.60008L0 4.76837e-07L9.99985 0L4.99992 6.60008Z" fill="#E13D4F" fill-rule="evenodd" transform="translate(0 2.4)" />
+            <path id="Oval" d="M0 1.95002C0 0.873054 1.15319 0 2.57572 0C3.99825 0 5.15143 0.873054 5.15143 1.95002C5.15143 3.02699 3.99825 3.90004 2.57572 3.90004C1.15319 3.90004 0 3.02699 0 1.95002Z" fill="#E13D4F" fill-rule="evenodd" transform="translate(0 0)" />
+            <path id="Oval" d="M0 1.95002C0 0.873054 1.15319 0 2.57572 0C3.99825 0 5.15143 0.873054 5.15143 1.95002C5.15143 3.02699 3.99825 3.90004 2.57572 3.90004C1.15319 3.90004 0 3.02699 0 1.95002Z" fill="#E13D4F" fill-rule="evenodd" transform="translate(4.849 0)" />
+          </g>
+        </g>
+      </g>
+      <rect id="Rectangle" width="12" height="5" fill="#7FC5CC" fill-rule="evenodd" transform="translate(18 2)" />
+      <rect id="Rectangle" width="15" height="7" fill="#7FC5CC" fill-rule="evenodd" transform="translate(46 0)" />
+    </g>
+  </g>
+</svg>

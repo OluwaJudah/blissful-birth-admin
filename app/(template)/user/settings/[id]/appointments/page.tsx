@@ -9,6 +9,7 @@ import { AppointmmentPrimaryButton } from "@/components/user/settings/appointmen
 import { PATIENT_ONBOARDED } from "@/constants/appointment";
 import { getMotherDetails } from "@/data/mother-info";
 import { CreateAppointmmentButton } from "@/components/user/settings/appointments/create-appointment-button";
+import { PrintAppointmmentButton } from "@/components/user/settings/appointments/print-appointment-button";
 
 export const revalidate = 0;
 
@@ -34,6 +35,7 @@ export default async function SettingsAccount({
           </div>
           <div className="flex gap-1">
             <CreateAppointmmentButton />
+            <PrintAppointmmentButton id={id} />
             {motherInfo && motherInfo.status !== PATIENT_ONBOARDED && (
               <AppointmmentPrimaryButton />
             )}
