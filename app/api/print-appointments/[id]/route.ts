@@ -2,7 +2,6 @@
 import puppeteer from "puppeteer-core";
 import { NextRequest } from "next/server";
 import { getMotherAppointments } from "@/data/appointment";
-import fs from "fs";
 import { generateAppointmentHTML } from "@/lib/generateHTML";
 
 export async function GET(
@@ -11,7 +10,6 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const css = fs.readFileSync("./public/pdf-template.css", "utf8");
 
     // Fetch appointment details, image, and table rows here
     const base64Image =
