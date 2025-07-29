@@ -10,7 +10,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const css = fs.readFileSync("./pdf-template.css", "utf8");
+    const css = fs.readFileSync("./public/pdf-template.css", "utf8");
 
     // Fetch appointment details, image, and table rows here
     const base64Image =
