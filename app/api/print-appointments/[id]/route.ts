@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import puppeteer from "puppeteer";
 import fs from "fs";
 import { getMotherAppointments } from "@/data/appointment";
-const css = fs.readFileSync("pdf-template.css", "utf8"); // needs fs module
+const css = fs.readFileSync("./pdf-template.css", "utf8"); // needs fs module
 const base64Image = fs.readFileSync("./public/blissfulLogo2.svg", "base64");
 
 export async function GET(
