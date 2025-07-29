@@ -75,7 +75,7 @@ export async function GET(
   `;
 
     const browser = await puppeteer.connect({
-      browserWSEndpoint: `wss://production-sfo.browserless.io?token=${process.env.BROWESERLESS_TOKEN}`,
+      browserWSEndpoint: `wss://production-sfo.browserless.io?token=${process.env.BROWSERLESS_TOKEN}`,
     });
 
     const page = await browser.newPage();
