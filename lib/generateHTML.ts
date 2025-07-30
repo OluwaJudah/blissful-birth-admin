@@ -1,8 +1,12 @@
 // lib/generateHtml.ts
 
-import { pdfCSS } from './tailwind-pdf-css';
+import { pdfCSS } from "./tailwind-pdf-css";
 
-export function generateAppointmentHTML(base64Image: string, appointmentStr: string) {
+export function generateAppointmentHTML(
+  base64Image: string,
+  appointmentStr: string,
+  motherInfoStr: string
+) {
   const date = new Date().toLocaleDateString();
 
   return `
@@ -12,33 +16,33 @@ export function generateAppointmentHTML(base64Image: string, appointmentStr: str
         <style>${pdfCSS}</style>
       </head>
       <body class="p-10 text-sm">
-        <img src="${base64Image}" alt="Logo" class="w-1/2 mx-auto mb-3" />
-        <h2 class="text-xl font-bold text-center mb-4 underline">Appointment Schedule</h2>
-        <p>Co Registration: K2017378199</p>
-        <p>Practice Number: 0834106</p>
-        <p>SANC No: 11515228</p>
-        <p>Cell No: +27 064 169 4887</p>
-        <p>Clinic Address: Medical Suites, Florida Junction</p>
-        <p>Birth Unit Address: 38 Simmer Street, Selwyn, Roodepoort</p>
-        <p class="mb-4">Generated on: ${date}</p>
-
-        <div class="flex justify-between w-3/4 pr-4">
-          <p>Name:</p>
-          <p>Tel No:</p>
-          <p>EDD:</p>
+        <img src="${base64Image}" alt="Logo" class="w-1/2 mx-auto mb-4" />
+        <h2 class="text-xl font-bold text-center mb-4 underline">APPOINTMENT SCHEDULE</h2>
+        <div class="flex flex-col mb-4">
+          <p><b>Co Registration:</b> K2017378199</p>
+          <p><b>Practice Number:</b> 0834106</p>
+          <p><b>SANC No:</b> 11515228</p>
+          <p><b>Cell No:</b> +27 064 169 4887</p>
+          <p><b>Clinic Address:</b> Medical Suites, Florida Junction</p>
+          <p><b>Birth Unit Address:</b> 38 Simmer Street, Selwyn, Roodepoort</p>
+          <p class=""><b>Generated on:</b> ${date}</p>
         </div>
 
-        <table class="w-full border-collapse border mx-4 text-xs">
+        <div class="flex justify-between w-3/4 pr-4 font-bold">${motherInfoStr}</div>
+
+        <table class="border-collapse border my-4 text-sm">
           <thead>
             <tr class="bg-gray-200">
-              <th class="border p-2">Week</th>
-              <th class="border p-2">Date</th>
-              <th class="border p-2">Time</th>
+              <th class="border p-2" style="width: 50px;">Week</th>
+              <th class="border p-2" style="width: 120px;">Date</th>
+              <th class="border p-2" style="width: 70px;">Time</th>
               <th class="border p-2">Notes</th>
             </tr>
           </thead>
           <tbody>${appointmentStr}</tbody>
         </table>
+
+        <p class="font-bold text-sm">Signature: ___________________________</p>
       </body>
     </html>
   `;

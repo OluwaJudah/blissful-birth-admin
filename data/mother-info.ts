@@ -22,9 +22,17 @@ export const getMothers = async () => {
 export const getMotherDetails = async (userId: string) => {
   await dbConnect();
 
-  return await MotherInfo.findOne({
-    userId: new Types.ObjectId(userId),
-  }).lean();
+  return await MotherInfo.findOne(
+    {
+      userId: new Types.ObjectId(userId),
+    },
+    {
+      __v: 0,
+      createdAt: 0,
+      updatedAt: 0,
+      userId: 0,
+    }
+  ).lean();
 };
 
 export const getBirthCompanion = async (userId: string) => {
