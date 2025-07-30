@@ -141,7 +141,7 @@ export function UsersActionDialog({
         </ScrollArea>
         <div className="flex justify-center">
           {isPending ? (
-            <Button type="button" className="w-[120px] bg-gray-500">
+            <Button type="button" className="w-[84px] bg-gray-500">
               <LoaderCircle className="animate-spin" />
             </Button>
           ) : (
