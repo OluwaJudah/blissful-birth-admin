@@ -126,9 +126,6 @@ const AppointmentsDateFilter = ({ appointments }: { appointments: any[] }) => {
             </div>
           </div>
         </div>
-        <Button className="space-x-1" onClick={() => {}}>
-          <span>Send Notifications</span> <IconPlus size={18} />
-        </Button>
       </div>
       {isLoading && (
         <div className="w-full">
