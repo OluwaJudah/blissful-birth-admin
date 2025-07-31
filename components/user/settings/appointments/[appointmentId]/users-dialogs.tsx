@@ -2,17 +2,27 @@
 import { IAppointment } from "@/definitions/appointment";
 import { useUsers } from "./context/users-context";
 import { UsersActionDialog } from "./users-action-dialog";
+import { CreateNotificationActionDialog } from "./create-notification-dialog";
 
 export function UsersDialogs({
   appointmentId,
   appointmentData,
+  userId,
 }: {
   appointmentId: string;
   appointmentData: IAppointment;
+  userId: string;
 }) {
   const { open, setOpen } = useUsers();
   return (
     <>
+      <CreateNotificationActionDialog
+        userId={userId}
+        appointmentId={appointmentId}
+        open={open === "send-reminder"}
+        onOpenChange={() => setOpen("send-reminder")}
+      />
+
       <UsersActionDialog
         key="user-add"
         appointmentId={appointmentId}

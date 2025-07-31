@@ -53,7 +53,7 @@ export const sidebarData: SidebarData = {
         {
           title: "Notifications",
           url: "/notifications",
-          icon: IconCalendarEvent,
+          icon: IconNotification,
         },
       ],
     },

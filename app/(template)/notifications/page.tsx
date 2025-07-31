@@ -3,9 +3,9 @@ import { Main } from "@/components/layout/main";
 import { ProfileDropdown } from "@/components/profile-dropdown";
 import { Search } from "@/components/search";
 import { ThemeSwitch } from "@/components/theme-switch";
-import { getAppointmentsForFilter } from "@/data/appointment";
 import AppointmentsDateFilter from "@/components/notifications/notifications-date-filter";
 import { Suspense } from "react";
+import { getNotificationsForFilter } from "@/data/notification";
 
 export default async function Notifications() {
   const today = new Date();
@@ -13,7 +13,7 @@ export default async function Notifications() {
   const dateStr = today.toISOString().split("T")[0];
   today.setDate(today.getDate() + 8);
   const thirtyDayStr = today.toISOString().split("T")[0];
-  const appointments = await getAppointmentsForFilter(dateStr, thirtyDayStr);
+  const notifications = await getNotificationsForFilter(dateStr, thirtyDayStr);
 
   return (
     <>
@@ -36,7 +36,7 @@ export default async function Notifications() {
         </div>
         <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0">
           <Suspense fallback={<>Loading...</>}>
-            <AppointmentsDateFilter appointments={appointments} />
+            <AppointmentsDateFilter notifications={notifications} />
           </Suspense>
         </div>
       </Main>

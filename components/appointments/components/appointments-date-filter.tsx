@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import AppointmentDateTimeSlot from "./appointment-date-timeslot";
 import { getAppointmentsForFilter } from "@/data/appointment";
+import { IconPlus } from "@tabler/icons-react";
+import { Button } from "@/components/ui/button";
+// import { useUsers } from "./context/users-context";
 
 const AppointmentsDateFilter = ({ appointments }: { appointments: any[] }) => {
   const today = new Date();
@@ -87,7 +90,7 @@ const AppointmentsDateFilter = ({ appointments }: { appointments: any[] }) => {
 
   return (
     <>
-      <div className="flex flex-row items-center gap-8 mb-2 border border-gray-200 p-4 rounded-xl w-full">
+      <div className="flex flex-row items-center justify-between gap-8 mb-2 border border-gray-200 p-4 rounded-xl w-full">
         <div className="flex flex-col gap-1">
           <div className="text-sm font-medium">Choose Date Range:</div>
           <div className="flex flex-row gap-8">
@@ -124,6 +127,9 @@ const AppointmentsDateFilter = ({ appointments }: { appointments: any[] }) => {
             </div>
           </div>
         </div>
+        <Button className="space-x-1" onClick={() => {}}>
+          <span>Send Notifications</span> <IconPlus size={18} />
+        </Button>
       </div>
       {isLoading && (
         <div className="w-full">
