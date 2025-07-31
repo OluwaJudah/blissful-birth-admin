@@ -28,7 +28,7 @@ export function PrintAppointmmentButton({ id }: { id: string }) {
   return (
     <>
       {isPending ? (
-        <Button type="button" className="w-[120px] bg-gray-500">
+        <Button type="button" className="w-[85px] bg-gray-500">
           <LoaderCircle className="animate-spin" />
         </Button>
       ) : (
