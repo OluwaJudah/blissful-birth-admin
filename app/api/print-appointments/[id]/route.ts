@@ -69,13 +69,13 @@ export async function GET(
 
     await browser.close();
 
-    return new Response(pdfBuffer, {
+    return new Response(Buffer.from(pdfBuffer), {
       headers: {
         "Content-Type": "application/pdf",
         "Content-Disposition": "inline; filename=appointment.pdf",
       },
     });
-  } catch (error: any) {
+      } catch (error: any) {
     console.error("PDF generation failed:", error);
     return new Response("Failed to generate PDF", { status: 500 });
   }

@@ -9,6 +9,13 @@ export type IAppointment = {
   pregnancyWeeks: number;
 };
 
+export type INotification = {
+  to: string;
+  message: string;
+  status?: string;
+  messageSid?: string;
+};
+
 export type IAppointmentData = {
   id: string;
   time: string;
@@ -142,3 +149,20 @@ export const createAppointmentFormSchema = z.object({
 export type CreateAppointmentFormSchema = z.infer<
   typeof createAppointmentFormSchema
 >;
+
+export const createNotificationFormSchema = z.object({
+  to: z.string().min(1, "Please enter the phone number"),
+  message: z.string(),
+});
+
+export type CreateNotificationFormSchema = z.infer<
+  typeof createNotificationFormSchema
+>;
+
+export type CreateNotificationFormState = {
+  errors?: {
+    to?: string[];
+    message?: string[];
+  };
+  message?: string | null;
+};

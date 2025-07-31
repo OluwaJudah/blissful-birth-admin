@@ -8,13 +8,14 @@ import { getAppointment } from "@/data/appointment";
 import { Suspense } from "react";
 import { calculateTrimester } from "@/utils";
 import { trimesters } from "@/constants/user";
+import { SendReminderButton } from "@/components/user/settings/appointments/[appointmentId]/send-reminder-button";
 
 export default async function Appointments({
   params,
 }: {
-  params: Promise<{ appointmentId: string }>;
+  params: Promise<{ id: string; appointmentId: string }>;
 }) {
-  const { appointmentId } = await params;
+  const { id, appointmentId } = await params;
   const appointment = await getAppointment(appointmentId);
   const pregnancyWeeks = appointment?.pregnancyWeeks;
   const trimester = calculateTrimester(appointment?.pregnancyWeeks || 0);
@@ -32,9 +33,12 @@ export default async function Appointments({
               Manage all appointment details and report here.
             </p>
           </div>
-          <Suspense fallback={<>Loading ...</>}>
-            <RescheduleAppointmmentButton />
-          </Suspense>
+          <div className="flex gap-1">
+            <Suspense fallback={<>Loading ...</>}>
+              <RescheduleAppointmmentButton />
+              <SendReminderButton />
+            </Suspense>
+          </div>
         </div>
         <Separator className="my-4 flex-none" />
         <ScrollArea className="faded-bottom -mx-4 flex-1 scroll-smooth px-4 md:pb-16">
@@ -47,6 +51,7 @@ export default async function Appointments({
         </ScrollArea>
         <UsersDialogs
           appointmentId={appointmentId}
+          userId={id}
           appointmentData={{
             time: appointment?.time || "",
             pregnancyWeeks: appointment?.pregnancyWeeks || 0,
