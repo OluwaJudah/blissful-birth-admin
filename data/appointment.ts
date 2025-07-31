@@ -141,6 +141,119 @@ export const getAppointmentsForFilter = async (fromDate = "", toDate = "") => {
   }
 
   return await Appointment.aggregate([
+    ...(Object.keys(matchStage).length > 0 ? [{ $match: matchStage }] : []),
+
+    // Join with User
+    {
+      $lookup: {
+        from: "users",
+        localField: "userId",
+        foreignField: "_id",
+        as: "user",
+      },
+    },
+    { $unwind: { path: "$user", preserveNullAndEmptyArrays: false } },
+    { $match: { "user.role": CLIENT } },
+
+    // Join with MotherInfo
+    {
+      $lookup: {
+        from: "motherinfos",
+        localField: "user._id",
+        foreignField: "userId",
+        as: "motherinfo",
+      },
+    },
+    { $unwind: { path: "$motherinfo", preserveNullAndEmptyArrays: false } },
+
+    // 🔧 Normalize time string to HH:mm (pad leading zero if needed)
+    {
+      $addFields: {
+        time: {
+          $cond: [
+            { $regexMatch: { input: "$time", regex: /^\d:\d{2}$/ } }, // matches "9:00"
+            { $concat: ["0", "$time"] }, // convert to "09:00"
+            "$time", // already in correct format
+          ],
+        },
+      },
+    },
+
+    // Group to remove duplicate appointment docs
+    {
+      $group: {
+        _id: "$_id",
+        userId: { $first: "$userId" },
+        date: { $first: "$date" },
+        status: { $first: "$status" },
+        time: { $first: "$time" },
+        pregnancyWeeks: { $first: "$pregnancyWeeks" },
+        fullName: { $first: "$motherinfo.fullName" },
+        surname: { $first: "$motherinfo.surname" },
+      },
+    },
+
+    // Group by date + normalized time
+    {
+      $group: {
+        _id: { date: "$date", time: "$time" },
+        appointments: {
+          $push: {
+            _id: { $toString: "$_id" },
+            userId: { $toString: "$userId" },
+            date: { $toString: "$date" },
+            status: "$status",
+            time: "$time",
+            pregnancyWeeks: "$pregnancyWeeks",
+            fullName: "$fullName",
+            surname: "$surname",
+          },
+        },
+      },
+    },
+
+    // Sort time slots by date & time
+    { $sort: { "_id.date": 1, "_id.time": 1 } },
+
+    // Group by date to create slot list
+    {
+      $group: {
+        _id: { $toString: "$_id.date" },
+        slots: {
+          $push: {
+            time: "$_id.time",
+            appointments: "$appointments",
+          },
+        },
+      },
+    },
+
+    // Output formatting
+    {
+      $project: {
+        _id: 0,
+        date: "$_id",
+        slots: 1,
+      },
+    },
+
+    // Sort final result by date
+    { $sort: { date: 1 } },
+  ]);
+};
+
+export const getAppointmentsForReminders = async () => {
+  await dbConnect();
+
+  const matchStage: any = {};
+  const today = new Date();
+  today.setDate(today.getDate() - 1);
+  const fromDate = today.toISOString().split("T")[0];
+  today.setDate(today.getDate() + 8);
+  const toDate = today.toISOString().split("T")[0];
+  matchStage.date = { $gte: new Date(fromDate), $lte: new Date(toDate) };
+
+  return await Appointment.aggregate([
     // Optional match stage for filtering by date
     ...(Object.keys(matchStage).length > 0 ? [{ $match: matchStage }] : []),
 
@@ -165,7 +278,7 @@ export const getAppointmentsForFilter = async (fromDate = "", toDate = "") => {
       },
     },
     { $unwind: { path: "$motherinfo", preserveNullAndEmptyArrays: false } },
-
+    { $match: { "motherinfo.contactNumber": { $ne: null } } },
     // Group by unique appointment to remove duplicates
     {
       $group: {
@@ -174,59 +287,21 @@ export const getAppointmentsForFilter = async (fromDate = "", toDate = "") => {
         date: { $first: "$date" },
         status: { $first: "$status" },
         time: { $first: "$time" },
-        pregnancyWeeks: { $first: "$pregnancyWeeks" },
         fullName: { $first: "$motherinfo.fullName" },
         surname: { $first: "$motherinfo.surname" },
+        contactNumber: { $first: "$motherinfo.contactNumber" },
       },
     },
-
-    // Regroup by date and time
-    {
-      $group: {
-        _id: { date: "$date", time: "$time" },
-        appointments: {
-          $push: {
-            _id: { $toString: "$_id" },
-            userId: { $toString: "$userId" },
-            date: { $toString: "$date" },
-            status: "$status",
-            time: "$time",
-            pregnancyWeeks: "$pregnancyWeeks",
-            fullName: "$fullName",
-            surname: "$surname",
-          },
-        },
-      },
-    },
-
-    // Sort by time within each date group
-    {
-      $sort: { "_id.date": 1, "_id.time": 1 },
-    },
-
-    // Group by date to create slot structure
-    {
-      $group: {
-        _id: { $toString: "$_id.date" },
-        slots: {
-          $push: {
-            time: "$_id.time",
-            appointments: "$appointments",
-          },
-        },
-      },
-    },
-
-    // Format output
     {
       $project: {
-        _id: 0,
-        date: "$_id",
-        slots: 1,
+        _id: "$_id",
+        userId: "$userId",
+        date: "$date",
+        time: "$time",
+        fullName: "$fullName",
+        surname: "$surname",
+        contactNumber: "$contactNumber",
       },
     },
-
-    // Sort by date
-    { $sort: { date: 1 } },
   ]);
 };
