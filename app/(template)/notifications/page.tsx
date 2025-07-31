@@ -3,9 +3,9 @@ import { Main } from "@/components/layout/main";
 import { ProfileDropdown } from "@/components/profile-dropdown";
 import { Search } from "@/components/search";
 import { ThemeSwitch } from "@/components/theme-switch";
-import AppointmentsDateFilter from "@/components/notifications/notifications-date-filter";
 import { Suspense } from "react";
 import { getNotificationsForFilter } from "@/data/notification";
+import NotificationsDateFilter from "@/components/notifications/notifications-date-filter";
 
 export default async function Notifications() {
   const today = new Date();
@@ -36,7 +36,7 @@ export default async function Notifications() {
         </div>
         <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0">
           <Suspense fallback={<>Loading...</>}>
-            <AppointmentsDateFilter notifications={notifications} />
+            <NotificationsDateFilter notifications={notifications} />
           </Suspense>
         </div>
       </Main>

@@ -11,7 +11,7 @@ const NotificationDetails = ({
   fullName,
   surname,
   status,
-  pregnancyWeeks,
+  messageSid,
 }: {
   _id: string;
   userId: string;
@@ -19,7 +19,7 @@ const NotificationDetails = ({
   fullName: string;
   surname: string;
   status: string;
-  pregnancyWeeks: number;
+  messageSid: string;
 }) => {
   const dateStr = new Date(date);
   const formattedDate = dateStr.toLocaleDateString("en-GB", {
@@ -29,10 +29,7 @@ const NotificationDetails = ({
   });
 
   return (
-    <Link
-      href={`/user/settings/${userId}/appointments/${_id}`}
-      className="rounded-3xl border flex justify-between items-center gap-3 px-2 py-1 hover:shadow-md"
-    >
+    <div className="rounded-3xl border flex justify-between items-center gap-3 px-2 py-1 hover:shadow-md">
       <div className="flex items-center gap-3">
         {" "}
         <div className="flex items-center justify-between">
@@ -48,7 +45,7 @@ const NotificationDetails = ({
           </h2>
           <div className="flex flex-row gap-3 text-xs">
             <div>
-              Weeks: <b>{pregnancyWeeks}</b>
+              Message SID: <b>{messageSid}</b>
             </div>
             <div>
               Date: <b>{formattedDate}</b>
@@ -56,11 +53,7 @@ const NotificationDetails = ({
           </div>
         </div>
       </div>
-      <div className="flex gap-3">
-        <Badge variant="outline">{status}</Badge>
-        <IconChevronRight />
-      </div>
-    </Link>
+    </div>
   );
 };
 

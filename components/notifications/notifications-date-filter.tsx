@@ -2,10 +2,14 @@
 import { LoaderCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
-import NotificationDateTimeSlot from "./notification-date-timeslot";
-import { getAppointmentsForFilter } from "@/data/appointment";
+import { getNotificationsForFilter } from "@/data/notification";
+import NotificationDetails from "./notification-details";
 
-const NotificationsDateFilter = ({ appointments }: { appointments: any[] }) => {
+const NotificationsDateFilter = ({
+  notifications,
+}: {
+  notifications: any[];
+}) => {
   const today = new Date();
   today.setDate(today.getDate() - 1);
   const dateStr = today.toISOString().split("T")[0];
@@ -15,14 +19,14 @@ const NotificationsDateFilter = ({ appointments }: { appointments: any[] }) => {
   const [fromDate, setFromDate] = useState(dateStr);
   const [toDate, setToDate] = useState(thirtyDayStr);
   const [isLoading, setIsLoading] = useState(false);
-  const [appointmentsData, setNotificationsData] = useState<any[]>([]);
+  const [notificationsData, setNotificationsData] = useState<any[]>([]);
   const [filteredNotificationsData, setfilteredNotificationsData] = useState<
     any[]
   >([]);
 
   useEffect(() => {
-    setNotificationsData(appointments);
-    setfilteredNotificationsData(appointments);
+    setNotificationsData(notifications);
+    setfilteredNotificationsData(notifications);
   }, []);
 
   const onChangeFromDate = async (e: any) => {
@@ -30,9 +34,9 @@ const NotificationsDateFilter = ({ appointments }: { appointments: any[] }) => {
     setFromDate(fromDate);
 
     setIsLoading(true);
-    const appointments = await getAppointmentsForFilter(fromDate);
-    setNotificationsData(appointments);
-    setfilteredNotificationsData(appointments);
+    const notifications = await getNotificationsForFilter(fromDate);
+    setNotificationsData(notifications);
+    setfilteredNotificationsData(notifications);
     setIsLoading(false);
   };
 
@@ -41,42 +45,22 @@ const NotificationsDateFilter = ({ appointments }: { appointments: any[] }) => {
     setToDate(toDate);
 
     setIsLoading(true);
-    const appointments = await getAppointmentsForFilter(fromDate, toDate);
-    setNotificationsData(appointments);
-    setfilteredNotificationsData(appointments);
+    const notifications = await getNotificationsForFilter(fromDate, toDate);
+    setNotificationsData(notifications);
+    setfilteredNotificationsData(notifications);
     setIsLoading(false);
   };
 
   const onChangeFilterUser = async (e: any) => {
     const search = e.target.value.toLowerCase();
 
-    const filteredData = appointments
-      .map((entry) => {
-        const filteredSlots = entry.slots
-          .map((slot: any) => {
-            const filteredNotifications = slot.appointments.filter(
-              (app: any) => {
-                const fullName = app.fullName.toLowerCase();
-                const surname = app.surname.toLowerCase();
-                return fullName.includes(search) || surname.includes(search);
-              }
-            );
+    const filteredNotifications = notifications.filter((n) => {
+      const fullName = n.fullName?.toLowerCase() || "";
+      const surname = n.surname?.toLowerCase() || "";
+      return fullName.includes(search) || surname.includes(search);
+    });
 
-            // Only keep the slot if it has matching appointments
-            return filteredNotifications.length > 0
-              ? { ...slot, appointments: filteredNotifications }
-              : null;
-          })
-          .filter((slot: any) => slot !== null); // remove empty slots
-
-        // Only keep the entry if it has matching slots
-        return filteredSlots.length > 0
-          ? { ...entry, slots: filteredSlots }
-          : null;
-      })
-      .filter((entry) => entry !== null); // remove empty entries
-
-    setfilteredNotificationsData(filteredData);
+    setfilteredNotificationsData(filteredNotifications);
   };
 
   const clearFilter = () => {
@@ -131,22 +115,9 @@ const NotificationsDateFilter = ({ appointments }: { appointments: any[] }) => {
         </div>
       )}
       <div className="flex flex-col gap-2">
-        {filteredNotificationsData &&
-          filteredNotificationsData.length > 0 &&
-          filteredNotificationsData.map((a, index) => {
-            const dateStr = new Date(a.date);
-            return (
-              <NotificationDateTimeSlot
-                date={dateStr.toLocaleDateString("en-GB", {
-                  day: "2-digit",
-                  month: "short",
-                  year: "numeric",
-                })}
-                slots={a.slots}
-                key={index}
-              />
-            );
-          })}
+        {filteredNotificationsData.map((a) => (
+          <NotificationDetails key={a._id} {...{ ...a }} />
+        ))}
       </div>
     </>
   );
