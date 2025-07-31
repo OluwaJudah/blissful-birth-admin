@@ -6,7 +6,6 @@ import AppointmentDateTimeSlot from "./appointment-date-timeslot";
 import { getAppointmentsForFilter } from "@/data/appointment";
 import { IconPlus } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
-// import { useUsers } from "./context/users-context";
 
 const AppointmentsDateFilter = ({ appointments }: { appointments: any[] }) => {
   const today = new Date();
