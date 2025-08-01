@@ -468,3 +468,21 @@ export const uploadAppointmentsExcel = async (jsonData: any[]) => {
 
   revalidatePath("/clients");
 };
+
+export const deleteAppointment = async (
+  appointmentId: string,
+  pathname: string
+) => {
+  if (!Types.ObjectId.isValid(appointmentId)) {
+    throw new Error("Invalid appointment ID");
+  }
+  try {
+    const deleted = await Appointment.findByIdAndDelete(appointmentId);
+
+    if (!deleted) throw Error("Does not exist"); // returns the deleted doc or null if not found
+  } catch (err) {
+    console.log("Error:", err);
+  }
+  revalidatePath(pathname);
+  redirect(pathname);
+};

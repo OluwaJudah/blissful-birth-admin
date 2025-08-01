@@ -3,6 +3,7 @@ import { IAppointment } from "@/definitions/appointment";
 import { useUsers } from "./context/users-context";
 import { UsersActionDialog } from "./users-action-dialog";
 import { CreateNotificationActionDialog } from "./create-notification-dialog";
+import { DeleteAppointmentDialog } from "./users-delete-dialog";
 
 export function UsersDialogs({
   appointmentId,
@@ -29,6 +30,14 @@ export function UsersDialogs({
         appointmentData={appointmentData}
         open={open === "add"}
         onOpenChange={() => setOpen("add")}
+      />
+
+      <DeleteAppointmentDialog
+        key="user-delete"
+        userId={userId}
+        appointmentId={appointmentId}
+        open={open === "delete"}
+        onOpenChange={() => setOpen("delete")}
       />
     </>
   );

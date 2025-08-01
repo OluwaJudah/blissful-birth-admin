@@ -9,6 +9,7 @@ import { Suspense } from "react";
 import { calculateTrimester } from "@/utils";
 import { trimesters } from "@/constants/user";
 import { SendReminderButton } from "@/components/user/settings/appointments/[appointmentId]/send-reminder-button";
+import { DeleteAppointmmentButton } from "@/components/user/settings/appointments/[appointmentId]/delete-button";
 
 export default async function Appointments({
   params,
@@ -37,6 +38,7 @@ export default async function Appointments({
             <Suspense fallback={<>Loading ...</>}>
               <RescheduleAppointmmentButton />
               <SendReminderButton />
+              <DeleteAppointmmentButton />
             </Suspense>
           </div>
         </div>
