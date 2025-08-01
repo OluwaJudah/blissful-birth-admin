@@ -59,7 +59,12 @@ export async function sendNotifications() {
     const { userId, date, time, fullName, surname, contactNumber } =
       appointment;
     const response = await sendWhatsApp(contactNumber);
-    console.log({ response });
+
+    if (response.status === "failed") {
+      console.log("Failed to send notification to", contactNumber);
+      console.log({ response });
+      continue;
+    }
 
     await Notification.create({
       to: contactNumber,
