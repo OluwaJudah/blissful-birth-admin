@@ -55,15 +55,16 @@ export async function createNotification(
 
 export async function sendNotifications() {
   const appointments = await getAppointmentsForReminders();
-  const to = "0677140540";
+  const contactNumber = "0677140540";
   for (const appointment of appointments) {
-    const { userId, date, time, fullName, surname, contactNumber } =
+    const { userId, date, time, fullName, surname } =
       appointment;
-    const response = await sendWhatsApp(contactNumber);
+    const to = "+27" + contactNumber;
+    const response = await sendWhatsApp(to);
     console.log({ response });
 
     await Notification.create({
-      to: "+27" + to,
+      to: to,
       messageSid: response.sid,
       message: `Hello ${fullName} ${surname}, this is a reminder for your appointment on ${date} at ${time}.`,
       userId: new Types.ObjectId(userId),
