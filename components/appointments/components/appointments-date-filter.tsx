@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import AppointmentDateTimeSlot from "./appointment-date-timeslot";
 import { getAppointmentsForFilter } from "@/data/appointment";
+import SelectFilter from "@/components/appointments/components/select-filter";
 
 const AppointmentsDateFilter = ({ appointments }: { appointments: any[] }) => {
   const today = new Date();
@@ -22,7 +23,7 @@ const AppointmentsDateFilter = ({ appointments }: { appointments: any[] }) => {
 
   useEffect(() => {
     setAppointmentsData(appointments);
-    setfilteredAppointmentsData(appointments);
+    filterByStatus(appointments, "pending");
   }, []);
 
   const onChangeFromDate = async (e: any) => {
@@ -32,7 +33,7 @@ const AppointmentsDateFilter = ({ appointments }: { appointments: any[] }) => {
     setIsLoading(true);
     const appointments = await getAppointmentsForFilter(fromDate);
     setAppointmentsData(appointments);
-    setfilteredAppointmentsData(appointments);
+    filterByStatus(appointments, "pending");
     setIsLoading(false);
   };
 
@@ -43,7 +44,7 @@ const AppointmentsDateFilter = ({ appointments }: { appointments: any[] }) => {
     setIsLoading(true);
     const appointments = await getAppointmentsForFilter(fromDate, toDate);
     setAppointmentsData(appointments);
-    setfilteredAppointmentsData(appointments);
+    filterByStatus(appointments, "pending");
     setIsLoading(false);
   };
 
@@ -59,6 +60,39 @@ const AppointmentsDateFilter = ({ appointments }: { appointments: any[] }) => {
                 const fullName = app.fullName.toLowerCase();
                 const surname = app.surname.toLowerCase();
                 return fullName.includes(search) || surname.includes(search);
+              }
+            );
+
+            // Only keep the slot if it has matching appointments
+            return filteredAppointments.length > 0
+              ? { ...slot, appointments: filteredAppointments }
+              : null;
+          })
+          .filter((slot: any) => slot !== null); // remove empty slots
+
+        // Only keep the entry if it has matching slots
+        return filteredSlots.length > 0
+          ? { ...entry, slots: filteredSlots }
+          : null;
+      })
+      .filter((entry) => entry !== null); // remove empty entries
+
+    setfilteredAppointmentsData(filteredData);
+  };
+
+  const filterByStatus = async (appointments: any[], status: string) => {
+    if (status === "all") {
+      setfilteredAppointmentsData(appointments);
+      return;
+    }
+
+    const filteredData = appointments
+      .map((entry) => {
+        const filteredSlots = entry.slots
+          .map((slot: any) => {
+            const filteredAppointments = slot.appointments.filter(
+              (app: any) => {
+                return app.status.toLowerCase() === status;
               }
             );
 
@@ -120,6 +154,13 @@ const AppointmentsDateFilter = ({ appointments }: { appointments: any[] }) => {
                 placeholder="Filter users..."
                 className="w-[200px] flex flex-col justify-center"
                 onChange={onChangeFilterUser}
+              />
+            </div>
+            <div className="flex flex-row items-center gap-3">
+              <div className="text-sm font-medium">Filter Status:</div>
+              <SelectFilter
+                appointments={appointments}
+                filterByStatus={filterByStatus}
               />
             </div>
           </div>
