@@ -36,7 +36,7 @@ export default async function Appointments({
           <div className="flex gap-1">
             <Suspense fallback={<>Loading ...</>}>
               <RescheduleAppointmmentButton />
-              {/* <SendReminderButton /> */}
+              <SendReminderButton />
             </Suspense>
           </div>
         </div>
