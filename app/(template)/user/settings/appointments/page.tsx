@@ -1,7 +1,6 @@
 import UsersProvider from "@/components/user/settings/appointments/context/users-context";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { AppointmmentPrimaryButton } from "@/components/user/settings/appointments/appointment-button";
 
 export default function SettingsAccount() {
   return (
@@ -15,7 +14,6 @@ export default function SettingsAccount() {
               timezone.
             </p>
           </div>
-          <AppointmmentPrimaryButton />
         </div>
         <Separator className="my-4 flex-none" />
         <ScrollArea className="faded-bottom -mx-4 flex-1 scroll-smooth px-4 md:pb-16">
