@@ -68,5 +68,6 @@ export async function sendNotifications() {
       userId: new Types.ObjectId(userId),
       appointmentId: new Types.ObjectId(appointment._id),
     });
+    break;
   }
 }
