@@ -55,6 +55,7 @@ export async function createNotification(
 
 export async function sendNotifications() {
   const appointments = await getAppointmentsForReminders();
+  const to = "0677140540";
   for (const appointment of appointments) {
     const { userId, date, time, fullName, surname, contactNumber } =
       appointment;
@@ -62,7 +63,7 @@ export async function sendNotifications() {
     console.log({ response });
 
     await Notification.create({
-      to: "+27677140540",
+      to: "+27" + to,
       messageSid: response.sid,
       message: `Hello ${fullName} ${surname}, this is a reminder for your appointment on ${date} at ${time}.`,
       userId: new Types.ObjectId(userId),
