@@ -5,11 +5,11 @@ import AppointmentEntry from "@/components/user/settings/appointments/Appointmen
 import { getMotherAppointments } from "@/data/appointment";
 import { UsersDialogs } from "@/components/user/settings/appointments/users-dialogs";
 import { Suspense } from "react";
-import { AppointmmentPrimaryButton } from "@/components/user/settings/appointments/appointment-button";
 import { PATIENT_ONBOARDED } from "@/constants/appointment";
 import { getMotherDetails } from "@/data/mother-info";
 import { CreateAppointmmentButton } from "@/components/user/settings/appointments/create-appointment-button";
 import { PrintAppointmmentButton } from "@/components/user/settings/appointments/print-appointment-button";
+import { GenerateAppointmentButton } from "@/components/user/settings/appointments/generate-appointment-button";
 
 export const revalidate = 0;
 
@@ -37,7 +37,7 @@ export default async function SettingsAccount({
             <CreateAppointmmentButton />
             <PrintAppointmmentButton id={id} />
             {motherInfo && motherInfo.status !== PATIENT_ONBOARDED && (
-              <AppointmmentPrimaryButton />
+              <GenerateAppointmentButton />
             )}
           </div>
         </div>

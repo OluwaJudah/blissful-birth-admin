@@ -3,7 +3,7 @@ import { IconPlus } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { useUsers } from "./context/users-context";
 
-export function AppointmmentPrimaryButton() {
+export function GenerateAppointmentButton() {
   const { setOpen } = useUsers();
 
   return (

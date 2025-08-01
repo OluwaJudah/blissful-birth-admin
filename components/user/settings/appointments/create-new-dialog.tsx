@@ -13,7 +13,7 @@ import { Form } from "@/components/ui/form";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { startTransition, useActionState, useRef } from "react";
 import { User } from "./data/schema";
-import { createAppointment, generateAppointments } from "@/actions/appointment";
+import { createAppointment } from "@/actions/appointment";
 import {
   createAppointmentFormSchema,
   CreateAppointmentFormSchema,

@@ -306,6 +306,8 @@ export async function generateAppointmentSlots(edd: string, userId: string) {
 
   await dbConnect();
   // 1. Aggregate existing appointment counts per date/time
+  await Appointment.deleteMany({ userId: new Types.ObjectId(userId) });
+
   const usage = await Appointment.aggregate([
     {
       $match: {
