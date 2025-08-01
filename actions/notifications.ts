@@ -62,7 +62,7 @@ export async function sendNotifications() {
     console.log({ response });
 
     await Notification.create({
-      to: "0677140540",
+      to: "+27677140540",
       messageSid: response.sid,
       message: `Hello ${fullName} ${surname}, this is a reminder for your appointment on ${date} at ${time}.`,
       userId: new Types.ObjectId(userId),
