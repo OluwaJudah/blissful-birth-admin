@@ -42,7 +42,7 @@ const initialState = {
   errors: {},
 };
 
-export function UsersActionDialog({
+export function GenerateAppointmentDialog({
   userId,
   currentRow,
   open,
