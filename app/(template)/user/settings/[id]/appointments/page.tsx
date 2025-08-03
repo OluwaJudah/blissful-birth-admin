@@ -8,8 +8,7 @@ import { Suspense } from "react";
 import { PATIENT_ONBOARDED } from "@/constants/appointment";
 import { getMotherDetails } from "@/data/mother-info";
 import { CreateAppointmmentButton } from "@/components/user/settings/appointments/create-appointment-button";
-import { PrintAppointmmentButton } from "@/components/user/settings/appointments/print-appointment-button";
-import { GenerateAppointmentButton } from "@/components/user/settings/appointments/generate-appointment-button";
+import { AppointmentOptionsDropdown } from "@/components/user/settings/appointments/appointment-options-dropdown";
 
 export const revalidate = 0;
 
@@ -35,10 +34,11 @@ export default async function SettingsAccount({
           </div>
           <div className="flex gap-1">
             <CreateAppointmmentButton />
-            <PrintAppointmmentButton id={id} />
-            {motherInfo && motherInfo.status !== PATIENT_ONBOARDED && (
+            <AppointmentOptionsDropdown id={id} />
+            {/* <PrintAppointmmentButton id={id} /> */}
+            {/* {motherInfo && motherInfo.status !== PATIENT_ONBOARDED && (
               <GenerateAppointmentButton />
-            )}
+            )} */}
           </div>
         </div>
         <Separator className="my-4 flex-none" />
