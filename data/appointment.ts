@@ -1,4 +1,5 @@
 "use server";
+import { PATIENT_CLOSED } from "@/constants/appointment";
 import { CLIENT } from "@/constants/user";
 import dbConnect from "@/lib/db";
 import Appointment from "@/models/appointment";
@@ -165,6 +166,7 @@ export const getAppointmentsForFilter = async (fromDate = "", toDate = "") => {
       },
     },
     { $unwind: { path: "$motherinfo", preserveNullAndEmptyArrays: false } },
+    { $match: { "motherinfo.status": { $ne: PATIENT_CLOSED } } },
 
     // 🔧 Normalize time string to HH:mm (pad leading zero if needed)
     {

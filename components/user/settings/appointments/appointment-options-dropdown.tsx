@@ -15,7 +15,13 @@ import {
 } from "@tabler/icons-react";
 import { useUsers } from "./context/users-context";
 
-export function AppointmentOptionsDropdown({ id }: { id: string }) {
+export function AppointmentOptionsDropdown({
+  id,
+  isClosed,
+}: {
+  id: string;
+  isClosed: boolean;
+}) {
   const { setOpen } = useUsers();
 
   const handlePrintAppointment = async () => {
@@ -55,24 +61,29 @@ export function AppointmentOptionsDropdown({ id }: { id: string }) {
               Print Appointment
             </div>
           </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <div
-              className="flex items-center gap-2"
-              onClick={() => setOpen("generate")}
-            >
-              <IconCalendar size={18} />
-              Generate Appointments
-            </div>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <div
-              className="flex items-center gap-2"
-              onClick={() => setOpen("close")}
-            >
-              <IconX size={18} />
-              Close Appointments
-            </div>
-          </DropdownMenuItem>
+
+          {!isClosed && (
+            <>
+              <DropdownMenuItem asChild>
+                <div
+                  className="flex items-center gap-2"
+                  onClick={() => setOpen("generate")}
+                >
+                  <IconCalendar size={18} />
+                  Generate Appointments
+                </div>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <div
+                  className="flex items-center gap-2"
+                  onClick={() => setOpen("close")}
+                >
+                  <IconX size={18} />
+                  Close Appointments
+                </div>
+              </DropdownMenuItem>{" "}
+            </>
+          )}
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>

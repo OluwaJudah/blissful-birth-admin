@@ -2,6 +2,8 @@ export const COMPLETED_APPOINTMENT = "completed";
 export const PENDING_APPOINTMENT = "pending";
 export const APPOINTMENT = "appointment";
 export const PATIENT_ONBOARDED = "onboarded";
+export const PATIENT_CLOSED = "closed";
+export const PATIENT_PENDING = "pending";
 export const MAX_PER_SLOT = 2;
 export const SLOT_TIMES = [
   "09:00",

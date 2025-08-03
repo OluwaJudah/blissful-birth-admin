@@ -5,7 +5,7 @@ import AppointmentEntry from "@/components/user/settings/appointments/Appointmen
 import { getMotherAppointments } from "@/data/appointment";
 import { UsersDialogs } from "@/components/user/settings/appointments/users-dialogs";
 import { Suspense } from "react";
-import { PATIENT_ONBOARDED } from "@/constants/appointment";
+import { PATIENT_CLOSED } from "@/constants/appointment";
 import { getMotherDetails } from "@/data/mother-info";
 import { CreateAppointmmentButton } from "@/components/user/settings/appointments/create-appointment-button";
 import { AppointmentOptionsDropdown } from "@/components/user/settings/appointments/appointment-options-dropdown";
@@ -20,7 +20,8 @@ export default async function SettingsAccount({
   const { id } = await params;
   const appointments = await getMotherAppointments(id);
   const motherInfo = await getMotherDetails(id);
-
+  const isClosed = motherInfo?.status === PATIENT_CLOSED;
+  
   return (
     <UsersProvider>
       <div className="flex flex-1 flex-col">
@@ -34,11 +35,7 @@ export default async function SettingsAccount({
           </div>
           <div className="flex gap-1">
             <CreateAppointmmentButton />
-            <AppointmentOptionsDropdown id={id} />
-            {/* <PrintAppointmmentButton id={id} /> */}
-            {/* {motherInfo && motherInfo.status !== PATIENT_ONBOARDED && (
-              <GenerateAppointmentButton />
-            )} */}
+            <AppointmentOptionsDropdown id={id} isClosed={isClosed} />
           </div>
         </div>
         <Separator className="my-4 flex-none" />

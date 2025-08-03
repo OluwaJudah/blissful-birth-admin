@@ -1,5 +1,10 @@
 import { getMotherDetails } from "@/data/mother-info";
 import ClientPackage from "./client-package";
+import {
+  PATIENT_CLOSED,
+  PATIENT_ONBOARDED,
+  PATIENT_PENDING,
+} from "@/constants/appointment";
 
 const MotherInfo = async ({ userId }: { userId: string }) => {
   const mother = await getMotherDetails(userId);
@@ -10,6 +15,7 @@ const MotherInfo = async ({ userId }: { userId: string }) => {
     fullName,
     surname,
     maidenName,
+    status,
     idPassportNo,
     dateOfBirth,
     lastMenstrualDate,
@@ -29,7 +35,14 @@ const MotherInfo = async ({ userId }: { userId: string }) => {
     const date = new Date(edd);
     eddStr = date.toDateString();
   }
+  const statusMap = {
+    [PATIENT_CLOSED]: "Closed",
+    [PATIENT_ONBOARDED]: "Onboarded",
+    [PATIENT_PENDING]: "Pending",
+  };
 
+  const isClosed = status === PATIENT_CLOSED;
+  const statusStr = statusMap[status as keyof typeof statusMap] || "N/A";
   return (
     <div className="grid grid-cols-4 gap-y-4 gap-x-8 h-[450px]">
       <div className="">
@@ -87,6 +100,10 @@ const MotherInfo = async ({ userId }: { userId: string }) => {
       <div className="">
         <div className="text-sm font-bold">P</div>
         <div className="">{p || "N/A"}</div>
+      </div>
+      <div className="">
+        <div className="text-sm font-bold">Status</div>
+        <div className="">{statusStr}</div>
       </div>
       <div className="col-span-4">
         <div className="w-2/3">
