@@ -3,6 +3,7 @@ import {
   APPOINTMENT,
   COMPLETED_APPOINTMENT,
   MAX_PER_SLOT,
+  PATIENT_CLOSED,
   PATIENT_ONBOARDED,
   PENDING_APPOINTMENT,
   SLOT_TIMES,
@@ -366,7 +367,7 @@ export async function generateAppointmentSlots(edd: string, userId: string) {
     throw Error(`Error: Failed to create all patient's appointment`);
   }
 
-  try {
+  /* try {
     await Appointment.findOneAndUpdate(
       {
         userId: new Types.ObjectId(userId),
@@ -376,7 +377,7 @@ export async function generateAppointmentSlots(edd: string, userId: string) {
     );
   } catch (err) {
     throw Error(`Error: Failed to update first appointment`);
-  }
+  } */
 
   try {
     await MotherInfo.findOneAndUpdate(
@@ -387,6 +388,20 @@ export async function generateAppointmentSlots(edd: string, userId: string) {
     throw Error(`Error: Failed to update patient's status`);
   }
 }
+
+export const closeAppointment = async (userId: string, pathname: string) => {
+  await dbConnect();
+  try {
+    await MotherInfo.findOneAndUpdate(
+      { userId: new Types.ObjectId(userId) },
+      { $set: { status: PATIENT_CLOSED } }
+    );
+  } catch (err) {
+    throw Error(`Error: Failed to update patient's status`);
+  }
+  revalidatePath(pathname);
+  redirect(pathname);
+};
 
 export const uploadAppointments = async (jsonData: any[]) => {
   const motherDetails = jsonData[0];

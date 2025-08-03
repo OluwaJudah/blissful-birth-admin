@@ -2,7 +2,8 @@
 import { useUsers } from "./context/users-context";
 import { CreateNewActionDialog } from "./create-new-dialog";
 import { PrintAppointmentModal } from "./print-appointment-modal";
-import { UsersActionDialog } from "./users-action-dialog";
+import { GenerateAppointmentDialog } from "./generate-appointment-dialog";
+import { CloseAppointmentDialog } from "./close-appointment-dialog";
 
 export function UsersDialogs({ userId }: { userId: string }) {
   const { open, setOpen } = useUsers();
@@ -18,10 +19,16 @@ export function UsersDialogs({ userId }: { userId: string }) {
         onOpenChange={() => setOpen("print")}
       />
 
-      <UsersActionDialog
+      <GenerateAppointmentDialog
         userId={userId}
         open={open === "generate"}
         onOpenChange={() => setOpen("generate")}
+      />
+      {/* Close Appointment Dialog */}
+      <CloseAppointmentDialog
+        userId={userId}
+        open={open === "close"}
+        onOpenChange={() => setOpen("close")}
       />
     </>
   );
