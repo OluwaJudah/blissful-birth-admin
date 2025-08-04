@@ -73,7 +73,7 @@ export const updateMotherInfoFormData: any[] = [
   },
   {
     name: "p",
-    label: "Pulse (bpm)",
+    label: "P",
     type: "number",
     placeholder: "Please enter the P value",
   },
