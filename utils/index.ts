@@ -104,7 +104,7 @@ export const getFutureAppointmentMondaysFromEdd = (
 ): { week: number; mondayDate: Date; formatted: string }[] => {
   const edd = new Date(eddStr);
   const today = todayStr ? new Date(todayStr) : new Date();
-  const lmp = new Date(edd.getTime() - 280 * MS_IN_DAY); // LMP: Week 1 starts
+  const lmp = new Date(edd.getTime() - 280 * MS_IN_DAY); // LMP = EDD - 280 days
 
   // Calculate current pregnancy week
   const daysPregnant = Math.floor(
@@ -116,12 +116,10 @@ export const getFutureAppointmentMondaysFromEdd = (
   const mondays: { week: number; mondayDate: Date; formatted: string }[] = [];
 
   for (const week of futureWeeks) {
-    const weekStart = new Date(
-      lmp.getTime() + (week - 1) * 7 * MS_IN_DAY + 1 * MS_IN_DAY
-    );
+    const weekStart = new Date(lmp.getTime() + (week - 1) * 7 * MS_IN_DAY + 1 * MS_IN_DAY);
     const weekEnd = new Date(weekStart.getTime() + 6 * MS_IN_DAY);
 
-    // Walk through each day of the week to find a Monday
+    // Try to find a Monday within the week
     let monday: Date | null = null;
     for (
       let d = new Date(weekStart);
@@ -134,7 +132,25 @@ export const getFutureAppointmentMondaysFromEdd = (
       }
     }
 
-    if (!monday) continue; // No Monday found in the week — unlikely
+    if (!monday) {
+      // No Monday in the week — fallback to closest Monday before/after the week
+      const midPoint = new Date((weekStart.getTime() + weekEnd.getTime()) / 2);
+
+      const beforeMonday = new Date(midPoint);
+      while (beforeMonday.getDay() !== 1) {
+        beforeMonday.setDate(beforeMonday.getDate() - 1);
+      }
+
+      const afterMonday = new Date(midPoint);
+      while (afterMonday.getDay() !== 1) {
+        afterMonday.setDate(afterMonday.getDate() + 1);
+      }
+
+      const distBefore = Math.abs(midPoint.getTime() - beforeMonday.getTime());
+      const distAfter = Math.abs(midPoint.getTime() - afterMonday.getTime());
+
+      monday = distBefore <= distAfter ? beforeMonday : afterMonday;
+    }
 
     mondays.push({
       week,
