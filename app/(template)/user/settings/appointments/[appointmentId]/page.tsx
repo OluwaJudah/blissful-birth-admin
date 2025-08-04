@@ -1,4 +1,3 @@
-import AppointmentTabs from "@/components/user/settings/components/appointment-tabs";
 import UsersProvider from "@/components/user/settings/appointments/[appointmentId]/context/users-context";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";

@@ -8,7 +8,6 @@ import {
   PENDING_APPOINTMENT,
   SLOT_TIMES,
 } from "@/constants/appointment";
-import { FIRST_APPOINTMENT, pregnancyWeeks } from "@/constants/user";
 import {
   babyReportFormSchema,
   GenerateAppointmentsFormState,
