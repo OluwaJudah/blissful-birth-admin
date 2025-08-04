@@ -1,4 +1,4 @@
-import AppointmentTabs from "@/components/user/settings/components/appointment-tabs";
+import AppointmentTabs from "@/components/user/settings/appointments/[appointmentId]/appointment-tabs";
 import UsersProvider from "@/components/user/settings/appointments/[appointmentId]/context/users-context";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
@@ -8,7 +8,7 @@ import { getAppointment } from "@/data/appointment";
 import { Suspense } from "react";
 import { calculateTrimester } from "@/utils";
 import { trimesters } from "@/constants/user";
-import { SendReminderButton } from "@/components/user/settings/appointments/[appointmentId]/send-reminder-button";
+// import { SendReminderButton } from "@/components/user/settings/appointments/[appointmentId]/send-reminder-button";
 import { DeleteAppointmmentButton } from "@/components/user/settings/appointments/[appointmentId]/delete-button";
 
 export default async function Appointments({

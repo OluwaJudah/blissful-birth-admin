@@ -73,7 +73,8 @@ export default async function RootLayout({
             Patient Profile - {motherInfo?.fullName} {motherInfo?.surname}
           </h1>
           <p className="text-muted-foreground">
-            Manage your account settings and set e-mail preferences.
+            Manage patient profile data(Mother's information, Birth Companion,
+            Baby Report, etc.)
           </p>
         </div>
         <Separator className="my-4 lg:my-6" />
