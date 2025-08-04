@@ -6,6 +6,7 @@ export const PATIENT_CLOSED = "closed";
 export const PATIENT_PENDING = "pending";
 export const MAX_PER_SLOT = 2;
 export const SLOT_TIMES = [
+  "08:30",
   "09:00",
   "09:30",
   "10:00",
