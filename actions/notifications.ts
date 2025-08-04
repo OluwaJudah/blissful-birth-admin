@@ -63,15 +63,22 @@ export async function createNotification(
 
 export async function sendNotifications() {
   const appointments = await getAppointmentsForReminders();
-  const contactNumber = "0677140540";
   for (const appointment of appointments) {
-    const { userId, date, time, fullName, surname } = appointment;
+    const { userId, date, time, fullName, surname, contactNumber } =
+      appointment;
+    const today = new Date(date);
+    const dateString = today.toLocaleDateString("en-ZA", {
+      day: "numeric",
+      month: "short",
+      year: "2-digit",
+    });
+
     const to = "+27" + contactNumber;
     const response = await sendWhatsApp(
       to,
       JSON.stringify({
         1: fullName,
-        2: date,
+        2: dateString,
         3: time,
         4: "20",
       })
