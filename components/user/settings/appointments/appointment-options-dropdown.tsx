@@ -18,9 +18,11 @@ import { useUsers } from "./context/users-context";
 export function AppointmentOptionsDropdown({
   id,
   isClosed,
+  fullName,
 }: {
   id: string;
   isClosed: boolean;
+  fullName: string;
 }) {
   const { setOpen } = useUsers();
 
@@ -35,7 +37,7 @@ export function AppointmentOptionsDropdown({
 
     const link = document.createElement("a");
     link.href = url;
-    link.download = "appointment-report.pdf";
+    link.download = `${fullName} - Appointments.pdf`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

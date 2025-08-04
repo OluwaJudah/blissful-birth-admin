@@ -21,7 +21,7 @@ export default async function SettingsAccount({
   const appointments = await getMotherAppointments(id);
   const motherInfo = await getMotherDetails(id);
   const isClosed = motherInfo?.status === PATIENT_CLOSED;
-  
+
   return (
     <UsersProvider>
       <div className="flex flex-1 flex-col">
@@ -35,7 +35,11 @@ export default async function SettingsAccount({
           </div>
           <div className="flex gap-1">
             <CreateAppointmmentButton />
-            <AppointmentOptionsDropdown id={id} isClosed={isClosed} />
+            <AppointmentOptionsDropdown
+              fullName={`${motherInfo?.fullName} ${motherInfo?.surname}`}
+              id={id}
+              isClosed={isClosed}
+            />
           </div>
         </div>
         <Separator className="my-4 flex-none" />
