@@ -36,7 +36,15 @@ export async function createNotification(
   await dbConnect();
 
   try {
-    const response = await sendWhatsApp(to);
+    const response = await sendWhatsApp(
+      to,
+      JSON.stringify({
+        1: "Judah Israel",
+        2: "2025-08-04",
+        3: "10:00",
+        4: "20",
+      })
+    );
 
     await Notification.create({
       to,
@@ -57,10 +65,17 @@ export async function sendNotifications() {
   const appointments = await getAppointmentsForReminders();
   const contactNumber = "0677140540";
   for (const appointment of appointments) {
-    const { userId, date, time, fullName, surname } =
-      appointment;
+    const { userId, date, time, fullName, surname } = appointment;
     const to = "+27" + contactNumber;
-    const response = await sendWhatsApp(to);
+    const response = await sendWhatsApp(
+      to,
+      JSON.stringify({
+        1: fullName,
+        2: date,
+        3: time,
+        4: "20",
+      })
+    );
     console.log({ response });
 
     await Notification.create({

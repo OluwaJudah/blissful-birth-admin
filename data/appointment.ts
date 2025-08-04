@@ -281,6 +281,7 @@ export const getAppointmentsForReminders = async () => {
     },
     { $unwind: { path: "$motherinfo", preserveNullAndEmptyArrays: false } },
     { $match: { "motherinfo.contactNumber": { $ne: null } } },
+    { $match: { "motherinfo.status": { $ne: PATIENT_CLOSED } } },
     // Group by unique appointment to remove duplicates
     {
       $group: {
