@@ -67,13 +67,13 @@ export const bloodInputFormData: any[] = [
 export const updateMotherInfoFormData: any[] = [
   {
     name: "g",
-    label: "G",
+    label: "G (Gravida)",
     type: "number",
     placeholder: "Please enter the G value",
   },
   {
     name: "p",
-    label: "P",
+    label: "P (Parity)",
     type: "number",
     placeholder: "Please enter the P value",
   },
