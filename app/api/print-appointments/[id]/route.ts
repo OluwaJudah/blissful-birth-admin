@@ -72,7 +72,7 @@ export async function GET(
     return new Response(Buffer.from(pdfBuffer), {
       headers: {
         "Content-Type": "application/pdf",
-        "Content-Disposition": `inline; filename=appointment.pdf,
+        "Content-Disposition": "inline; filename=appointment.pdf",
       },
     });
       } catch (error: any) {
