@@ -32,7 +32,7 @@ export async function GET(
               <td class="border p-2">${appointment.pregnancyWeeks}</td>
               <td class="border p-2">${formattedDate}</td>
               <td class="border p-2">${appointment.time}</td>
-              <td class="border p-2">${appointment.note}</td>
+              <td class="border p-2"></td>
             </tr>`
       );
     }, "");
