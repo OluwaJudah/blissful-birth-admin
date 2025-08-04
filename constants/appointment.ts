@@ -140,6 +140,7 @@ export const babyReportFormData: any[] = [
 ];
 
 export const timeSlotOptions = [
+  { label: "8:30", value: "8:30" },
   { label: "9:00", value: "9:00" },
   { label: "9:30", value: "9:30" },
   { label: "10:00", value: "10:00" },
