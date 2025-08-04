@@ -213,3 +213,26 @@ export type IBabyInfo = {
   fullName: string;
   surname: string;
 };
+
+export type UpdateMotherInfoFormState = {
+  errors?: {
+    g?: string[];
+    p?: string[];
+    packageType?: string[];
+    age?: string[];
+  };
+  message?: string | null;
+};
+
+export const updateMotherInfoFormSchema = z.object({
+  g: z.coerce.number(),
+  p: z.coerce.number(),
+  age: z.coerce.number().min(1, {
+    message: "Age must be greater than 0.",
+  }),
+  packageType: z.string().min(1, "Please select a Time Slot "),
+});
+
+export type UpdateMotherInfoFormSchema = z.infer<
+  typeof updateMotherInfoFormSchema
+>;

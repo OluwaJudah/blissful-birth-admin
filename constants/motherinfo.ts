@@ -63,3 +63,29 @@ export const bloodInputFormData: any[] = [
     placeholder: "Please enter the hb value",
   },
 ];
+
+export const updateMotherInfoFormData: any[] = [
+  {
+    name: "g",
+    label: "G",
+    type: "number",
+    placeholder: "Please enter the G value",
+  },
+  {
+    name: "p",
+    label: "Pulse (bpm)",
+    type: "number",
+    placeholder: "Please enter the P value",
+  },
+  {
+    name: "age",
+    label: "Age",
+    type: "number",
+    placeholder: "Please enter the age",
+  },
+];
+
+export const packageTypeOptions = [
+  { label: "Antenatal", value: "anc" },
+  { label: "Full Package", value: "full" },
+];
