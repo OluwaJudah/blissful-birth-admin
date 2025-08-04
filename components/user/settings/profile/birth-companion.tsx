@@ -19,7 +19,7 @@ const BirthCompanion = async ({ userId }: { userId: string }) => {
 
   return (
     <div className="h-[340px]">
-      <div className="grid grid-cols-4 gap-y-4 gap-x-8 h-[240px]">
+      <div className="grid grid-cols-4 gap-y-4 gap-x-8 h-[200px]">
         <div className="">
           <div className="text-sm font-bold">Full Name</div>
           <div className="">{fullName}</div>

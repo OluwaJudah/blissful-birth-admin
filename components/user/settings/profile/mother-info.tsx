@@ -49,7 +49,7 @@ const MotherInfo = async ({ userId }: { userId: string }) => {
     packageTypeMap[packageType as keyof typeof packageTypeMap] || "N/A";
 
   return (
-    <div className="grid grid-cols-4 gap-y-4 gap-x-8 h-[450px]">
+    <div className="grid grid-cols-4 gap-y-1 gap-x-2 h-[300px]">
       <div className="">
         <div className="text-sm font-bold">Full Name</div>
         <div className="">{fullName}</div>
