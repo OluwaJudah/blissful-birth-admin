@@ -96,69 +96,58 @@ export const getUpcomingAppointmentMondays = (
   return results;
 };
 
-function getLastTuesdayFromCurrentOrNextMonth() {
-  const today = new Date();
+const MS_IN_DAY = 24 * 60 * 60 * 1000;
 
-  function getLastTuesday(year: number, month: number) {
-    const lastDay = new Date(year, month + 1, 0); // last day of month
-    while (lastDay.getDay() !== 2) {
-      lastDay.setDate(lastDay.getDate() - 1);
-    }
-    return lastDay;
-  }
-
-  const currentYear = today.getFullYear();
-  const currentMonth = today.getMonth();
-
-  let lastTuesday = getLastTuesday(currentYear, currentMonth);
-
-  // If it's before today, move to next month
-  if (lastTuesday.getDate() !== today.getDate() && lastTuesday < today) {
-    const nextMonth = currentMonth === 11 ? 0 : currentMonth + 1;
-    const nextYear = currentMonth === 11 ? currentYear + 1 : currentYear;
-    lastTuesday = getLastTuesday(nextYear, nextMonth);
-  }
-
-  return lastTuesday;
-}
-
-export const getAppointmentMondaysAfterLastTuesday = (
-  eddStr: string
-): any[] => {
+export const getFutureAppointmentMondaysFromEdd = (
+  eddStr: string,
+  todayStr?: string
+): { week: number; mondayDate: Date; formatted: string }[] => {
   const edd = new Date(eddStr);
-  const startDate = new Date(edd.getTime() - 280 * 24 * 60 * 60 * 1000); // start of Week 1
+  const today = todayStr ? new Date(todayStr) : new Date();
+  const lmp = new Date(edd.getTime() - 280 * MS_IN_DAY); // LMP: Week 1 starts
 
-  // Get last Tuesday of current month
-  let lastTuesday = getLastTuesdayFromCurrentOrNextMonth();
-  const mondayDates: any[] = [];
+  // Calculate current pregnancy week
+  const daysPregnant = Math.floor(
+    (today.getTime() - lmp.getTime()) / MS_IN_DAY
+  );
+  const currentWeek = Math.floor(daysPregnant / 7);
 
-  for (const week of appointmentWeeks) {
+  const futureWeeks = appointmentWeeks.filter((week) => week >= currentWeek);
+  const mondays: { week: number; mondayDate: Date; formatted: string }[] = [];
+
+  for (const week of futureWeeks) {
     const weekStart = new Date(
-      startDate.getTime() + (week - 1) * 7 * 24 * 60 * 60 * 1000
+      lmp.getTime() + (week - 1) * 7 * MS_IN_DAY + 1 * MS_IN_DAY
     );
+    const weekEnd = new Date(weekStart.getTime() + 6 * MS_IN_DAY);
 
-    // Align to Monday
-    const day = weekStart.getDay(); // Sunday = 0, Monday = 1, etc.
-    const diffToMonday = day === 0 ? 1 : (8 - day) % 7;
-    const monday = new Date(weekStart);
-    monday.setDate(weekStart.getDate() + diffToMonday);
+    // Walk through each day of the week to find a Monday
+    let monday: Date | null = null;
+    for (
+      let d = new Date(weekStart);
+      d <= weekEnd;
+      d.setDate(d.getDate() + 1)
+    ) {
+      if (d.getDay() === 1) {
+        monday = new Date(d);
+        break;
+      }
+    }
 
-    // Include only Mondays after the last Tuesday of the current month
-    if (monday > lastTuesday) {
-      const formatted = monday.toLocaleDateString("en-GB", {
+    if (!monday) continue; // No Monday found in the week — unlikely
+
+    mondays.push({
+      week,
+      mondayDate: monday,
+      formatted: monday.toLocaleDateString("en-GB", {
         day: "2-digit",
         month: "short",
         year: "numeric",
-      });
-
-      mondayDates.push({
-        week,
-        mondayDate: formatted,
-      });
-    }
+      }),
+    });
   }
 
-  return mondayDates;
+  return mondays;
 };
 
 export const parseDate = (dateStr: string): Date => {
@@ -173,3 +162,25 @@ export const parseDate = (dateStr: string): Date => {
 
   return parsed;
 };
+
+// utils/dateUtils.ts
+
+export function formatDateLocal(date: Date): string {
+  const year = date.getFullYear();
+  const month = `${date.getMonth() + 1}`.padStart(2, "0");
+  const day = `${date.getDate()}`.padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+export function parseLocalDate(dateStr: string): Date {
+  const [year, month, day] = dateStr.split("-").map(Number);
+  return new Date(year, month - 1, day); // Local time
+}
+
+export function toLocalISOString(date: Date): string {
+  if (isNaN(date.getTime())) {
+    throw new Error(`Invalid Date passed to toLocalISOString: ${date}`);
+  }
+  const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+  return localDate.toISOString().split("T")[0];
+}

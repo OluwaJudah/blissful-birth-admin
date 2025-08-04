@@ -27,7 +27,12 @@ import BabyReport from "@/models/baby-report";
 import MotherInfo from "@/models/mother-info";
 import MotherReport from "@/models/mother-report";
 import User from "@/models/user";
-import { getAppointmentMondaysAfterLastTuesday, parseDate } from "@/utils";
+import {
+  getFutureAppointmentMondaysFromEdd,
+  parseDate,
+  parseLocalDate,
+  toLocalISOString,
+} from "@/utils";
 import { Types } from "mongoose";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -300,14 +305,17 @@ export async function createAppointment(
 }
 
 export async function generateAppointmentSlots(edd: string, userId: string) {
-  const weekDates = getAppointmentMondaysAfterLastTuesday(edd);
-  const today = new Date(weekDates[0].mondayDate);
-  const endDate = new Date(weekDates[weekDates.length - 1].mondayDate);
+  const weekDates = getFutureAppointmentMondaysFromEdd(edd);
+
+  const today = parseLocalDate(weekDates[0].formatted);
+  const endDate = parseLocalDate(weekDates[weekDates.length - 1].formatted);
 
   await dbConnect();
-  // 1. Aggregate existing appointment counts per date/time
+
+  // 1. Delete previous appointments
   await Appointment.deleteMany({ userId: new Types.ObjectId(userId) });
 
+  // 2. Aggregate appointment usage
   const usage = await Appointment.aggregate([
     {
       $match: {
@@ -322,23 +330,27 @@ export async function generateAppointmentSlots(edd: string, userId: string) {
     },
   ]);
 
-  // 2. Build a map for quick lookup: { 'YYYY-MM-DD': { '09:00': count } }
   const usageMap: Record<string, Record<string, number>> = {};
 
   usage.forEach(({ _id, count }) => {
-    const dateKey = new Date(_id.date).toISOString().split("T")[0];
+    const dateKey = toLocalISOString(new Date(_id.date));
     const time = _id.time;
 
     if (!usageMap[dateKey]) usageMap[dateKey] = {};
     usageMap[dateKey][time] = count;
   });
-  // 3. Build available slots per day
+
   const availableSlots: any[] = [];
 
   weekDates.forEach((a) => {
-    const date = new Date(a.mondayDate);
-    const dateKey = date.toISOString().split("T")[0];
-    const takenSlots = usageMap[dateKey] || {};
+    const date = new Date(a.mondayDate); // now a valid Date
+    if (isNaN(date.getTime())) {
+      console.warn("Invalid Date object for mondayDate:", a.mondayDate);
+      return;
+    }
+
+    const dateKey = toLocalISOString(date);
+    const takenSlots = usageMap[dateKey] || [];
 
     const available = SLOT_TIMES.filter((time) => {
       const count = takenSlots[time] || 0;
@@ -355,7 +367,9 @@ export async function generateAppointmentSlots(edd: string, userId: string) {
       type: APPOINTMENT,
     };
 
-    if (available.length > 0) appointment.time = available[0]; // Select the first available
+    if (available.length > 0) {
+      appointment.time = available[0];
+    }
 
     availableSlots.push(appointment);
   });
@@ -366,22 +380,10 @@ export async function generateAppointmentSlots(edd: string, userId: string) {
     throw Error(`Error: Failed to create all patient's appointment`);
   }
 
-  /* try {
-    await Appointment.findOneAndUpdate(
-      {
-        userId: new Types.ObjectId(userId),
-        type: FIRST_APPOINTMENT,
-      },
-      { $set: { status: COMPLETED_APPOINTMENT } }
-    );
-  } catch (err) {
-    throw Error(`Error: Failed to update first appointment`);
-  } */
-
   try {
     await MotherInfo.findOneAndUpdate(
       { userId: new Types.ObjectId(userId) },
-      { $set: { status: PATIENT_ONBOARDED, edd: new Date(edd) } }
+      { $set: { status: PATIENT_ONBOARDED, edd: parseLocalDate(edd) } }
     );
   } catch (err) {
     throw Error(`Error: Failed to update patient's status`);

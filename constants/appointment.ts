@@ -23,7 +23,7 @@ export const SLOT_TIMES = [
   "16:00",
 ];
 export const appointmentWeeks: any[] = [
-  8, 13, 18, 21, 24, 28, 30, 32, 34, 36, 37, 38, 39, 40,
+  8, 13, 18, 21, 24, 28, 30, 32, 34, 37, 38, 39, 40,
 ];
 
 export const defaultValueMotherReportForm = {
