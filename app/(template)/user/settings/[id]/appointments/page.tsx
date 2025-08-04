@@ -45,7 +45,7 @@ export default async function SettingsAccount({
         <Separator className="my-4 flex-none" />
         <ScrollArea className="faded-bottom -mx-4 flex-1 scroll-smooth px-4 md:pb-16">
           <Suspense fallback={<>Loading...</>}>
-            <div className="-mx-1 px-1.5 flex flex-col gap-3 lg:max-w-xl">
+            <div className="-mx-1 px-1.5 flex flex-col gap-1 lg:max-w-xl">
               {appointments.map(
                 ({ _id, date, time, status, pregnancyWeeks, type }) => (
                   <AppointmentEntry

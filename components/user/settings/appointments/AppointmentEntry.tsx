@@ -34,19 +34,14 @@ const AppointmentEntry = ({
 
   return (
     <Link href={url}>
-      <h2 className="mb-1 font-semibold">{label}</h2>
-      <div className="rounded-lg border flex justify-between items-center gap-3 p-4 hover:shadow-md">
+      <div className="rounded-lg border flex justify-between items-center gap-3 p-2 hover:shadow-md">
         <div className="flex items-center gap-3">
           <div className="flex items-center justify-between">
-            <div
-              className={`flex size-10 items-center justify-center rounded-lg bg-muted p-2`}
-            >
-              <IconCalendarEvent />
-            </div>
+            <IconCalendarEvent size={18} />
           </div>
           <div>
             <h2 className="font-semibold">
-              {date}, {time}
+              Weeks: {pregnancyWeeks} - {date} - {time}
             </h2>
           </div>
         </div>
