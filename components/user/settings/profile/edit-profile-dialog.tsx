@@ -18,18 +18,20 @@ import { useUsers } from "./context/users-context";
 import SelectInput from "@/components/ui/select-input";
 import ValidatedInput from "@/components/ui/validated-input";
 import { updateMotherInfo } from "@/actions/mother-info";
-import { UpdateMotherInfoFormSchema } from "@/definitions/mother-info";
+import {
+  MotherInfoData,
+  UpdateMotherInfoFormSchema,
+} from "@/definitions/mother-info";
 import { updateMotherInfoFormSchema } from "@/definitions/mother-info";
-import { packageTypeOptions, updateMotherInfoFormData } from "@/constants/motherinfo";
+import {
+  packageTypeOptions,
+  updateMotherInfoFormData,
+} from "@/constants/motherinfo";
 
 interface Props {
-  userId: string;
+  motherInfoData: MotherInfoData;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  age: number;
-  g: number;
-  p: number;
-  packageType: string;
 }
 
 const initialState = {
@@ -37,13 +39,17 @@ const initialState = {
   errors: {},
 };
 
-export function EditProfileDialog({ userId, open, onOpenChange, age, g, p, packageType }: Props) {
+export function EditProfileDialog({
+  motherInfoData,
+  open,
+  onOpenChange,
+}: Props) {
   const { setOpen } = useUsers();
   const formRef = useRef<HTMLFormElement>(null);
   const pathname = usePathname();
   const updateMotherInfoWithUserId = updateMotherInfo.bind(
     null,
-    userId,
+    motherInfoData.userId,
     pathname
   );
 
@@ -54,9 +60,21 @@ export function EditProfileDialog({ userId, open, onOpenChange, age, g, p, packa
 
   const form = useForm<UpdateMotherInfoFormSchema>({
     resolver: zodResolver(updateMotherInfoFormSchema),
-    defaultValues: { g, p, packageType, age },
+    defaultValues: {
+      ...motherInfoData,
+      lastMenstrualDate: motherInfoData.lastMenstrualDate
+        ? new Date(motherInfoData.lastMenstrualDate).toISOString().split("T")[0]
+        : "",
+      scanDate: motherInfoData.scanDate
+        ? new Date(motherInfoData.scanDate).toISOString().split("T")[0]
+        : "",
+      scanGestationalAge: motherInfoData.scanGestationalAge
+        ? new Date(motherInfoData.scanGestationalAge)
+            .toISOString()
+            .split("T")[0]
+        : "",
+    },
   });
-
 
   return (
     <Dialog

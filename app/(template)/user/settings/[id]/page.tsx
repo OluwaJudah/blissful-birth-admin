@@ -15,7 +15,15 @@ export default async function SettingsProfile({
   const motherInfo = await getMotherDetails(id);
   if (!motherInfo) return null;
 
-  const { age, g, p, packageType } = motherInfo;
+  const {
+    age,
+    g,
+    p,
+    packageType,
+    lastMenstrualDate,
+    scanDate,
+    scanGestationalAge,
+  } = motherInfo;
 
   return (
     <UsersProvider>
@@ -37,11 +45,16 @@ export default async function SettingsProfile({
         </ScrollArea>
       </div>
       <UsersDialogs
-        userId={id}
-        age={age || 0}
-        g={g || 0}
-        p={p || 0}
-        packageType={packageType || ""}
+        motherInfoData={{
+          userId: id,
+          age: age || 0,
+          g: g || 0,
+          p: p || 0,
+          packageType: packageType || "",
+          lastMenstrualDate: lastMenstrualDate || null,
+          scanDate: scanDate || null,
+          scanGestationalAge: scanGestationalAge || null,
+        }}
       />
     </UsersProvider>
   );

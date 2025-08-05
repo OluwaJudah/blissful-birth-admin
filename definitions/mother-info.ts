@@ -204,6 +204,8 @@ export type IMotherInfo = IBirthCompanion & {
   age?: number;
   g?: number;
   p?: number;
+  scanDate?: Date;
+  scanGestationalAge?: Date;
   paymentSum?: number;
   packageType?: string;
   status: string;
@@ -214,12 +216,26 @@ export type IBabyInfo = {
   surname: string;
 };
 
+export type MotherInfoData = {
+  userId: string;
+  age: number;
+  g: number;
+  p: number;
+  packageType: string;
+  lastMenstrualDate: Date | null;
+  scanDate: Date | null;
+  scanGestationalAge: Date | null;
+};
+
 export type UpdateMotherInfoFormState = {
   errors?: {
     g?: string[];
     p?: string[];
     packageType?: string[];
     age?: string[];
+    scanDate?: string[];
+    scanGestationalAge?: string[];
+    lastMenstrualDate?: string[];
   };
   message?: string | null;
 };
@@ -230,6 +246,24 @@ export const updateMotherInfoFormSchema = z.object({
   age: z.coerce.number().min(1, {
     message: "Age must be greater than 0.",
   }),
+  scanDate: z
+    .string()
+    .optional()
+    .refine((val: any) => !val || !isNaN(Date.parse(val)), {
+      message: "Invalid lastMenstrualDate",
+    }),
+  scanGestationalAge: z
+    .string()
+    .optional()
+    .refine((val: any) => !val || !isNaN(Date.parse(val)), {
+      message: "Invalid lastMenstrualDate",
+    }),
+  lastMenstrualDate: z
+    .string()
+    .optional()
+    .refine((val: any) => !val || !isNaN(Date.parse(val)), {
+      message: "Invalid lastMenstrualDate",
+    }),
   packageType: z.string().min(1, "Please select a Time Slot "),
 });
 

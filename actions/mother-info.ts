@@ -26,12 +26,30 @@ export async function updateMotherInfo(
     return state;
   }
 
-  const { g, p, packageType, age } = validatedFields.data;
+  const {
+    g,
+    p,
+    packageType,
+    age,
+    scanDate,
+    scanGestationalAge,
+    lastMenstrualDate,
+  } = validatedFields.data;
 
   await dbConnect();
   await MotherInfo.findOneAndUpdate(
     { userId: new Types.ObjectId(userId) },
-    { $set: { g, p, packageType, age } },
+    {
+      $set: {
+        g,
+        p,
+        packageType,
+        age,
+        scanDate,
+        scanGestationalAge,
+        lastMenstrualDate,
+      },
+    },
     {
       new: true,
       runValidators: true,

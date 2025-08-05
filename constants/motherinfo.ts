@@ -83,6 +83,24 @@ export const updateMotherInfoFormData: any[] = [
     type: "number",
     placeholder: "Please enter the age",
   },
+  {
+    name: "scanDate",
+    label: "Scan Date",
+    type: "date",
+    placeholder: "Please enter the scan date",
+  },
+  {
+    name: "scanGestationalAge",
+    label: "Scan Gestation Age",
+    type: "date",
+    placeholder: "Please enter the scan gestational date",
+  },
+  {
+    name: "lastMenstrualDate",
+    label: "Last Menstrual Date",
+    type: "date",
+    placeholder: "Please enter the last menstrual date",
+  },
 ];
 
 export const packageTypeOptions = [
