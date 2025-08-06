@@ -4,11 +4,11 @@ import { ProfileDropdown } from "@/components/profile-dropdown";
 import { Search } from "@/components/search";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { getAppointmentsForFilter } from "@/data/appointment";
-import AppointmentsDateFilter from "@/components/appointments/components/appointments-date-filter";
 import { Suspense } from "react";
+import { Appointments } from "@/components/appointments/components/appointments";
 export const revalidate = 0;
 
-export default async function Appointments() {
+export default async function AppointmentsPage() {
   const today = new Date();
   today.setDate(today.getDate() - 1);
   const dateStr = today.toISOString().split("T")[0];
@@ -28,7 +28,7 @@ export default async function Appointments() {
 
       <Main>
         <Suspense fallback={<>Loading...</>}>
-          <AppointmentsDateFilter appointments={appointments} />
+          <Appointments appointments={appointments} />
         </Suspense>
       </Main>
     </>
