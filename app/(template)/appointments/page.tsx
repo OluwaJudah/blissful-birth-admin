@@ -6,6 +6,7 @@ import { ThemeSwitch } from "@/components/theme-switch";
 import { getAppointmentsForFilter } from "@/data/appointment";
 import AppointmentsDateFilter from "@/components/appointments/components/appointments-date-filter";
 import { Suspense } from "react";
+export const revalidate = 0;
 
 export default async function Appointments() {
   const today = new Date();
@@ -28,9 +29,7 @@ export default async function Appointments() {
       <Main>
         <div className="mb-0 flex flex-wrap items-center justify-between space-y-2">
           <div>
-            <h2 className="text-2xl font-bold tracking-tight">
-              Appointments {dateStr} - {thirtyDayStr}
-            </h2>
+            <h2 className="text-2xl font-bold tracking-tight">Appointments</h2>
             <p className="text-muted-foreground">
               Manage your client appointments here.
             </p>
