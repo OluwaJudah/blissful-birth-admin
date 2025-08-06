@@ -23,11 +23,14 @@ import { LoaderCircle } from "lucide-react";
 const SelectFilter = ({
   appointments,
   filterByStatus,
+  status,
+  setStatus,
 }: {
   appointments: any;
   filterByStatus: (data: any[], status: string) => void;
+  status: string;
+  setStatus: (status: string) => void;
 }) => {
-  const [status, setStatus] = useState("pending");
   const [isPending, setIsPending] = useState(false);
   const packageFormSchema = z.object({
     status: z.string().min(2, {
@@ -44,7 +47,7 @@ const SelectFilter = ({
 
   const handleStringToInt = async (value: string) => {
     try {
-      setStatus(value);
+      setStatus(value.toLowerCase());
       onChangeFilterStatus(value.toLowerCase());
     } catch (err) {
       console.log("Error updating mother info");
