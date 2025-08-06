@@ -166,6 +166,7 @@ export const getAppointmentsForFilter = async (fromDate = "", toDate = "") => {
       },
     },
     { $unwind: { path: "$motherinfo", preserveNullAndEmptyArrays: false } },
+    { $match: { "motherinfo.contactNumber": { $ne: null } } },
     { $match: { "motherinfo.status": { $ne: PATIENT_CLOSED } } },
 
     // 🔧 Normalize time string to HH:mm (pad leading zero if needed)
