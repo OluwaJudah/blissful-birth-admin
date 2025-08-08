@@ -62,7 +62,7 @@ export async function createNotification(
 }
 
 export async function sendNotifications() {
-  const appointments = await getAppointmentsForReminders();
+  /* const appointments = await getAppointmentsForReminders();
   for (const appointment of appointments) {
     const { userId, date, time, fullName, surname, contactNumber } =
       appointment;
@@ -88,10 +88,8 @@ export async function sendNotifications() {
     await Notification.create({
       to: to,
       messageSid: response.sid,
-      message: `Hello ${fullName} ${surname}, this is a reminder for your appointment on ${date} at ${time}.`,
       userId: new Types.ObjectId(userId),
       appointmentId: new Types.ObjectId(appointment._id),
     });
-    break;
-  }
+  } */
 }
