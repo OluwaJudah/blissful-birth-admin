@@ -6,6 +6,7 @@ import { ThemeSwitch } from "@/components/theme-switch";
 import { Suspense } from "react";
 import { getNotificationsForFilter } from "@/data/notification";
 import NotificationsDateFilter from "@/components/notifications/notifications-date-filter";
+export const revalidate = 0;
 
 export default async function Notifications() {
   const today = new Date();
