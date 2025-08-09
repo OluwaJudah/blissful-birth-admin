@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input";
 import AppointmentDateTimeSlot from "./appointment-date-timeslot";
 import { getAppointmentsForFilter } from "@/data/appointment";
 import SelectFilter from "@/components/appointments/components/select-filter";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 export const Appointments = ({ appointments }: { appointments: any[] }) => {
   const today = new Date();
@@ -17,6 +19,10 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
   const [fromDate, setFromDate] = useState(dateStr);
   const [toDate, setToDate] = useState(sevenDaysFromNowStr);
   const [isLoading, setIsLoading] = useState(false);
+  const [allAppointments, setAllAppointments] = useState(0);
+  const [pendingAppointment, setPendingAppointment] = useState(0);
+  const [confirmedAppointment, setConfirmedAppointment] = useState(0);
+  const [completedAppointment, setCompletedAppointment] = useState(0);
   const [appointmentsData, setAppointmentsData] = useState<any[]>([]);
   const [filteredAppointmentsData, setfilteredAppointmentsData] = useState<
     any[]
@@ -33,6 +39,7 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
   useEffect(() => {
     setAppointmentsData(appointments);
     filterByStatus(appointments, "pending");
+    filterByStatusInit(appointments);
   }, []);
 
   const onChangeFromDate = async (e: any) => {
@@ -90,6 +97,7 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
   };
 
   const filterByStatus = async (appointments: any[], status: string) => {
+    setStatus(status);
     if (status === "all") {
       setfilteredAppointmentsData(appointments);
       return;
@@ -122,10 +130,70 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
     setfilteredAppointmentsData(filteredData);
   };
 
+  const filterByStatusInit = async (appointments: any[]) => {
+    let pending = 0;
+    let confirmed = 0;
+    let completed = 0;
+    let allAppointments = 0;
+
+    appointments.forEach((entry) => {
+      entry.slots.forEach((slot: any) => {
+        slot.appointments.forEach((app: any) => {
+          allAppointments++;
+          if (app.status.toLowerCase() === "pending") ++pending;
+          else if (app.status.toLowerCase() === "confirmed") ++confirmed;
+          else if (app.status.toLowerCase() === "completed") ++completed;
+        });
+
+        // Only keep the slot if it has matching appointments
+      });
+
+      // Only keep the entry if it has matching slots
+    });
+    setAllAppointments(allAppointments);
+    setPendingAppointment(pending);
+    setConfirmedAppointment(confirmed);
+    setCompletedAppointment(completed);
+  };
+
   const clearFilter = () => {
     setIsLoading(false);
     setToDate("");
     setFromDate("");
+  };
+
+  const statusArr = [
+    { name: "All", data: allAppointments, value: "all" },
+    { name: "Pending", data: pendingAppointment, value: "pending" },
+    { name: "Confirmed", data: confirmedAppointment, value: "confirmed" },
+    { name: "Completed", data: completedAppointment, value: "completed" },
+  ];
+
+  const StatusButton = ({
+    value,
+    data,
+    name,
+  }: {
+    value: string;
+    data: number;
+    name: string;
+  }) => {
+    return (
+      <Button
+        type="button"
+        onClick={() => filterByStatus(appointments, value)}
+        className={
+          status === value
+            ? ""
+            : "border-2 border-gray bg-white text-black hover:bg-gray-200"
+        }
+      >
+        {name}{" "}
+        <Badge className={status === value ? "bg-white text-black" : ""}>
+          {data}
+        </Badge>
+      </Button>
+    );
   };
 
   return (
@@ -152,11 +220,11 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
         </div>
       </div>
       <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0">
-        <div className="flex flex-row items-center justify-between gap-8 mb-2 border border-gray-200 p-4 rounded-xl w-full">
-          <div className="flex flex-col gap-1">
+        <div className="flex flex-row items-center justify-between mb-2 border-2 border-gray-200 p-2 rounded-xl w-full">
+          <div className="flex flex-col gap-2">
             <div className="text-sm font-medium">Choose Date Range:</div>
-            <div className="flex flex-row gap-8">
-              <div className="flex flex-row items-center gap-3">
+            <div className="flex flex-row gap-3">
+              <div className="flex flex-row items-center gap-1">
                 <div className="text-sm font-medium">From:</div>
                 <Input
                   placeholder="Filter apps..."
@@ -167,7 +235,7 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
                   onClick={clearFilter}
                 />
               </div>
-              <div className="flex flex-row items-center gap-3">
+              <div className="flex flex-row items-center gap-1">
                 <div className="text-sm font-medium">To:</div>
                 <Input
                   placeholder="Filter apps..."
@@ -179,7 +247,7 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
                   onChange={onChangeToDate}
                 />
               </div>
-              <div className="flex flex-row items-center gap-3">
+              <div className="flex flex-row items-center gap-1">
                 <div className="text-sm font-medium">Filter User:</div>
                 <Input
                   placeholder="Filter users..."
@@ -187,7 +255,8 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
                   onChange={onChangeFilterUser}
                 />
               </div>
-              <div className="flex flex-row items-center gap-3">
+
+              {/* <div className="flex flex-row items-center gap-3">
                 <div className="text-sm font-medium">Filter Status:</div>
                 <SelectFilter
                   appointments={appointments}
@@ -195,9 +264,17 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
                   status={status}
                   setStatus={setStatus}
                 />
-              </div>
+              </div> */}
             </div>
           </div>
+          <div className="flex flex-col items-start gap-2">
+            <div className="text-sm font-medium">Filter Status:</div>
+            <div className="flex flex-row items-center gap-3">
+              {statusArr.map((s) => (
+                <StatusButton key={s.value} {...s} />
+              ))}
+            </div>
+          </div>{" "}
         </div>
         {isLoading && (
           <div className="w-full">
