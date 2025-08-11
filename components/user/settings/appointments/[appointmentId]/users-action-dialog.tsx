@@ -23,6 +23,7 @@ import { timeSlotOptions } from "@/constants/appointment";
 import SelectInput from "@/components/ui/select-input";
 import ValidatedInput from "@/components/ui/validated-input";
 import { useUsers } from "./context/users-context";
+import { usePathname } from "next/navigation";
 
 interface Props {
   appointmentId: string;
@@ -36,7 +37,7 @@ const initialState = {
   errors: {},
 };
 
-export function UsersActionDialog({
+export function EditAppointmentDialog({
   appointmentId,
   appointmentData,
   open,
@@ -44,9 +45,11 @@ export function UsersActionDialog({
 }: Props) {
   const { setOpen } = useUsers();
   const formRef = useRef<HTMLFormElement>(null);
+  const pathname = usePathname();
   const rescheduleAppointmentWithAppointmentId = rescheduleAppointment.bind(
     null,
-    appointmentId
+    appointmentId,
+    pathname
   );
   const [state, formAction, isPending] = useActionState(
     rescheduleAppointmentWithAppointmentId,

@@ -198,6 +198,7 @@ const updateAppointmentStatus = async (
 
 export async function rescheduleAppointment(
   appointmentId: string,
+  pathname: string,
   prevState: CreateAppointmentFormState | undefined,
   formData: FormData
 ) {
@@ -218,6 +219,7 @@ export async function rescheduleAppointment(
     { date: new Date(date), pregnancyWeeks, time },
     appointmentId
   );
+  revalidatePath(pathname);
 }
 
 const updateAppointmentDate = async (

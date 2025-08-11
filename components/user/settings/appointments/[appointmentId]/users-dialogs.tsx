@@ -1,7 +1,7 @@
 "use client";
 import { IAppointment } from "@/definitions/appointment";
 import { useUsers } from "./context/users-context";
-import { UsersActionDialog } from "./users-action-dialog";
+import { EditAppointmentDialog } from "./users-action-dialog";
 import { CreateNotificationActionDialog } from "./create-notification-dialog";
 import { DeleteAppointmentDialog } from "./users-delete-dialog";
 
@@ -24,12 +24,12 @@ export function UsersDialogs({
         onOpenChange={() => setOpen("send-reminder")}
       />
 
-      <UsersActionDialog
-        key="user-add"
+      <EditAppointmentDialog
+        key="user-edit"
         appointmentId={appointmentId}
         appointmentData={appointmentData}
-        open={open === "add"}
-        onOpenChange={() => setOpen("add")}
+        open={open === "edit"}
+        onOpenChange={() => setOpen("edit")}
       />
 
       <DeleteAppointmentDialog
