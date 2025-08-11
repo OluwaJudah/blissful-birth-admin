@@ -33,7 +33,7 @@ import {
   parseLocalDate,
   toLocalISOString,
 } from "@/utils";
-import { Types } from "mongoose";
+import mongoose, { Types } from "mongoose";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -496,13 +496,34 @@ export const deleteAppointment = async (
   if (!Types.ObjectId.isValid(appointmentId)) {
     throw new Error("Invalid appointment ID");
   }
-  try {
-    const deleted = await Appointment.findByIdAndDelete(appointmentId);
+  await dbConnect();
 
-    if (!deleted) throw Error("Does not exist"); // returns the deleted doc or null if not found
-  } catch (err) {
-    console.log("Error:", err);
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  try {
+    // 2️⃣ Delete appointment notes linked to those appointments
+    await BabyReport.deleteMany({ appointmentId: appointmentId }, { session });
+
+    await MotherReport.deleteMany(
+      { appointmentId: appointmentId },
+      { session }
+    );
+
+    // 5️⃣ Delete the user
+    await Appointment.deleteOne({ _id: appointmentId }, { session });
+
+    // ✅ Commit the transaction
+    await session.commitTransaction();
+    console.log(`Deleted appointment ${appointmentId} and all related data`);
+  } catch (error) {
+    // ❌ Rollback if something goes wrong
+    await session.abortTransaction();
+    console.error("Error deleting user data:", error);
+  } finally {
+    session.endSession();
   }
+
   revalidatePath(pathname);
   redirect(pathname);
 };
