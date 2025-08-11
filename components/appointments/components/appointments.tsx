@@ -222,7 +222,7 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
         </div>
       </div>
       <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0">
-        <div className="flex flex-row items-center justify-between mb-2 border-2 border-gray-200 p-2 rounded-xl w-full">
+        <div className="flex md:flex-col md:gap-4 md:items-start flex-row items-center justify-between mb-2 border-2 border-gray-200 p-2 rounded-xl w-full">
           <div className="flex flex-col gap-2">
             <div className="text-sm font-medium">Choose Date Range:</div>
             <div className="flex flex-row gap-3">
