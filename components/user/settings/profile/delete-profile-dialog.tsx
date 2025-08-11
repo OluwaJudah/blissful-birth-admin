@@ -48,7 +48,7 @@ export function DeleteProfileDialog({
         <ScrollArea className="-mr-4 w-full py-1 pr-4">
           <div className="space-y-4">
             <p className="mb-2 font-thin text-sm text-gray-900">
-              Are you sure you want to delete {name} profile entry?
+              Are you sure you want to <b>delete {name}</b> profile entry?
               <br />
               This action will permanently remove the payment entry from the
               system. This cannot be undone.
@@ -65,7 +65,10 @@ export function DeleteProfileDialog({
           </Button>
 
           {isPending ? (
-            <Button type="button" className="w-[120px] bg-red-500">
+            <Button
+              type="button"
+              className="w-[120px] hover:bg-red-500 bg-red-500"
+            >
               <LoaderCircle className="animate-spin" />
             </Button>
           ) : (
