@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import AppointmentDateTimeSlot from "./appointment-date-timeslot";
 import { getAppointmentsForFilter } from "@/data/appointment";
-import SelectFilter from "@/components/appointments/components/select-filter";
+// import SelectFilter from "@/components/appointments/components/select-filter";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
@@ -50,6 +50,7 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
     const appointments = await getAppointmentsForFilter(fromDate);
     setAppointmentsData(appointments);
     filterByStatus(appointments, "pending");
+    filterByStatusInit(appointments);
     setIsLoading(false);
   };
 
@@ -61,6 +62,7 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
     const appointments = await getAppointmentsForFilter(fromDate, toDate);
     setAppointmentsData(appointments);
     filterByStatus(appointments, "pending");
+    filterByStatusInit(appointments);
     setIsLoading(false);
   };
 
