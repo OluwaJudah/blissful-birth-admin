@@ -5,6 +5,7 @@ import { getMotherDetails } from "@/data/mother-info";
 import UsersProvider from "@/components/user/settings/profile/context/users-context";
 import { UsersDialogs } from "@/components/user/settings/profile/users-dialogs";
 import { EditProfileButton } from "@/components/user/settings/profile/edit-profile-button";
+import { ProfileOptionsDropdown } from "@/components/user/settings/profile/profile-options-dropdown";
 
 export default async function SettingsProfile({
   params,
@@ -23,6 +24,8 @@ export default async function SettingsProfile({
     lastMenstrualDate,
     scanDate,
     scanGestationalAge,
+    fullName,
+    surname,
   } = motherInfo;
 
   return (
@@ -37,6 +40,7 @@ export default async function SettingsProfile({
           </div>
           <div className="flex gap-1">
             <EditProfileButton />
+            <ProfileOptionsDropdown id={id} />
           </div>
         </div>
         <Separator className="my-4 flex-none" />
@@ -45,6 +49,7 @@ export default async function SettingsProfile({
         </ScrollArea>
       </div>
       <UsersDialogs
+        name={fullName + " " + surname}
         motherInfoData={{
           userId: id,
           age: age || 0,
