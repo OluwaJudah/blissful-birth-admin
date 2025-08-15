@@ -64,32 +64,42 @@ export async function createNotification(
 export async function sendNotifications() {
   const appointments = await getAppointmentsForReminders();
   for (const appointment of appointments) {
-    const { userId, date, time, fullName, surname, contactNumber } =
-      appointment;
-    const today = new Date(date);
-    const dateString = today.toLocaleDateString("en-ZA", {
-      day: "numeric",
-      month: "short",
-      year: "2-digit",
-    });
+    try {
+      const { userId, date, time, fullName, surname, contactNumber } =
+        appointment;
+      const today = new Date(date);
+      const dateString = today.toLocaleDateString("en-ZA", {
+        day: "numeric",
+        month: "short",
+        year: "2-digit",
+      });
 
-    const to = "+27" + contactNumber;
-    const response = await sendWhatsApp(
-      to,
-      JSON.stringify({
-        1: fullName,
-        2: dateString,
-        3: time,
-        4: "20",
-      })
-    );
-    console.log({ response });
+      const to = "+27" + contactNumber;
+      const response = await sendWhatsApp(
+        to,
+        JSON.stringify({
+          1: fullName,
+          2: dateString,
+          3: time,
+          4: "20",
+        })
+      );
+      console.log({ to, status: "✅ sent", sid: response.sid });
 
-    await Notification.create({
-      to: to,
-      messageSid: response.sid,
-      userId: new Types.ObjectId(userId),
-      appointmentId: new Types.ObjectId(appointment._id),
-    });
+      await Notification.create({
+        to: to,
+        messageSid: response.sid,
+        userId: new Types.ObjectId(userId),
+        appointmentId: new Types.ObjectId(appointment._id),
+      });
+    } catch (error) {
+      console.error(
+        `❌ Failed to send to ${appointment.contactNumber}:`,
+        error
+      );
+      // Continue to the next appointment
+    }
   }
+
+  console.log("📨 Notification sending process completed.");
 }
