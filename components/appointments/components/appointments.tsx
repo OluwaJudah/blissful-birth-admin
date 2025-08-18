@@ -13,7 +13,8 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
   const sevenDaysFromNow = new Date();
   today.setDate(today.getDate() - 1);
   sevenDaysFromNow.setDate(today.getDate() + 8);
-  const { fromDate, toDate, setFromDate, setToDate, resetDates } = useAppointmentDateFilter();
+  const { fromDate, toDate, setFromDate, setToDate, resetDates } =
+    useAppointmentDateFilter();
 
   const [isLoading, setIsLoading] = useState(false);
   const [allAppointments, setAllAppointments] = useState(0);
@@ -33,10 +34,18 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
     all: "",
   };
 
-  useEffect(() => {
+  const getAppointmentInit = async () => {
+    const appointments = await getAppointmentsForFilter(
+      fromDate ? fromDate.toISOString().split("T")[0] : undefined,
+      toDate ? toDate.toISOString().split("T")[0] : undefined
+    );
     setAppointmentsData(appointments);
     filterByStatus(appointments, "all");
     filterByStatusInit(appointments);
+  };
+
+  useEffect(() => {
+    getAppointmentInit();
   }, []);
 
   const onChangeFromDate = async (e: any) => {
@@ -249,9 +258,13 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
                 <Input
                   placeholder="Filter apps..."
                   className="w-[200px] flex flex-col justify-center"
-                  defaultValue={toDate ? toDate.toISOString().split("T")[0] : ""}
+                  defaultValue={
+                    toDate ? toDate.toISOString().split("T")[0] : ""
+                  }
                   type="date"
-                  min={fromDate ? fromDate.toISOString().split("T")[0] : undefined}
+                  min={
+                    fromDate ? fromDate.toISOString().split("T")[0] : undefined
+                  }
                   disabled={!fromDate}
                   onChange={onChangeToDate}
                 />
