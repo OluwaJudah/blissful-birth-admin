@@ -192,6 +192,7 @@ export const getAppointmentsForFilter = async (fromDate = "", toDate = "") => {
         pregnancyWeeks: { $first: "$pregnancyWeeks" },
         fullName: { $first: "$motherinfo.fullName" },
         surname: { $first: "$motherinfo.surname" },
+        edd: { $first: "$motherinfo.edd" },
       },
     },
 
@@ -209,6 +210,7 @@ export const getAppointmentsForFilter = async (fromDate = "", toDate = "") => {
             pregnancyWeeks: "$pregnancyWeeks",
             fullName: "$fullName",
             surname: "$surname",
+            edd: "$edd",
           },
         },
       },

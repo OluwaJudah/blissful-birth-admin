@@ -27,7 +27,7 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
   const [filteredAppointmentsData, setfilteredAppointmentsData] = useState<
     any[]
   >([]);
-  const [status, setStatus] = useState("pending");
+  const [status, setStatus] = useState("all");
   const statusMap = {
     pending: "Pending",
     confirmed: "Confirmed",
@@ -38,7 +38,7 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
 
   useEffect(() => {
     setAppointmentsData(appointments);
-    filterByStatus(appointments, "pending");
+    filterByStatus(appointments, "all");
     filterByStatusInit(appointments);
   }, []);
 
@@ -49,7 +49,7 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
     setIsLoading(true);
     const appointments = await getAppointmentsForFilter(fromDate);
     setAppointmentsData(appointments);
-    filterByStatus(appointments, "pending");
+    filterByStatus(appointments, "all");
     filterByStatusInit(appointments);
     setIsLoading(false);
   };
@@ -61,7 +61,7 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
     setIsLoading(true);
     const appointments = await getAppointmentsForFilter(fromDate, toDate);
     setAppointmentsData(appointments);
-    filterByStatus(appointments, "pending");
+    filterByStatus(appointments, "all");
     filterByStatusInit(appointments);
     setIsLoading(false);
   };

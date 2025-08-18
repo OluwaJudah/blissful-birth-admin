@@ -12,6 +12,7 @@ const AppointmentDetails = ({
   surname,
   status,
   pregnancyWeeks,
+  edd,
 }: {
   _id: string;
   userId: string;
@@ -20,9 +21,16 @@ const AppointmentDetails = ({
   surname: string;
   status: string;
   pregnancyWeeks: number;
+  edd: Date;
 }) => {
   const dateStr = new Date(date);
   const formattedDate = dateStr.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+  const eddDateStr = new Date(edd);
+  const eddFormattedDate = eddDateStr.toLocaleDateString("en-GB", {
     day: "2-digit",
     month: "short",
     year: "numeric",
@@ -52,6 +60,9 @@ const AppointmentDetails = ({
             </div>
             <div>
               Date: <b>{formattedDate}</b>
+            </div>{" "}
+            <div>
+              EDD: <b>{eddFormattedDate}</b>
             </div>
           </div>
         </div>
