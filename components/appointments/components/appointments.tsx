@@ -4,20 +4,17 @@ import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import AppointmentDateTimeSlot from "./appointment-date-timeslot";
 import { getAppointmentsForFilter } from "@/data/appointment";
-// import SelectFilter from "@/components/appointments/components/select-filter";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useAppointmentDateFilter } from "./appointment-date-context";
 
 export const Appointments = ({ appointments }: { appointments: any[] }) => {
   const today = new Date();
   const sevenDaysFromNow = new Date();
   today.setDate(today.getDate() - 1);
-  const dateStr = today.toISOString().split("T")[0];
   sevenDaysFromNow.setDate(today.getDate() + 8);
-  const sevenDaysFromNowStr = sevenDaysFromNow.toISOString().split("T")[0];
+  const { fromDate, toDate, setFromDate, setToDate, resetDates } = useAppointmentDateFilter();
 
-  const [fromDate, setFromDate] = useState(dateStr);
-  const [toDate, setToDate] = useState(sevenDaysFromNowStr);
   const [isLoading, setIsLoading] = useState(false);
   const [allAppointments, setAllAppointments] = useState(0);
   const [pendingAppointment, setPendingAppointment] = useState(0);
@@ -43,11 +40,12 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
   }, []);
 
   const onChangeFromDate = async (e: any) => {
-    const fromDate = e.target.value;
-    setFromDate(fromDate);
+    const value = e.target.value as string;
+    const nextFromDate = value ? new Date(value) : null;
+    setFromDate(nextFromDate);
 
     setIsLoading(true);
-    const appointments = await getAppointmentsForFilter(fromDate);
+    const appointments = await getAppointmentsForFilter(value || undefined);
     setAppointmentsData(appointments);
     filterByStatus(appointments, "all");
     filterByStatusInit(appointments);
@@ -55,11 +53,15 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
   };
 
   const onChangeToDate = async (e: any) => {
-    const toDate = e.target.value;
-    setToDate(toDate);
+    const value = e.target.value as string;
+    const nextToDate = value ? new Date(value) : null;
+    setToDate(nextToDate);
 
     setIsLoading(true);
-    const appointments = await getAppointmentsForFilter(fromDate, toDate);
+    const appointments = await getAppointmentsForFilter(
+      fromDate ? fromDate.toISOString().split("T")[0] : undefined,
+      value || undefined
+    );
     setAppointmentsData(appointments);
     filterByStatus(appointments, "all");
     filterByStatusInit(appointments);
@@ -160,8 +162,7 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
 
   const clearFilter = () => {
     setIsLoading(false);
-    setToDate("");
-    setFromDate("");
+    resetDates();
   };
 
   const statusArr = [
@@ -204,17 +205,21 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
         <div>
           <h2 className="text-2xl font-bold tracking-tight">
             {statusMap[status as keyof typeof statusMap]} Appointments -{" "}
-            {new Date(fromDate).toLocaleDateString("en-GB", {
-              day: "2-digit",
-              month: "short",
-              year: "numeric",
-            })}
+            {fromDate
+              ? fromDate.toLocaleDateString("en-GB", {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                })
+              : "-"}
             {" to "}
-            {new Date(toDate).toLocaleDateString("en-GB", {
-              day: "2-digit",
-              month: "short",
-              year: "numeric",
-            })}
+            {toDate
+              ? toDate.toLocaleDateString("en-GB", {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                })
+              : "-"}
           </h2>
           <p className="text-muted-foreground">
             Manage your client appointments here.
@@ -231,7 +236,9 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
                 <Input
                   placeholder="Filter apps..."
                   className="w-[200px] flex flex-col justify-center"
-                  defaultValue={fromDate}
+                  defaultValue={
+                    fromDate ? fromDate.toISOString().split("T")[0] : ""
+                  }
                   type="date"
                   onChange={onChangeFromDate}
                   onClick={clearFilter}
@@ -242,9 +249,9 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
                 <Input
                   placeholder="Filter apps..."
                   className="w-[200px] flex flex-col justify-center"
-                  defaultValue={toDate}
+                  defaultValue={toDate ? toDate.toISOString().split("T")[0] : ""}
                   type="date"
-                  min={fromDate}
+                  min={fromDate ? fromDate.toISOString().split("T")[0] : undefined}
                   disabled={!fromDate}
                   onChange={onChangeToDate}
                 />

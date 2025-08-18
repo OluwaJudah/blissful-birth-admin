@@ -4,8 +4,7 @@ import { ProfileDropdown } from "@/components/profile-dropdown";
 import { Search } from "@/components/search";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { getAppointmentsForFilter } from "@/data/appointment";
-import { Suspense } from "react";
-import { Appointments } from "@/components/appointments/components/appointments";
+import AppointmentMain from "@/components/appointments/components/appointment-main";
 export const revalidate = 0;
 
 export default async function AppointmentsPage() {
@@ -27,9 +26,7 @@ export default async function AppointmentsPage() {
       </Header>
 
       <Main>
-        <Suspense fallback={<>Loading...</>}>
-          <Appointments appointments={appointments} />
-        </Suspense>
+        <AppointmentMain appointments={appointments} />
       </Main>
     </>
   );
