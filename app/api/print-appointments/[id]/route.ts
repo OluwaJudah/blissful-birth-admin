@@ -20,6 +20,7 @@ export async function GET(
     const remindersMap: Record<number, string> = {
       13: "Remember to book Dating Scan with Chubby Cheeks",
       21: "Remember to book Anormally Scan with Chubby Cheeks",
+      34: "Remember to book Gynae Appointment for 36 weeks",
       37: "Remember to book Chiropractor Appointment after 37 weeks",
     };
     const appointmentStr = appointments.reduce((acc, appointment) => {
