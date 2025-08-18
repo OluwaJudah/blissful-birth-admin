@@ -23,7 +23,7 @@ const MotherInfoSchema = new Schema<MotherInfo>(
     g: { type: Number },
     p: { type: Number },
     scanDate: { type: Date },
-    scanGestationalAge: { type: Date },
+    scanGestationalAge: { type: String },
     contactNumber: { type: String }, // required: true },
     email: { type: String },
     status: { type: String, required: true },

@@ -68,11 +68,6 @@ export function EditProfileDialog({
       scanDate: motherInfoData.scanDate
         ? new Date(motherInfoData.scanDate).toISOString().split("T")[0]
         : "",
-      scanGestationalAge: motherInfoData.scanGestationalAge
-        ? new Date(motherInfoData.scanGestationalAge)
-            .toISOString()
-            .split("T")[0]
-        : "",
     },
   });
 

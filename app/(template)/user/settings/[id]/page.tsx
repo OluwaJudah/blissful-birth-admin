@@ -58,7 +58,7 @@ export default async function SettingsProfile({
           packageType: packageType || "",
           lastMenstrualDate: lastMenstrualDate || null,
           scanDate: scanDate || null,
-          scanGestationalAge: scanGestationalAge || null,
+          scanGestationalAge: scanGestationalAge || "",
         }}
       />
     </UsersProvider>

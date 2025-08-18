@@ -205,7 +205,7 @@ export type IMotherInfo = IBirthCompanion & {
   g?: number;
   p?: number;
   scanDate?: Date;
-  scanGestationalAge?: Date;
+  scanGestationalAge?: string;
   paymentSum?: number;
   packageType?: string;
   status: string;
@@ -224,7 +224,7 @@ export type MotherInfoData = {
   packageType: string;
   lastMenstrualDate: Date | null;
   scanDate: Date | null;
-  scanGestationalAge: Date | null;
+  scanGestationalAge: string;
 };
 
 export type UpdateMotherInfoFormState = {
@@ -252,12 +252,7 @@ export const updateMotherInfoFormSchema = z.object({
     .refine((val: any) => !val || !isNaN(Date.parse(val)), {
       message: "Invalid lastMenstrualDate",
     }),
-  scanGestationalAge: z
-    .string()
-    .optional()
-    .refine((val: any) => !val || !isNaN(Date.parse(val)), {
-      message: "Invalid lastMenstrualDate",
-    }),
+  scanGestationalAge: z.string(),
   lastMenstrualDate: z
     .string()
     .optional()

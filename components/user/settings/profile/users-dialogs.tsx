@@ -9,7 +9,6 @@ export function UsersDialogs({
   motherInfoData,
 }: {
   name: string;
-
   motherInfoData: MotherInfoData;
 }) {
   const { open, setOpen } = useUsers();
