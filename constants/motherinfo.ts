@@ -92,7 +92,6 @@ export const updateMotherInfoFormData: any[] = [
   {
     name: "scanGestationalAge",
     label: "Scan Gestation Age",
-    type: "date",
     placeholder: "Please enter the scan gestational date",
   },
   {
