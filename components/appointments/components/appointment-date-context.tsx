@@ -19,6 +19,7 @@ type AppointmentDateFilter = {
 };
 
 const STORAGE_KEY = "appointmentDateFilter";
+const EXPIRY_HOURS = 18;
 
 // ---- Context ----
 const AppointmentDateFilterContext = createContext<
@@ -37,6 +38,30 @@ const getDefaultDates = () => {
   return { from, to };
 };
 
+const withExpiry = (data: any) => {
+  return {
+    value: data,
+    expiry: Date.now() + EXPIRY_HOURS * 60 * 60 * 1000, // 18 hours in ms
+  };
+};
+
+const getWithExpiry = (key: string) => {
+  try {
+    const itemStr = localStorage.getItem(key);
+    if (!itemStr) return null;
+
+    const item = JSON.parse(itemStr);
+    if (Date.now() > item.expiry) {
+      localStorage.removeItem(key);
+      return null;
+    }
+    return item.value;
+  } catch (err) {
+    console.error("Error reading localStorage with expiry", err);
+    return null;
+  }
+};
+
 // ---- Provider ----
 export const AppointmentDateFilterProvider = ({
   children,
@@ -53,11 +78,10 @@ export const AppointmentDateFilterProvider = ({
   useEffect(() => {
     setHydrated(true);
     try {
-      const stored = localStorage.getItem(STORAGE_KEY);
+      const stored = getWithExpiry(STORAGE_KEY);
       if (stored) {
-        const parsed = JSON.parse(stored);
-        if (parsed.fromDate) setFromDate(new Date(parsed.fromDate));
-        if (parsed.toDate) setToDate(new Date(parsed.toDate));
+        if (stored.fromDate) setFromDate(new Date(stored.fromDate));
+        if (stored.toDate) setToDate(new Date(stored.toDate));
       }
     } catch (err) {
       console.error("Error parsing date filter from localStorage", err);
@@ -67,13 +91,11 @@ export const AppointmentDateFilterProvider = ({
   // Persist to localStorage
   useEffect(() => {
     if (!hydrated) return;
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify({
-        fromDate: fromDate ? fromDate.toISOString() : null,
-        toDate: toDate ? toDate.toISOString() : null,
-      })
-    );
+    const payload = {
+      fromDate: fromDate ? fromDate.toISOString() : null,
+      toDate: toDate ? toDate.toISOString() : null,
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(withExpiry(payload)));
   }, [fromDate, toDate, hydrated]);
 
   // Reset
