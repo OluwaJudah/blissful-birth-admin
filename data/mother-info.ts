@@ -156,13 +156,23 @@ export const getMotherInfoWithPaymentSum = async () => {
   ]);
 
   return mothers.map(
-    ({ _id, fullName, userId, surname, contactNumber, email, paymentSum }) => ({
+    ({
+      _id,
+      fullName,
+      userId,
+      surname,
+      contactNumber,
+      email,
+      paymentSum,
+      edd,
+    }) => ({
       _id,
       fullName: fullName + " " + surname,
       userId,
       contactNumber,
       email,
       paymentSum,
+      edd,
     })
   );
 };

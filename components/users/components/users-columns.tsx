@@ -76,6 +76,19 @@ export const columns: ColumnDef<IMotherInfo>[] = [
     enableSorting: false,
   },
   {
+    accessorKey: "edd",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="EDD" />
+    ),
+    cell: ({ row }) => {
+      const date = new Date(row.getValue("edd"));
+      const eddStr = date.toDateString();
+
+      return <div>{eddStr}</div>;
+    },
+    enableSorting: false,
+  },
+  {
     accessorKey: "paymentSum",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Total Payment" />
