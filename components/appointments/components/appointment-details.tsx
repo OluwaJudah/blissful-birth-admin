@@ -1,7 +1,10 @@
+"use client";
+
 import { Badge } from "@/components/ui/badge";
 import { IconChevronRight } from "@tabler/icons-react";
 import { User } from "lucide-react";
 import Link from "next/link";
+import { useAppointmentSelection } from "./appointment-selected-context";
 
 const AppointmentDetails = ({
   _id,
@@ -22,6 +25,8 @@ const AppointmentDetails = ({
   pregnancyWeeks: number;
   edd: Date;
 }) => {
+  const { selectedIds, toggleAppointment } = useAppointmentSelection();
+
   const dateStr = new Date(date);
   const formattedDate = dateStr.toLocaleDateString("en-GB", {
     day: "2-digit",
@@ -37,22 +42,24 @@ const AppointmentDetails = ({
 
   return (
     <div className="flex flex-row gap-2 w-full items-center">
-      <input type="checkbox" className="w-5 h-5" />
+      <input
+        type="checkbox"
+        className="w-5 h-5"
+        checked={selectedIds.includes(_id)}
+        onChange={() => toggleAppointment(_id)}
+      />
 
       <Link
         href={`/user/settings/${userId}/appointments/${_id}`}
         className="rounded-3xl border flex justify-between items-center gap-3 px-2 py-1 hover:shadow-md w-full"
       >
         <div className="flex items-center gap-3">
-          {" "}
           <div className="flex items-center justify-between">
-            <div
-              className={`flex w-9 h-9 items-center justify-center rounded-full bg-muted p-2`}
-            >
+            <div className="flex w-9 h-9 items-center justify-center rounded-full bg-muted p-2">
               <User />
             </div>
           </div>
-          <div className="">
+          <div>
             <h2 className="text-sm font-semibold leading-none">
               {fullName} {surname}
             </h2>
@@ -62,7 +69,7 @@ const AppointmentDetails = ({
               </div>
               <div>
                 Date: <b>{formattedDate}</b>
-              </div>{" "}
+              </div>
               <div>
                 EDD: <b>{eddFormattedDate}</b>
               </div>

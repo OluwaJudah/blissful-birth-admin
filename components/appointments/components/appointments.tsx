@@ -1,31 +1,34 @@
 "use client";
-import { LoaderCircle } from "lucide-react";
+
 import { useEffect, useState } from "react";
-import { Input } from "@/components/ui/input";
-import AppointmentDateTimeSlot from "./appointment-date-timeslot";
+import { LoaderCircle } from "lucide-react";
 import { getAppointmentsForFilter } from "@/data/appointment";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { useAppointmentDateFilter } from "./appointment-date-context";
+import { AppointmentSelectionProvider } from "./appointment-selected-context";
+import AppointmentsHeader from "./appointment-header";
+import AppointmentsFilters from "./appointment-filter";
+import AppointmentStatusButtons from "./appointment-status-button";
+import AppointmentList from "./appointment-list";
+import AppointmentLoader from "./appointment-loader";
 
 export const Appointments = ({ appointments }: { appointments: any[] }) => {
-  const today = new Date();
-  const sevenDaysFromNow = new Date();
-  today.setDate(today.getDate() - 1);
-  sevenDaysFromNow.setDate(today.getDate() + 8);
   const { fromDate, toDate, setFromDate, setToDate, resetDates } =
     useAppointmentDateFilter();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [allAppointments, setAllAppointments] = useState(0);
-  const [pendingAppointment, setPendingAppointment] = useState(0);
-  const [confirmedAppointment, setConfirmedAppointment] = useState(0);
-  const [completedAppointment, setCompletedAppointment] = useState(0);
   const [appointmentsData, setAppointmentsData] = useState<any[]>([]);
   const [filteredAppointmentsData, setfilteredAppointmentsData] = useState<
     any[]
   >([]);
   const [status, setStatus] = useState("all");
+
+  const [stats, setStats] = useState({
+    all: 0,
+    pending: 0,
+    confirmed: 0,
+    completed: 0,
+  });
+
   const statusMap = {
     pending: "Pending",
     confirmed: "Confirmed",
@@ -35,81 +38,20 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
   };
 
   const getAppointmentInit = async () => {
-    const appointments = await getAppointmentsForFilter(
+    const appts = await getAppointmentsForFilter(
       fromDate ? fromDate.toISOString().split("T")[0] : undefined,
       toDate ? toDate.toISOString().split("T")[0] : undefined
     );
-    setAppointmentsData(appointments);
-    filterByStatus(appointments, "all");
-    filterByStatusInit(appointments);
+    setAppointmentsData(appts);
+    filterByStatus(appts, "all");
+    filterByStatusInit(appts);
   };
 
   useEffect(() => {
     getAppointmentInit();
   }, []);
 
-  const onChangeFromDate = async (e: any) => {
-    const value = e.target.value as string;
-    const nextFromDate = value ? new Date(value) : null;
-    setFromDate(nextFromDate);
-
-    setIsLoading(true);
-    const appointments = await getAppointmentsForFilter(value || undefined);
-    setAppointmentsData(appointments);
-    filterByStatus(appointments, "all");
-    filterByStatusInit(appointments);
-    setIsLoading(false);
-  };
-
-  const onChangeToDate = async (e: any) => {
-    const value = e.target.value as string;
-    const nextToDate = value ? new Date(value) : null;
-    setToDate(nextToDate);
-
-    setIsLoading(true);
-    const appointments = await getAppointmentsForFilter(
-      fromDate ? fromDate.toISOString().split("T")[0] : undefined,
-      value || undefined
-    );
-    setAppointmentsData(appointments);
-    filterByStatus(appointments, "all");
-    filterByStatusInit(appointments);
-    setIsLoading(false);
-  };
-
-  const onChangeFilterUser = async (e: any) => {
-    const search = e.target.value.toLowerCase();
-
-    const filteredData = appointments
-      .map((entry) => {
-        const filteredSlots = entry.slots
-          .map((slot: any) => {
-            const filteredAppointments = slot.appointments.filter(
-              (app: any) => {
-                const fullName = app.fullName.toLowerCase();
-                const surname = app.surname.toLowerCase();
-                return fullName.includes(search) || surname.includes(search);
-              }
-            );
-
-            // Only keep the slot if it has matching appointments
-            return filteredAppointments.length > 0
-              ? { ...slot, appointments: filteredAppointments }
-              : null;
-          })
-          .filter((slot: any) => slot !== null); // remove empty slots
-
-        // Only keep the entry if it has matching slots
-        return filteredSlots.length > 0
-          ? { ...entry, slots: filteredSlots }
-          : null;
-      })
-      .filter((entry) => entry !== null); // remove empty entries
-
-    setfilteredAppointmentsData(filteredData);
-  };
-
-  const filterByStatus = async (appointments: any[], status: string) => {
+  const filterByStatus = (appointments: any[], status: string) => {
     setStatus(status);
     if (status === "all") {
       setfilteredAppointmentsData(appointments);
@@ -121,206 +63,84 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
         const filteredSlots = entry.slots
           .map((slot: any) => {
             const filteredAppointments = slot.appointments.filter(
-              (app: any) => {
-                return app.status.toLowerCase() === status;
-              }
+              (app: any) => app.status.toLowerCase() === status
             );
-
-            // Only keep the slot if it has matching appointments
             return filteredAppointments.length > 0
               ? { ...slot, appointments: filteredAppointments }
               : null;
           })
-          .filter((slot: any) => slot !== null); // remove empty slots
+          .filter(Boolean);
 
-        // Only keep the entry if it has matching slots
         return filteredSlots.length > 0
           ? { ...entry, slots: filteredSlots }
           : null;
       })
-      .filter((entry) => entry !== null); // remove empty entries
+      .filter(Boolean);
 
     setfilteredAppointmentsData(filteredData);
   };
 
-  const filterByStatusInit = async (appointments: any[]) => {
-    let pending = 0;
-    let confirmed = 0;
-    let completed = 0;
-    let allAppointments = 0;
+  const filterByStatusInit = (appointments: any[]) => {
+    let pending = 0,
+      confirmed = 0,
+      completed = 0,
+      all = 0;
 
     appointments.forEach((entry) => {
       entry.slots.forEach((slot: any) => {
         slot.appointments.forEach((app: any) => {
-          allAppointments++;
+          all++;
           if (app.status.toLowerCase() === "pending") ++pending;
           else if (app.status.toLowerCase() === "confirmed") ++confirmed;
           else if (app.status.toLowerCase() === "completed") ++completed;
         });
-
-        // Only keep the slot if it has matching appointments
       });
-
-      // Only keep the entry if it has matching slots
     });
-    setAllAppointments(allAppointments);
-    setPendingAppointment(pending);
-    setConfirmedAppointment(confirmed);
-    setCompletedAppointment(completed);
-  };
 
-  const clearFilter = () => {
-    setIsLoading(false);
-    resetDates();
-  };
-
-  const statusArr = [
-    { name: "All", data: allAppointments, value: "all" },
-    { name: "Pending", data: pendingAppointment, value: "pending" },
-    { name: "Confirmed", data: confirmedAppointment, value: "confirmed" },
-    { name: "Completed", data: completedAppointment, value: "completed" },
-  ];
-
-  const StatusButton = ({
-    value,
-    data,
-    name,
-  }: {
-    value: string;
-    data: number;
-    name: string;
-  }) => {
-    return (
-      <Button
-        type="button"
-        onClick={() => filterByStatus(appointments, value)}
-        className={
-          status === value
-            ? ""
-            : "border-2 border-gray bg-white text-black hover:bg-gray-200"
-        }
-      >
-        {name}{" "}
-        <Badge className={status === value ? "bg-white text-black" : ""}>
-          {data}
-        </Badge>
-      </Button>
-    );
+    setStats({ all, pending, confirmed, completed });
   };
 
   return (
     <>
-      <div className="mb-0 flex flex-wrap items-center justify-between space-y-2">
-        <div>
-          <h2 className="text-2xl font-bold tracking-tight">
-            {statusMap[status as keyof typeof statusMap]} Appointments -{" "}
-            {fromDate
-              ? fromDate.toLocaleDateString("en-GB", {
-                  day: "2-digit",
-                  month: "short",
-                  year: "numeric",
-                })
-              : "-"}
-            {" to "}
-            {toDate
-              ? toDate.toLocaleDateString("en-GB", {
-                  day: "2-digit",
-                  month: "short",
-                  year: "numeric",
-                })
-              : "-"}
-          </h2>
-          <p className="text-muted-foreground">
-            Manage your client appointments here.
-          </p>
-        </div>
-      </div>
+      <AppointmentsHeader
+        status={status}
+        statusMap={statusMap}
+        fromDate={fromDate}
+        toDate={toDate}
+      />
+
       <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0">
         <div className="flex flex-col gap-4 items-start xl:flex-row xl:items-center justify-between mb-2 border-2 border-gray-200 p-2 rounded-xl w-full">
-          <div className="flex flex-col gap-2">
-            <div className="text-sm font-medium">Choose Date Range:</div>
-            <div className="flex flex-row gap-3">
-              <div className="flex flex-row items-center gap-1">
-                <div className="text-sm font-medium">From:</div>
-                <Input
-                  placeholder="Filter apps..."
-                  className="w-[200px] flex flex-col justify-center"
-                  defaultValue={
-                    fromDate ? fromDate.toISOString().split("T")[0] : ""
-                  }
-                  type="date"
-                  onChange={onChangeFromDate}
-                  onClick={clearFilter}
-                />
-              </div>
-              <div className="flex flex-row items-center gap-1">
-                <div className="text-sm font-medium">To:</div>
-                <Input
-                  placeholder="Filter apps..."
-                  className="w-[200px] flex flex-col justify-center"
-                  defaultValue={
-                    toDate ? toDate.toISOString().split("T")[0] : ""
-                  }
-                  type="date"
-                  min={
-                    fromDate ? fromDate.toISOString().split("T")[0] : undefined
-                  }
-                  disabled={!fromDate}
-                  onChange={onChangeToDate}
-                />
-              </div>
-              <div className="flex flex-row items-center gap-1">
-                <div className="text-sm font-medium">Filter User:</div>
-                <Input
-                  placeholder="Filter users..."
-                  className="w-[200px] flex flex-col justify-center"
-                  onChange={onChangeFilterUser}
-                />
-              </div>
+          <AppointmentsFilters
+            fromDate={fromDate}
+            toDate={toDate}
+            setFromDate={setFromDate}
+            setToDate={setToDate}
+            setIsLoading={setIsLoading}
+            resetDates={resetDates}
+            setAppointmentsData={setAppointmentsData}
+            setfilteredAppointmentsData={setfilteredAppointmentsData}
+            filterByStatus={filterByStatus}
+            filterByStatusInit={filterByStatusInit}
+            appointments={appointments}
+          />
 
-              {/* <div className="flex flex-row items-center gap-3">
-                <div className="text-sm font-medium">Filter Status:</div>
-                <SelectFilter
-                  appointments={appointments}
-                  filterByStatus={filterByStatus}
-                  status={status}
-                  setStatus={setStatus}
-                />
-              </div> */}
-            </div>
-          </div>
-          <div className="flex flex-col items-start gap-2">
-            <div className="text-sm font-medium">Filter Status:</div>
-            <div className="flex flex-row items-center gap-3">
-              {statusArr.map((s) => (
-                <StatusButton key={s.value} {...s} />
-              ))}
-            </div>
-          </div>{" "}
+          <AppointmentStatusButtons
+            status={status}
+            stats={stats}
+            filterByStatus={(value: string) =>
+              filterByStatus(appointmentsData, value)
+            }
+          />
         </div>
-        {isLoading && (
-          <div className="w-full">
-            <LoaderCircle size={30} className="animate-spin mx-auto" />
-          </div>
-        )}
-        <div className="flex flex-col gap-2">
-          {filteredAppointmentsData &&
-            filteredAppointmentsData.length > 0 &&
-            filteredAppointmentsData.map((a, index) => {
-              const dateStr = new Date(a.date);
-              return (
-                <AppointmentDateTimeSlot
-                  date={dateStr.toLocaleDateString("en-GB", {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric",
-                  })}
-                  slots={a.slots}
-                  key={index}
-                />
-              );
-            })}
-        </div>
+
+        {isLoading && <AppointmentLoader />}
+
+        <AppointmentSelectionProvider>
+          <AppointmentList
+            filteredAppointmentsData={filteredAppointmentsData}
+          />
+        </AppointmentSelectionProvider>
       </div>
     </>
   );
