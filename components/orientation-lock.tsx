@@ -5,13 +5,17 @@ import { useEffect } from "react";
 
 export default function OrientationLock() {
   useEffect(() => {
-    if (typeof window !== "undefined" && "screen" in window) {
-      const orientation: any = (window as any).screen?.orientation;
-      if (orientation && typeof orientation.lock === "function") {
-        orientation.lock("landscape").catch(() => {});
+    if (typeof window !== "undefined" && "orientation" in screen) {
+      if (typeof screen.orientation.unlock === "function") {
+        const result = screen.orientation.unlock();
+        Promise.resolve(result).catch((err) => {
+          console.warn("Orientation unlock failed:", err);
+        });
+      } else {
+        console.info("Screen orientation unlock not supported on this device.");
       }
     }
   }, []);
 
-  return null; // no UI, just runs effect
+  return null; // just runs effect
 }
