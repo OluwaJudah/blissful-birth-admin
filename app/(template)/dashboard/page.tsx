@@ -31,6 +31,7 @@ import {
   ClipboardList,
   CheckCircle,
 } from "lucide-react";
+import { IconUsersGroup } from "@tabler/icons-react";
 
 const topNav = [
   {
@@ -108,6 +109,11 @@ export default function Dashboard() {
           <TabsContent value="overview" className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <KpiCard title="Total Patients" value="1,245" icon={<User />} />
+              <KpiCard
+                title="Active Client"
+                value="70"
+                icon={<IconUsersGroup />}
+              />
               <KpiCard
                 title="New Patient Intake"
                 value="52"
