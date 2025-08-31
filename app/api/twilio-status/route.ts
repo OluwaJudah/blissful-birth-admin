@@ -1,3 +1,4 @@
+import dbConnect from "@/lib/db";
 import Notification from "@/models/notification";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -7,7 +8,7 @@ export async function POST(req: NextRequest) {
   const messageStatus = data.get("MessageStatus");
 
   console.log(`📩 Twilio update: ${messageSid} -> ${messageStatus}`);
-
+  await dbConnect();
   // Optionally save to DB
   await Notification.updateOne({ messageSid }, { status: messageStatus });
 
