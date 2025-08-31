@@ -4,6 +4,7 @@ import { CLIENT } from "@/constants/user";
 import dbConnect from "@/lib/db";
 import Appointment from "@/models/appointment";
 import BabyReport from "@/models/baby-report";
+import MotherInfo from "@/models/mother-info";
 import MotherReport from "@/models/mother-report";
 import { Types } from "mongoose";
 
@@ -310,3 +311,25 @@ export const getAppointmentsForReminders = async () => {
     },
   ]);
 };
+
+export async function getUsersWithFutureAppointments() {
+  const now = new Date();
+
+  try {
+    const userIds = await Appointment.distinct("userId", {
+      date: { $gt: now },
+    });
+
+    console;
+    // Fetch user documents for these IDs
+    const users = await MotherInfo.find({
+      userId: { $in: userIds },
+      status: { $ne: "closed" },
+    });
+
+    return users;
+  } catch (error) {
+    console.error("Error fetching future appointment users:", error);
+    throw error;
+  }
+}

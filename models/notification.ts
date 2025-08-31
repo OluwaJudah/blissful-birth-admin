@@ -18,7 +18,6 @@ const NotificationSchema = new Schema<Notification>(
     appointmentId: {
       type: Schema.Types.ObjectId,
       ref: "Appointment",
-      required: true,
     },
   },
   { timestamps: true }

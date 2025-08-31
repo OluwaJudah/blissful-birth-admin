@@ -10,7 +10,10 @@ import dbConnect from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { sendWhatsApp } from "@/utils/twilio";
-import { getAppointmentsForReminders } from "@/data/appointment";
+import {
+  getAppointmentsForReminders,
+  getUsersWithFutureAppointments,
+} from "@/data/appointment";
 
 export async function createNotification(
   userId: string,
@@ -77,6 +80,7 @@ export async function sendNotifications() {
       const to = "+27" + contactNumber;
       const response = await sendWhatsApp(
         to,
+        process.env.TWILIO_REMINDER_CONTENTSID!,
         JSON.stringify({
           1: fullName,
           2: dateString,
@@ -93,10 +97,34 @@ export async function sendNotifications() {
         appointmentId: new Types.ObjectId(appointment._id),
       });
     } catch (error) {
-      console.error(
-        `❌ Failed to send to ${appointment.contactNumber}:`,
-        error
+      console.error(`❌ Failed to send to message:`, error);
+      // Continue to the next appointment
+    }
+  }
+
+  console.log("📨 Notification sending process completed.");
+}
+
+export async function sendBabyScanNotifications() {
+  const motherInfos = await getUsersWithFutureAppointments();
+  for (const motherInfo of motherInfos) {
+    try {
+      const { userId, contactNumber } = motherInfo;
+
+      const to = "+27" + contactNumber;
+      const response = await sendWhatsApp(
+        to,
+        process.env.BABY_SCAN_CONTENTSID!
       );
+      console.log({ to, status: "✅ sent", sid: response.sid });
+
+      await Notification.create({
+        to: to,
+        messageSid: response.sid,
+        userId: new Types.ObjectId(userId),
+      });
+    } catch (error) {
+      console.error(`❌ Failed to send to message:`, error);
       // Continue to the next appointment
     }
   }
