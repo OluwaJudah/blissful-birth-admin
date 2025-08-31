@@ -313,6 +313,8 @@ export const getAppointmentsForReminders = async () => {
 };
 
 export async function getUsersWithFutureAppointments() {
+  await dbConnect();
+
   const now = new Date();
 
   try {
