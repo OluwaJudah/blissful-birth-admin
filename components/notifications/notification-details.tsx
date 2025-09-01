@@ -31,7 +31,6 @@ const NotificationDetails = ({
   return (
     <div className="rounded-3xl border flex justify-between items-center gap-3 px-2 py-1 hover:shadow-md">
       <div className="flex items-center gap-3">
-        {" "}
         <div className="flex items-center justify-between">
           <div
             className={`flex w-9 h-9 items-center justify-center rounded-full bg-muted p-2`}
@@ -52,6 +51,9 @@ const NotificationDetails = ({
             </div>
           </div>
         </div>
+      </div>
+      <div className="flex items-center gap-2">
+        <Badge variant="outline">{status}</Badge>
       </div>
     </div>
   );
