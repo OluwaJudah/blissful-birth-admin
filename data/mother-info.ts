@@ -194,7 +194,7 @@ export async function getPaginatedMothers({
 }: PaginatedMothersInput) {
   await dbConnect();
 
-  const match: any = {};
+  const match: any = { status: { $ne: "closed" } };
   if (search) {
     match.$or = [
       { fullName: { $regex: search, $options: "i" } },
