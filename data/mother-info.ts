@@ -6,7 +6,7 @@ import BloodResult from "@/models/blood-result";
 import MedicalHistory from "@/models/medical-history";
 import MotherInfo from "@/models/mother-info";
 import { Types } from "mongoose";
-import { revalidatePath } from "next/cache";
+import { IMotherInfo } from "@/definitions/mother-info";
 
 export const getMothers = async () => {
   await dbConnect();
@@ -176,3 +176,74 @@ export const getMotherInfoWithPaymentSum = async () => {
     })
   );
 };
+
+interface PaginatedMothersInput {
+  page?: number;
+  limit?: number;
+  sortField?: string;
+  sortOrder?: "asc" | "desc";
+  search?: string;
+}
+
+export async function getPaginatedMothers({
+  page = 1,
+  limit = 10,
+  sortField = "edd",
+  sortOrder = "asc",
+  search = "",
+}: PaginatedMothersInput) {
+  await dbConnect();
+
+  const match: any = {};
+  if (search) {
+    match.$or = [
+      { fullName: { $regex: search, $options: "i" } },
+      { surname: { $regex: search, $options: "i" } },
+      { email: { $regex: search, $options: "i" } },
+    ];
+  }
+
+  const [data, total] = await Promise.all([
+    MotherInfo.aggregate([
+      { $match: match },
+      {
+        $lookup: {
+          from: "paymententries",
+          localField: "userId",
+          foreignField: "userId",
+          as: "paymententries",
+        },
+      },
+      { $addFields: { paymentSum: { $sum: "$paymententries.amount" } } },
+      {
+        $project: {
+          userId: 1,
+          email: 1,
+          surname: 1,
+          fullName: 1,
+          contactNumber: 1,
+          packageType: 1,
+          paymentSum: 1,
+          edd: 1,
+        },
+      },
+      { $sort: { [sortField]: sortOrder === "desc" ? -1 : 1 } },
+      { $skip: (page - 1) * limit },
+      { $limit: limit },
+    ]),
+    MotherInfo.countDocuments(match),
+  ]);
+
+  const mapped: any[] = data.map((m: IMotherInfo) => ({
+    _id: m._id?.toString(),
+    id: m._id?.toString(),
+    userId: m.userId?.toString(),
+    fullName: m.fullName + " " + m.surname,
+    contactNumber: m.contactNumber,
+    email: m.email,
+    paymentSum: m.paymentSum,
+    edd: m.edd ? new Date(m.edd).toISOString() : "",
+  }));
+
+  return { data: mapped, total };
+}

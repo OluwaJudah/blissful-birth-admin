@@ -5,19 +5,12 @@ import { Search } from "@/components/search";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { columns } from "@/components/users/components/users-columns";
 import { UsersDialogs } from "@/components/users/components/users-dialogs";
-import { UsersPrimaryButtons } from "@/components/users/components/users-primary-buttons";
 import { UsersTable } from "@/components/users/components/users-table";
 import UsersProvider from "@/components/users/context/users-context";
-import { getMotherInfoWithPaymentSum } from "@/data/mother-info";
-import { IMotherInfo } from "@/definitions/mother-info";
-import { Suspense } from "react";
+
 export const revalidate = 0;
 
-export default async function Users() {
-  // Parse user list
-  const data = (await getMotherInfoWithPaymentSum()) as IMotherInfo[];
-  const clients = JSON.parse(JSON.stringify(data));
-
+export default function Users() {
   return (
     <UsersProvider>
       <Header fixed>
@@ -36,9 +29,7 @@ export default async function Users() {
           </div>
         </div>
         <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0">
-          <Suspense fallback={<>Loading...</>}>
-            <UsersTable data={clients} columns={columns} />
-          </Suspense>
+          <UsersTable columns={columns} />
         </div>
       </Main>
 
