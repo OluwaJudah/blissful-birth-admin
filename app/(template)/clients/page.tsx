@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Header } from "@/components/layout/header";
 import { Main } from "@/components/layout/main";
 import { ProfileDropdown } from "@/components/profile-dropdown";
@@ -7,10 +8,30 @@ import { columns } from "@/components/users/components/users-columns";
 import { UsersDialogs } from "@/components/users/components/users-dialogs";
 import { UsersTable } from "@/components/users/components/users-table";
 import UsersProvider from "@/components/users/context/users-context";
+import { getMotherInfoWithPaymentSum } from "@/data/mother-info";
 
 export const revalidate = 0;
 
-export default function Users() {
+// app/(template)/clients/page.tsx
+export default async function Users({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string; pageSize?: string }>;
+}) {
+  // Await the searchParams promise to resolve the object
+  const resolvedSearchParams = await searchParams;
+
+  const currentPage = Number(resolvedSearchParams.page) || 0;
+  const pageSize = Number(resolvedSearchParams.pageSize) || 10;
+
+  // The rest of your code is unchanged
+  const { data, totalCount } = await getMotherInfoWithPaymentSum(
+    currentPage,
+    pageSize
+  );
+  const clients = JSON.parse(JSON.stringify(data));
+  const pageCount = Math.ceil(totalCount / pageSize);
+
   return (
     <UsersProvider>
       <Header fixed>
@@ -29,7 +50,14 @@ export default function Users() {
           </div>
         </div>
         <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0">
-          <UsersTable columns={columns} />
+          <Suspense fallback={<>Loading...</>}>
+            <UsersTable
+              data={clients}
+              columns={columns}
+              pageCount={pageCount}
+              totalCount={totalCount}
+            />
+          </Suspense>
         </div>
       </Main>
 

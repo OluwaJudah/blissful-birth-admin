@@ -125,7 +125,7 @@ export const getBloodResult = async (userId: string) => {
   };
 };
 
-export const getMotherInfoWithPaymentSum = async () => {
+/* export const getMotherInfoWithPaymentSum = async () => {
   await dbConnect();
 
   const mothers = await MotherInfo.aggregate([
@@ -176,7 +176,7 @@ export const getMotherInfoWithPaymentSum = async () => {
     })
   );
 };
-
+ */
 interface PaginatedMothersInput {
   page?: number;
   limit?: number;
@@ -247,3 +247,69 @@ export async function getPaginatedMothers({
 
   return { data: mapped, total };
 }
+
+export const getMotherInfoWithPaymentSum = async (
+  page: number,
+  pageSize: number
+) => {
+  await dbConnect();
+
+  // Get total count for pagination info
+  const totalCount = await MotherInfo.countDocuments();
+
+  const mothers = await MotherInfo.aggregate([
+    {
+      $lookup: {
+        from: "paymententries",
+        localField: "userId",
+        foreignField: "userId",
+        as: "paymententries",
+      },
+    },
+    {
+      $addFields: { paymentSum: { $sum: "$paymententries.amount" } },
+    },
+    { $sort: { edd: -1 } },
+    // Apply pagination directly in the aggregation pipeline
+    { $skip: page * pageSize },
+    { $limit: pageSize },
+    {
+      $project: {
+        userId: 1,
+        email: 1,
+        surname: 1,
+        fullName: 1,
+        contactNumber: 1,
+        packageType: 1,
+        paymentSum: 1,
+        edd: 1,
+      },
+    },
+  ]);
+
+  const paginatedMothers = mothers.map(
+    ({
+      _id,
+      fullName,
+      userId,
+      surname,
+      contactNumber,
+      email,
+      paymentSum,
+      edd,
+    }) => ({
+      _id,
+      fullName: fullName + " " + surname,
+      userId,
+      contactNumber,
+      email,
+      paymentSum,
+      edd,
+    })
+  );
+
+  return {
+    data: paginatedMothers,
+    totalCount,
+  };
+};

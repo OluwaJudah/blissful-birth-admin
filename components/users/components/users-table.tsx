@@ -1,157 +1,147 @@
 "use client";
-
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   ColumnDef,
-  useReactTable,
-  getCoreRowModel,
-  getSortedRowModel,
-  RowData,
-  VisibilityState,
   ColumnFiltersState,
+  RowData,
   SortingState,
+  VisibilityState,
   flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getSortedRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
+  useReactTable,
 } from "@tanstack/react-table";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { useRouter, useSearchParams } from "next/navigation";
 import { IMotherInfo } from "@/definitions/mother-info";
 import { DataTablePagination } from "./data-table-pagination";
 import { DataTableToolbar } from "./data-table-toolbar";
-import { getPaginatedMothers } from "@/data/mother-info";
+
+declare module "@tanstack/react-table" {
+  interface ColumnMeta<TData extends RowData, TValue> {
+    className: string;
+  }
+}
 
 interface DataTableProps {
   columns: ColumnDef<IMotherInfo>[];
+  data: IMotherInfo[];
+  pageCount: number;
+  totalCount: number;
 }
 
-export function UsersTable({ columns }: DataTableProps) {
-  const [data, setData] = useState<IMotherInfo[]>([]);
-  const [pageCount, setPageCount] = useState(0);
-  const [loading, setLoading] = useState(false);
+export function UsersTable({
+  columns,
+  data,
+  pageCount,
+  totalCount,
+}: DataTableProps) {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [pageIndex, setPageIndex] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
 
-  const fetchData = async () => {
-    setLoading(true);
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-    const sort = sorting[0];
-    const sortField = sort?.id || "edd";
-    const sortOrder = sort?.desc ? "desc" : "asc";
-    const rawSearch = columnFilters[0]?.value;
-    const search: string = typeof rawSearch === "string" ? rawSearch : "";
+  const currentPage = Number(searchParams.get("page")) || 0;
+  const pageSize = Number(searchParams.get("pageSize")) || 10;
 
-    const res = await getPaginatedMothers({
-      page: pageIndex + 1,
-      limit: pageSize,
-      sortField,
-      sortOrder,
-      search,
-    });
-
-    setData(res.data);
-    setPageCount(Math.ceil(res.total / pageSize));
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, [pageIndex, pageSize, sorting, columnFilters]);
+  // Memoize data and columns
+  const memoizedData = useMemo(() => data, [data]);
+  const memoizedColumns = useMemo(() => columns, [columns]);
 
   const table = useReactTable({
-    data,
-    columns,
+    data: memoizedData,
+    columns: memoizedColumns,
     pageCount,
     state: {
       sorting,
       columnVisibility,
       rowSelection,
       columnFilters,
-      pagination: { pageIndex, pageSize },
+      pagination: {
+        pageIndex: currentPage,
+        pageSize,
+      },
     },
-    manualPagination: true,
-    manualSorting: true,
-    manualFiltering: true,
     enableRowSelection: true,
+    manualPagination: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
-    onPaginationChange: (updater) => {
-      const next =
-        typeof updater === "function"
-          ? updater({ pageIndex, pageSize })
-          : updater;
-      setPageIndex(next.pageIndex);
-      setPageSize(next.pageSize);
-    },
     getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
   });
+
+  const handlePageChange = (newPage: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", newPage.toString());
+    params.set("pageSize", pageSize.toString());
+    router.push(`?${params.toString()}`);
+  };
 
   return (
     <div className="space-y-4">
       <DataTableToolbar table={table} />
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
+
+      <div className="rounded-md border overflow-x-auto">
+        <table className="min-w-full border">
+          <thead className="text-sm font-medium text-muted-foreground">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} colSpan={header.colSpan}>
+                  <th
+                    key={header.id}
+                    className={`px-4 py-2 border-b text-left ${
+                      header.column.columnDef.meta?.className ?? ""
+                    }`}
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
                           header.getContext()
                         )}
-                  </TableHead>
+                  </th>
                 ))}
-              </TableRow>
+              </tr>
             ))}
-          </TableHeader>
-          <TableBody>
-            {loading ? (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="text-center h-24"
-                >
-                  Loading...
-                </TableCell>
-              </TableRow>
-            ) : table.getRowModel().rows.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+          </thead>
+          <tbody className="text-sm font-normal">
+            {table.getRowModel().rows.map((row) => (
+              <tr
+                key={row.id}
+                className="hover:bg-muted data-[state=selected]:bg-muted/50"
+                data-state={row.getIsSelected() && "selected"}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <td
+                    key={cell.id}
+                    className={`px-4 py-2 border-b ${
+                      cell.column.columnDef.meta?.className ?? ""
+                    }`}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
-      <DataTablePagination table={table} />
+
+      <DataTablePagination
+        table={table}
+        handlePageChange={handlePageChange}
+        totalCount={totalCount}
+      />
     </div>
   );
 }
