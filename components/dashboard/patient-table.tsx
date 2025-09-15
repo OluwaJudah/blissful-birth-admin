@@ -1,12 +1,8 @@
 "use client";
 
-interface Patient {
-  id: number;
-  name: string;
-  dueDate: string;
-}
+import { MonthDuePatient } from "@/definitions/dashboard";
 
-export function PatientTable({ patients }: { patients: Patient[] }) {
+export function PatientTable({ data }: { data: MonthDuePatient[] }) {
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
@@ -17,7 +13,7 @@ export function PatientTable({ patients }: { patients: Patient[] }) {
           </tr>
         </thead>
         <tbody>
-          {patients.map((p) => (
+          {data.map((p) => (
             <tr key={p.id} className="border-b border-gray-400">
               <td className="py-2">{p.name}</td>
               <td className="py-2 text-muted-foreground">{p.dueDate}</td>

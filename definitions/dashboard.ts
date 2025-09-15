@@ -6,3 +6,9 @@ export interface StatusData {
   status: string;
   value: number;
 }
+
+export interface MonthDuePatient {
+  id: number;
+  name: string;
+  dueDate: string;
+}

@@ -7,12 +7,17 @@ import {
 } from "@/components/ui/card";
 import { PatientTable } from "@/components/dashboard/patient-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { MonthDuePatient } from "@/definitions/dashboard";
 
-const DuePatientTables = ({ patientsDue }: { patientsDue: any[] }) => {
+const DuePatientTables = ({
+  monthDuePatients,
+}: {
+  monthDuePatients: MonthDuePatient[];
+}) => {
   return (
     <>
       {" "}
-      <Card className="col-span-1 lg:col-span-6">
+      <Card className="col-span-1 lg:col-span-12">
         <CardHeader>
           <CardTitle>Patients Due This Month</CardTitle>
           <CardDescription>
@@ -20,10 +25,10 @@ const DuePatientTables = ({ patientsDue }: { patientsDue: any[] }) => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <PatientTable patients={patientsDue} />
+          <PatientTable data={monthDuePatients} />
         </CardContent>
       </Card>
-      <Card className="col-span-1 lg:col-span-6">
+      {/* <Card className="col-span-1 lg:col-span-6">
         <CardHeader>
           <CardTitle>Patients Due Per Month</CardTitle>
         </CardHeader>
@@ -63,7 +68,7 @@ const DuePatientTables = ({ patientsDue }: { patientsDue: any[] }) => {
             </TabsContent>
           </Tabs>
         </CardContent>
-      </Card>
+      </Card> */}
     </>
   );
 };

@@ -138,3 +138,28 @@ export async function getAppointmentStatusData() {
     value: item.value,
   }));
 }
+
+export async function getMonthDuePatients() {
+  const now = new Date();
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  const endOfMonth = new Date(
+    now.getFullYear(),
+    now.getMonth() + 1,
+    0,
+    23,
+    59,
+    59,
+    999
+  );
+
+  const patients = await MotherInfo.find({
+    edd: { $gte: startOfMonth, $lte: endOfMonth },
+  }).select("fullName edd");
+
+  // Format data for the table
+  return patients.map((p, idx) => ({
+    id: idx + 1,
+    name: p.fullName,
+    dueDate: p.edd ? new Date(p.edd).toLocaleDateString() : "-",
+  }));
+}

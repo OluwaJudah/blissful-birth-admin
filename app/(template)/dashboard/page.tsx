@@ -17,6 +17,7 @@ import { RecentSalesList } from "@/components/dashboard/recent-sales";
 import {
   getAppointmentStatusData,
   getKpiData,
+  getMonthDuePatients,
   getMonthlyIntakeData,
 } from "@/data/dashboard";
 import KpiCards from "@/components/dashboard/kpi-cards";
@@ -28,6 +29,7 @@ export default async function Dashboard() {
   const kpiData = await getKpiData();
   const monthlyIntakeData = await getMonthlyIntakeData();
   const appointmentStatusData = await getAppointmentStatusData();
+  const monthDuePatients = await getMonthDuePatients();
 
   return (
     <>
@@ -74,9 +76,9 @@ export default async function Dashboard() {
                 appointmentStatusData={appointmentStatusData}
               />
 
-              <DuePatientTables patientsDue={patientsDue} />
+              <DuePatientTables monthDuePatients={monthDuePatients} />
 
-              <Card className="col-span-1 lg:col-span-6">
+              {/* <Card className="col-span-1 lg:col-span-6">
                 <CardHeader>
                   <CardTitle>Overview</CardTitle>
                 </CardHeader>
@@ -95,7 +97,7 @@ export default async function Dashboard() {
                 <CardContent>
                   <RecentSalesList />
                 </CardContent>
-              </Card>
+              </Card> */}
             </div>
           </TabsContent>
         </Tabs>
