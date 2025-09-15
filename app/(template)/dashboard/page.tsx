@@ -1,10 +1,3 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Header } from "@/components/layout/header";
 import { Main } from "@/components/layout/main";
@@ -12,8 +5,6 @@ import { TopNav } from "@/components/layout/top-nav";
 import { ProfileDropdown } from "@/components/profile-dropdown";
 import { Search } from "@/components/search";
 import { ThemeSwitch } from "@/components/theme-switch";
-import { OverviewChart } from "@/components/dashboard/overview-chart";
-import { RecentSalesList } from "@/components/dashboard/recent-sales";
 import {
   getAppointmentStatusData,
   getKpiData,
@@ -77,27 +68,6 @@ export default async function Dashboard() {
               />
 
               <DuePatientTables monthDuePatients={monthDuePatients} />
-
-              {/* <Card className="col-span-1 lg:col-span-6">
-                <CardHeader>
-                  <CardTitle>Overview</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <OverviewChart />
-                </CardContent>
-              </Card>
-
-              <Card className="col-span-1 lg:col-span-6">
-                <CardHeader>
-                  <CardTitle>Recent Sales</CardTitle>
-                  <CardDescription>
-                    You made 265 sales this month.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <RecentSalesList />
-                </CardContent>
-              </Card> */}
             </div>
           </TabsContent>
         </Tabs>

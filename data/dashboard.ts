@@ -163,3 +163,20 @@ export async function getMonthDuePatients() {
     dueDate: p.edd ? new Date(p.edd).toLocaleDateString() : "-",
   }));
 }
+
+export async function getPatientsForMonth(year: number, month: number) {
+  await dbConnect();
+
+  const startOfMonth = new Date(year, month, 1);
+  const endOfMonth = new Date(year, month + 1, 0, 23, 59, 59, 999);
+
+  const patients = await MotherInfo.find({
+    edd: { $gte: startOfMonth, $lte: endOfMonth },
+  }).select("fullName edd");
+
+  return patients.map((p, idx) => ({
+    id: idx + 1,
+    name: p.fullName,
+    dueDate: p.edd,
+  }));
+}
