@@ -12,6 +12,8 @@ import { topNav } from "@/constants/dashboard";
 import Charts from "@/components/dashboard/charts";
 import { Suspense } from "react";
 
+export const revalidate = 3600;
+
 export default async function Dashboard({
   searchParams,
 }: {
