@@ -14,7 +14,7 @@ import { Search } from "@/components/search";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { OverviewChart } from "@/components/dashboard/overview-chart";
 import { RecentSalesList } from "@/components/dashboard/recent-sales";
-import { getKpiData } from "@/data/dashboard";
+import { getKpiData, getMonthlyIntakeData } from "@/data/dashboard";
 import KpiCards from "@/components/dashboard/kpi-cards";
 import DuePatientTables from "@/components/dashboard/due-patients-tables";
 import Charts from "@/components/dashboard/charts";
@@ -22,6 +22,8 @@ import { patientsDue, topNav } from "@/constants/dashboard";
 
 export default async function Dashboard() {
   const kpiData = await getKpiData();
+  const monthlyIntakeData = await getMonthlyIntakeData();
+
   return (
     <>
       <Header>
@@ -62,7 +64,7 @@ export default async function Dashboard() {
             <KpiCards kpiData={kpiData} />
 
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
-              <Charts />
+              <Charts data={monthlyIntakeData} />
 
               <DuePatientTables patientsDue={patientsDue} />
 

@@ -1,10 +1,9 @@
-"use client";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AppointmentStatusChart } from "./appointment-status-chart";
 import { MonthlyIntakeChart } from "./monthly-intake";
+import { MonthlyData } from "@/definitions/dashboard";
 
-export default function Charts() {
+export default function Charts({ data }: { data: MonthlyData[] }) {
   return (
     <>
       {" "}
@@ -13,7 +12,7 @@ export default function Charts() {
           <CardTitle>Monthly Intake of New Patients</CardTitle>
         </CardHeader>
         <CardContent>
-          <MonthlyIntakeChart />
+          <MonthlyIntakeChart data={data} />
         </CardContent>
       </Card>
       <Card className="col-span-1 lg:col-span-6">

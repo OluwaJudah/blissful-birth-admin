@@ -1,5 +1,6 @@
 "use client";
 
+import { MonthlyData } from "@/definitions/dashboard";
 import {
   ResponsiveContainer,
   BarChart,
@@ -9,25 +10,10 @@ import {
   Tooltip,
 } from "recharts";
 
-const monthlyIntakeData = [
-  { month: "Jan", intake: 24 },
-  { month: "Feb", intake: 30 },
-  { month: "Mar", intake: 45 },
-  { month: "Apr", intake: 50 },
-  { month: "May", intake: 38 },
-  { month: "Jun", intake: 60 },
-  { month: "Jul", intake: 42 },
-  { month: "Aug", intake: 55 },
-  { month: "Sep", intake: 48 },
-  { month: "Oct", intake: 65 },
-  { month: "Nov", intake: 40 },
-  { month: "Dec", intake: 70 },
-];
-
-export function MonthlyIntakeChart() {
+export function MonthlyIntakeChart({ data }: { data: MonthlyData[] }) {
   return (
     <ResponsiveContainer width="100%" height={300}>
-      <BarChart data={monthlyIntakeData}>
+      <BarChart data={data}>
         <XAxis
           dataKey="month"
           stroke="#000"

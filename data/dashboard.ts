@@ -68,3 +68,51 @@ export async function getKpiData() {
     mothersDueThisMonth,
   };
 }
+
+export async function getMonthlyIntakeData() {
+  const now = new Date();
+  const startOfYear = new Date(now.getFullYear(), 0, 1);
+  const endOfYear = new Date(now.getFullYear(), 11, 31, 23, 59, 59, 999);
+
+  // Aggregate patient count by month
+  const monthlyData = await MotherInfo.aggregate([
+    {
+      $match: {
+        createdAt: { $gte: startOfYear, $lte: endOfYear },
+      },
+    },
+    {
+      $group: {
+        _id: { $month: "$createdAt" },
+        intake: { $sum: 1 },
+      },
+    },
+    {
+      $sort: { _id: 1 },
+    },
+  ]);
+
+  // Format into { month: "Jan", intake: number }
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  return monthNames.map((name, idx) => {
+    const monthData = monthlyData.find((d) => d._id === idx + 1);
+    return {
+      month: name,
+      intake: monthData ? monthData.intake : 0,
+    };
+  });
+}
