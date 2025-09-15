@@ -1,27 +1,39 @@
 "use client";
 
 import { MonthDuePatient } from "@/definitions/dashboard";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
-import Calendar, { OnArgs } from "react-calendar";
+import { useState, useTransition } from "react";
+import Calendar from "react-calendar";
+import type { OnArgs } from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import { useRouter, useSearchParams } from "next/navigation";
+import { CalendarSkeleton, PatientsListSkeleton } from "./calendar-skeleton";
+
+interface Patient {
+  id: number;
+  name: string;
+  dueDate: string;
+}
 
 export function PatientsDueCalendar({
   patients,
 }: {
   patients: MonthDuePatient[];
 }) {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // Group patients by date
-  const patientsByDate: Record<string, MonthDuePatient[]> = {};
+  const patientsByDate: Record<string, Patient[]> = {};
   patients.forEach((p) => {
     const key = new Date(p.dueDate).toISOString().split("T")[0];
     if (!patientsByDate[key]) patientsByDate[key] = [];
     patientsByDate[key].push(p);
   });
+
+  const selectedPatients = selectedDate
+    ? patientsByDate[selectedDate.toISOString().split("T")[0]] || []
+    : [];
 
   const tileContent = ({ date, view }: { date: Date; view: string }) => {
     if (view === "month") {
@@ -36,42 +48,51 @@ export function PatientsDueCalendar({
     return null;
   };
 
-  const selectedPatients =
-    patientsByDate[selectedDate.toISOString().split("T")[0]] || [];
-
   const handleMonthChange = ({ activeStartDate }: OnArgs) => {
     if (!activeStartDate) return;
     const year = activeStartDate.getFullYear();
     const month = activeStartDate.getMonth();
+
     const params = new URLSearchParams(searchParams.toString());
     params.set("year", String(year));
     params.set("month", String(month));
-    router.push(`/dashboard?${params.toString()}`, { scroll: false });
+
+    startTransition(() => {
+      router.push(`/dashboard?${params.toString()}`, { scroll: false });
+    });
   };
 
   return (
     <div className="flex flex-col md:flex-row gap-6">
-      <Calendar
-        onClickDay={setSelectedDate}
-        onActiveStartDateChange={handleMonthChange}
-        tileContent={tileContent}
-        className="border rounded-md"
-      />
+      {isPending ? (
+        <CalendarSkeleton />
+      ) : (
+        <Calendar
+          onClickDay={setSelectedDate}
+          onActiveStartDateChange={handleMonthChange}
+          tileContent={tileContent}
+          className="border rounded-md w-full md:w-1/2"
+        />
+      )}
 
-      <div className="flex-1 p-4 border rounded-md h-fit">
-        <h3 className="font-semibold mb-2">
-          Patients due on {selectedDate.toLocaleDateString()}
-        </h3>
-        {selectedPatients.length === 0 ? (
-          <p>No patients due</p>
-        ) : (
-          <ul className="list-disc pl-5">
-            {selectedPatients.map((p) => (
-              <li key={p.id}>{p.name}</li>
-            ))}
-          </ul>
-        )}
-      </div>
+      {isPending ? (
+        <PatientsListSkeleton />
+      ) : (
+        <div className="flex-1 p-4 border rounded-md h-fit">
+          <h3 className="font-semibold mb-2">
+            Patients due on {selectedDate?.toLocaleDateString()}
+          </h3>
+          {selectedPatients.length === 0 ? (
+            <p>No patients due</p>
+          ) : (
+            <ul className="list-disc pl-5">
+              {selectedPatients.map((p) => (
+                <li key={p.id}>{p.name}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
     </div>
   );
 }
