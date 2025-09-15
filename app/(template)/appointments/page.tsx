@@ -5,7 +5,7 @@ import { Search } from "@/components/search";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { getAppointmentsForFilter } from "@/data/appointment";
 import AppointmentMain from "@/components/appointments/components/appointment-main";
-export const revalidate = 0;
+export const revalidate = 60;
 
 export default async function AppointmentsPage() {
   const today = new Date();
