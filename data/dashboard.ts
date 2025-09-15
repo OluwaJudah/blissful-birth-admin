@@ -119,7 +119,10 @@ export async function getMonthlyIntakeData() {
 
 export async function getAppointmentStatusData() {
   // Aggregate appointments by status
+  const now = new Date();
+
   const statusData = await Appointment.aggregate([
+    { $match: { date: { $lte: now } } },
     {
       $group: {
         _id: "$status",
