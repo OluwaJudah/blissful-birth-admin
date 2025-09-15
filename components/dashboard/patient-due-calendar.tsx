@@ -8,11 +8,7 @@ import "react-calendar/dist/Calendar.css";
 import { CalendarSkeleton, PatientsListSkeleton } from "./calendar-skeleton";
 import "./patient-due-patients.css";
 
-export function PatientsDueCalendar({
-  patients,
-}: {
-  patients: MonthDuePatient[];
-}) {
+export function PatientsDueCalendar({ patients }: { patients: any[] }) {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isPending, startTransition] = useTransition();
   const router = useRouter();

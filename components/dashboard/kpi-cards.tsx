@@ -8,8 +8,11 @@ import {
   User,
 } from "lucide-react";
 import { IconUsersGroup } from "@tabler/icons-react";
+import { getKpiData } from "@/data/dashboard";
 
-const KpiCards = ({ kpiData }: { kpiData: any }) => {
+const KpiCards = async () => {
+  const kpiData = await getKpiData();
+
   const {
     totalPatients,
     activeClients,

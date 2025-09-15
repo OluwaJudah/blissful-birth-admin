@@ -6,16 +6,11 @@ import { TopNav } from "@/components/layout/top-nav";
 import { ProfileDropdown } from "@/components/profile-dropdown";
 import { Search } from "@/components/search";
 import { ThemeSwitch } from "@/components/theme-switch";
-import {
-  getAppointmentStatusData,
-  getKpiData,
-  getMonthlyIntakeData,
-  getPatientsForMonth,
-} from "@/data/dashboard";
 import KpiCards from "@/components/dashboard/kpi-cards";
 import DuePatientTables from "@/components/dashboard/due-patients-tables";
 import { topNav } from "@/constants/dashboard";
 import Charts from "@/components/dashboard/charts";
+import { Suspense } from "react";
 
 export default async function Dashboard({
   searchParams,
@@ -26,11 +21,6 @@ export default async function Dashboard({
   const now = new Date();
   const year = Number(searchParamsObj?.year ?? now.getFullYear());
   const month = Number(searchParamsObj?.month ?? now.getMonth()); // 0-based
-
-  const kpiData = await getKpiData();
-  const monthlyIntakeData = await getMonthlyIntakeData();
-  const appointmentStatusData = await getAppointmentStatusData();
-  const monthDuePatients = await getPatientsForMonth(year, month);
 
   return (
     <>
@@ -69,14 +59,18 @@ export default async function Dashboard({
           </div>
 
           <TabsContent value="overview" className="space-y-4">
-            <KpiCards kpiData={kpiData} />
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
-              <Charts
-                data={monthlyIntakeData}
-                appointmentStatusData={appointmentStatusData}
-              />
+            <Suspense fallback={<>Loading...</>}>
+              <KpiCards />
+            </Suspense>
 
-              <DuePatientTables monthDuePatients={monthDuePatients} />
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
+              <Suspense fallback={<>Loading...</>}>
+                <Charts />
+              </Suspense>
+
+              <Suspense fallback={<>Loading...</>}>
+                <DuePatientTables year={year} month={month} />
+              </Suspense>
             </div>
           </TabsContent>
         </Tabs>

@@ -5,14 +5,18 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { MonthDuePatient } from "@/definitions/dashboard";
 import { PatientsDueCalendar } from "./patient-due-calendar";
+import { getPatientsForMonth } from "@/data/dashboard";
 
-const DuePatientTables = ({
-  monthDuePatients,
+const DuePatientTables = async ({
+  year,
+  month,
 }: {
-  monthDuePatients: any[];
+  year: number;
+  month: number;
 }) => {
+  const monthDuePatients = await getPatientsForMonth(year, month);
+
   return (
     <>
       {" "}

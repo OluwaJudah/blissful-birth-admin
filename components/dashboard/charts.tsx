@@ -1,17 +1,17 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AppointmentStatusChart } from "./appointment-status-chart";
 import { MonthlyIntakeChart } from "./monthly-intake";
-import { MonthlyData, StatusData } from "@/definitions/dashboard";
 import { Suspense } from "react";
 import { MonthlyIntakeChartSkeleton } from "./monthly-intake-chart-skeleton";
+import {
+  getAppointmentStatusData,
+  getMonthlyIntakeData,
+} from "@/data/dashboard";
 
-export default function Charts({
-  data,
-  appointmentStatusData,
-}: {
-  data: MonthlyData[];
-  appointmentStatusData: StatusData[];
-}) {
+export default async function Charts() {
+  const monthlyIntakeData = await getMonthlyIntakeData();
+  const appointmentStatusData = await getAppointmentStatusData();
+
   return (
     <>
       {" "}
@@ -21,7 +21,7 @@ export default function Charts({
         </CardHeader>
         <CardContent>
           <Suspense fallback={<MonthlyIntakeChartSkeleton />}>
-            <MonthlyIntakeChart data={data} />
+            <MonthlyIntakeChart data={monthlyIntakeData} />
           </Suspense>
         </CardContent>
       </Card>
