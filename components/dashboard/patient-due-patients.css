@@ -1,0 +1,14 @@
+.react-calendar {
+  width: 100% !important;
+  font-size: 1.125rem; /* text-lg */
+}
+
+.react-calendar__tile {
+  padding: 1rem 0.5rem; /* Larger cells */
+  font-size: 1rem; /* Slightly larger text */
+}
+
+.react-calendar__navigation button {
+  font-size: 1.25rem; /* Bigger month/year buttons */
+  padding: 0.5rem;
+}

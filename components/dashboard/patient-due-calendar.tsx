@@ -2,10 +2,11 @@
 
 import { MonthDuePatient } from "@/definitions/dashboard";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useTransition } from "react";
+import { Suspense, useState, useTransition } from "react";
 import Calendar, { OnArgs } from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { CalendarSkeleton, PatientsListSkeleton } from "./calendar-skeleton";
+import "./patient-due-patients.css";
 
 export function PatientsDueCalendar({
   patients,
@@ -48,27 +49,23 @@ export function PatientsDueCalendar({
     const params = new URLSearchParams(searchParams.toString());
     params.set("year", String(year));
     params.set("month", String(month));
-    startTransition(() => {
-      router.push(`/dashboard?${params.toString()}`, { scroll: false });
-    });
+    router.push(`/dashboard?${params.toString()}`, { scroll: false });
   };
 
   return (
     <div className="flex flex-col md:flex-row gap-6">
-      {isPending ? (
-        <CalendarSkeleton />
-      ) : (
-        <Calendar
-          onClickDay={setSelectedDate}
-          onActiveStartDateChange={handleMonthChange}
-          tileContent={tileContent}
-          className="border rounded-md"
-        />
-      )}
+      <div className="w-1/2">
+        <Suspense fallback={<CalendarSkeleton />}>
+          <Calendar
+            onClickDay={setSelectedDate}
+            onActiveStartDateChange={handleMonthChange}
+            tileContent={tileContent}
+            className="border rounded-md"
+          />
+        </Suspense>
+      </div>
 
-      {isPending ? (
-        <PatientsListSkeleton />
-      ) : (
+      <Suspense fallback={<PatientsListSkeleton />}>
         <div className="flex-1 p-4 border rounded-md h-fit">
           <h3 className="font-semibold mb-2">
             Patients due on {selectedDate.toLocaleDateString()}
@@ -83,7 +80,7 @@ export function PatientsDueCalendar({
             </ul>
           )}
         </div>
-      )}
+      </Suspense>
     </div>
   );
 }
