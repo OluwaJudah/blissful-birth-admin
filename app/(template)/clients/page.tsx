@@ -10,24 +10,23 @@ import { UsersTable } from "@/components/users/components/users-table";
 import UsersProvider from "@/components/users/context/users-context";
 import { getMotherInfoWithPaymentSum } from "@/data/mother-info";
 
-export const revalidate = 0;
+export const revalidate = 60;
 
-// app/(template)/clients/page.tsx
 export default async function Users({
   searchParams,
 }: {
-  searchParams: Promise<{ page?: string; pageSize?: string }>;
+  searchParams: Promise<{ page?: string; pageSize?: string; search?: string }>;
 }) {
-  // Await the searchParams promise to resolve the object
   const resolvedSearchParams = await searchParams;
 
   const currentPage = Number(resolvedSearchParams.page) || 0;
   const pageSize = Number(resolvedSearchParams.pageSize) || 10;
+  const searchTerm = resolvedSearchParams.search || "";
 
-  // The rest of your code is unchanged
   const { data, totalCount } = await getMotherInfoWithPaymentSum(
     currentPage,
-    pageSize
+    pageSize,
+    searchTerm
   );
   const clients = JSON.parse(JSON.stringify(data));
   const pageCount = Math.ceil(totalCount / pageSize);

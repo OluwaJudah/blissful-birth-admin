@@ -250,14 +250,28 @@ export async function getPaginatedMothers({
 
 export const getMotherInfoWithPaymentSum = async (
   page: number,
-  pageSize: number
+  pageSize: number,
+  searchTerm?: string
 ) => {
   await dbConnect();
 
-  // Get total count for pagination info
-  const totalCount = await MotherInfo.countDocuments();
+  const matchStage =
+    searchTerm && searchTerm.trim() !== ""
+      ? {
+          $or: [
+            { fullName: { $regex: searchTerm, $options: "i" } },
+            { surname: { $regex: searchTerm, $options: "i" } },
+            { email: { $regex: searchTerm, $options: "i" } },
+            { contactNumber: { $regex: searchTerm, $options: "i" } },
+          ],
+        }
+      : {};
+
+  // Get total count for pagination based on search
+  const totalCount = await MotherInfo.countDocuments(matchStage);
 
   const mothers = await MotherInfo.aggregate([
+    { $match: matchStage },
     {
       $lookup: {
         from: "paymententries",
@@ -270,7 +284,6 @@ export const getMotherInfoWithPaymentSum = async (
       $addFields: { paymentSum: { $sum: "$paymententries.amount" } },
     },
     { $sort: { edd: -1 } },
-    // Apply pagination directly in the aggregation pipeline
     { $skip: page * pageSize },
     { $limit: pageSize },
     {
@@ -291,15 +304,15 @@ export const getMotherInfoWithPaymentSum = async (
     ({
       _id,
       fullName,
-      userId,
       surname,
+      userId,
       contactNumber,
       email,
       paymentSum,
       edd,
     }) => ({
       _id,
-      fullName: fullName + " " + surname,
+      fullName: `${fullName} ${surname}`,
       userId,
       contactNumber,
       email,
@@ -308,8 +321,5 @@ export const getMotherInfoWithPaymentSum = async (
     })
   );
 
-  return {
-    data: paginatedMothers,
-    totalCount,
-  };
+  return { data: paginatedMothers, totalCount };
 };
