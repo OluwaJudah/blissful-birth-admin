@@ -116,3 +116,22 @@ export async function getMonthlyIntakeData() {
     };
   });
 }
+
+export async function getAppointmentStatusData() {
+  // Aggregate appointments by status
+  const statusData = await Appointment.aggregate([
+    {
+      $group: {
+        _id: "$status",
+        value: { $sum: 1 },
+      },
+    },
+    { $sort: { _id: 1 } },
+  ]);
+
+  // Map aggregation to chart format
+  return statusData.map((item) => ({
+    status: item._id,
+    value: item.value,
+  }));
+}

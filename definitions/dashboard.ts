@@ -2,3 +2,7 @@ export interface MonthlyData {
   month: string;
   intake: number;
 }
+export interface StatusData {
+  status: string;
+  value: number;
+}
