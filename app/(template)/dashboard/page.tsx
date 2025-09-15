@@ -9,7 +9,6 @@ import { ThemeSwitch } from "@/components/theme-switch";
 import KpiCards from "@/components/dashboard/kpi-cards";
 import DuePatientTables from "@/components/dashboard/due-patients-tables";
 import { topNav } from "@/constants/dashboard";
-import Charts from "@/components/dashboard/charts";
 import { Suspense } from "react";
 import KpiCardsSkeleton from "@/components/dashboard/kpi-cards-skeleton";
 import MonthlyIntakeBarChart from "@/components/dashboard/monthly-intake-barchart";
