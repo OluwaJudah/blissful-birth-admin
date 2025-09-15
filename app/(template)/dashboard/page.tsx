@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -15,10 +14,11 @@ import { Search } from "@/components/search";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { OverviewChart } from "@/components/dashboard/overview-chart";
 import { RecentSalesList } from "@/components/dashboard/recent-sales";
-import { getKpiData, patientsDue, topNav } from "@/data/dashboard";
+import { getKpiData } from "@/data/dashboard";
 import KpiCards from "@/components/dashboard/kpi-cards";
 import DuePatientTables from "@/components/dashboard/due-patients-tables";
 import Charts from "@/components/dashboard/charts";
+import { patientsDue, topNav } from "@/constants/dashboard";
 
 export default async function Dashboard() {
   const kpiData = await getKpiData();
@@ -36,9 +36,6 @@ export default async function Dashboard() {
       <Main>
         <div className="mb-2 flex items-center justify-between space-y-2">
           <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
-          <div className="flex items-center space-x-2">
-            <Button>Download</Button>
-          </div>
         </div>
 
         <Tabs
