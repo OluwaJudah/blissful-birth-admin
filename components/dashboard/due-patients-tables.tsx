@@ -19,7 +19,6 @@ const DuePatientTables = async ({
 
   return (
     <>
-      {" "}
       <Card className="col-span-1 lg:col-span-12">
         <CardHeader>
           <CardTitle>Patients Due This Month</CardTitle>

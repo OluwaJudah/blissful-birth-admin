@@ -11,6 +11,12 @@ import DuePatientTables from "@/components/dashboard/due-patients-tables";
 import { topNav } from "@/constants/dashboard";
 import Charts from "@/components/dashboard/charts";
 import { Suspense } from "react";
+import KpiCardsSkeleton from "@/components/dashboard/kpi-cards-skeleton";
+import MonthlyIntakeBarChart from "@/components/dashboard/monthly-intake-barchart";
+import { MonthlyIntakeChartSkeleton } from "@/components/dashboard/monthly-intake-chart-skeleton";
+import AppointmentStatusPieChart from "@/components/dashboard/appointment-status-pie-chart";
+import AppointmentStatusPieChartSkeleton from "@/components/dashboard/appointment-status-pie-chart-skeleton";
+import DuePatientTablesSkeleton from "@/components/dashboard/due-patients-tables-skeleton";
 
 export const revalidate = 3600;
 
@@ -61,16 +67,19 @@ export default async function Dashboard({
           </div>
 
           <TabsContent value="overview" className="space-y-4">
-            <Suspense fallback={<>Loading...</>}>
+            <Suspense fallback={<KpiCardsSkeleton />}>
               <KpiCards />
             </Suspense>
 
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
-              <Suspense fallback={<>Loading...</>}>
-                <Charts />
+              <Suspense fallback={<MonthlyIntakeChartSkeleton />}>
+                <MonthlyIntakeBarChart />
+              </Suspense>
+              <Suspense fallback={<AppointmentStatusPieChartSkeleton />}>
+                <AppointmentStatusPieChart />
               </Suspense>
 
-              <Suspense fallback={<>Loading...</>}>
+              <Suspense fallback={<DuePatientTablesSkeleton />}>
                 <DuePatientTables year={year} month={month} />
               </Suspense>
             </div>
