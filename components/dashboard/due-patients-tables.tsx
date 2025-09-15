@@ -11,7 +11,7 @@ import { PatientsDueCalendar } from "./patient-due-calendar";
 const DuePatientTables = ({
   monthDuePatients,
 }: {
-  monthDuePatients: MonthDuePatient[];
+  monthDuePatients: any[];
 }) => {
   return (
     <>
