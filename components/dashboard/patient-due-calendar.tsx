@@ -46,7 +46,7 @@ export function PatientsDueCalendar({
     const params = new URLSearchParams(searchParams.toString());
     params.set("year", String(year));
     params.set("month", String(month));
-    router.push(`/dashboard?${params.toString()}`);
+    router.push(`/dashboard?${params.toString()}`, { scroll: false });
   };
 
   return (
