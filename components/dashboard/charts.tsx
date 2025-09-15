@@ -2,6 +2,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AppointmentStatusChart } from "./appointment-status-chart";
 import { MonthlyIntakeChart } from "./monthly-intake";
 import { MonthlyData } from "@/definitions/dashboard";
+import { Suspense } from "react";
+import { MonthlyIntakeChartSkeleton } from "./monthly-intake-chart-skeleton";
 
 export default function Charts({ data }: { data: MonthlyData[] }) {
   return (
@@ -12,7 +14,9 @@ export default function Charts({ data }: { data: MonthlyData[] }) {
           <CardTitle>Monthly Intake of New Patients</CardTitle>
         </CardHeader>
         <CardContent>
-          <MonthlyIntakeChart data={data} />
+          <Suspense fallback={<MonthlyIntakeChartSkeleton />}>
+            <MonthlyIntakeChart data={data} />
+          </Suspense>
         </CardContent>
       </Card>
       <Card className="col-span-1 lg:col-span-6">
