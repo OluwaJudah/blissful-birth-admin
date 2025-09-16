@@ -1,6 +1,7 @@
 import dbConnect from "@/lib/db";
 import Appointment from "@/models/appointment";
 import MotherInfo from "@/models/mother-info";
+import PaymentEntry from "@/models/payment-history";
 
 export async function getKpiData() {
   await dbConnect();
@@ -37,10 +38,9 @@ export async function getKpiData() {
     date: { $gte: today },
   });
 
-  // 5. Revenue (sum of appointment payments – placeholder example)
-  const revenueAgg = await Appointment.aggregate([
-    { $match: { date: { $gte: today } } },
-    { $group: { _id: null, total: { $sum: "$paymentAmount" } } },
+  // 5. Revenue (sum of all payments in PaymentEntry)
+  const revenueAgg = await PaymentEntry.aggregate([
+    { $group: { _id: null, total: { $sum: "$amount" } } },
   ]);
   const revenue = `R ${revenueAgg[0]?.total?.toLocaleString() || "0"}`;
 
@@ -59,13 +59,29 @@ export async function getKpiData() {
     edd: { $gte: startOfMonth, $lte: endOfMonth },
   });
 
+  // 7. Payments KPI – sum of payments for the current month
+  const paymentsAgg = await PaymentEntry.aggregate([
+    {
+      $match: {
+        createdAt: { $gte: startOfMonth, $lte: endOfMonth },
+      },
+    },
+    {
+      $group: { _id: null, totalPayments: { $sum: "$amount" } },
+    },
+  ]);
+  const paymentsThisMonth = `R ${
+    paymentsAgg[0]?.totalPayments?.toLocaleString() || "0"
+  }`;
+
   return {
     totalPatients,
     activeClients,
     newPatientIntake,
     totalAppointments,
-    revenue,
+    revenue, // ✅ Now using PaymentEntry as the revenue source
     mothersDueThisMonth,
+    paymentsThisMonth,
   };
 }
 
