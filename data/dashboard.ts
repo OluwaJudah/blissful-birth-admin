@@ -196,3 +196,53 @@ export async function getPatientsForMonth(year: number, month: number) {
     dueDate: p.edd,
   }));
 }
+
+export async function getMonthlyRevenueData() {
+  await dbConnect();
+
+  const now = new Date();
+  const startOfYear = new Date(now.getFullYear(), 0, 1);
+  const endOfYear = new Date(now.getFullYear(), 11, 31, 23, 59, 59, 999);
+
+  // Aggregate revenue by month for the current year
+  const monthlyRevenue = await PaymentEntry.aggregate([
+    {
+      $match: {
+        createdAt: { $gte: startOfYear, $lte: endOfYear },
+      },
+    },
+    {
+      $group: {
+        _id: { $month: "$createdAt" },
+        totalRevenue: { $sum: "$amount" },
+      },
+    },
+    {
+      $sort: { _id: 1 },
+    },
+  ]);
+
+  // Format data for the chart
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  return monthNames.map((name, idx) => {
+    const revenueData = monthlyRevenue.find((d) => d._id === idx + 1);
+    return {
+      month: name,
+      revenue: revenueData ? revenueData.totalRevenue : 0,
+    };
+  });
+}

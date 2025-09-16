@@ -16,6 +16,7 @@ import MonthlyIntakeBarChartSkeleton from "@/components/dashboard/monthly-intake
 import AppointmentStatusPieChart from "@/components/dashboard/appointment-status-pie-chart";
 import AppointmentStatusPieChartSkeleton from "@/components/dashboard/appointment-status-pie-chart-skeleton";
 import DuePatientTablesSkeleton from "@/components/dashboard/due-patients-tables-skeleton";
+import MonthlyRevenueBarChart from "@/components/dashboard/monthly-revenue-barchart";
 
 export const revalidate = 3600;
 
@@ -80,6 +81,11 @@ export default async function Dashboard({
 
               <Suspense fallback={<DuePatientTablesSkeleton />}>
                 <DuePatientTables year={year} month={month} />
+              </Suspense>
+            </div>
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
+              <Suspense fallback={<MonthlyIntakeBarChartSkeleton />}>
+                <MonthlyRevenueBarChart />
               </Suspense>
             </div>
           </TabsContent>
