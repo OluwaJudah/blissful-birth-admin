@@ -47,7 +47,7 @@ export const sidebarData: SidebarData = {
         },
         {
           title: "Clients",
-          url: "/clients",
+          url: "/clients?status=onboarded&page=0",
           icon: IconUsers,
         },
         {

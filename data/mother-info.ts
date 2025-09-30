@@ -251,23 +251,28 @@ export async function getPaginatedMothers({
 export const getMotherInfoWithPaymentSum = async (
   page: number,
   pageSize: number,
-  searchTerm?: string
+  searchTerm?: string,
+  status?: "all" | "onboarded" | "pending" | "closed"
 ) => {
   await dbConnect();
 
-  const matchStage =
-    searchTerm && searchTerm.trim() !== ""
-      ? {
-          $or: [
-            { fullName: { $regex: searchTerm, $options: "i" } },
-            { surname: { $regex: searchTerm, $options: "i" } },
-            { email: { $regex: searchTerm, $options: "i" } },
-            { contactNumber: { $regex: searchTerm, $options: "i" } },
-          ],
-        }
-      : {};
+  // Build matchStage dynamically
+  const matchStage: any = {};
 
-  // Get total count for pagination based on search
+  // Search conditions
+  if (searchTerm && searchTerm.trim() !== "") {
+    matchStage.$or = [
+      { fullName: { $regex: searchTerm, $options: "i" } },
+      { surname: { $regex: searchTerm, $options: "i" } },
+      { email: { $regex: searchTerm, $options: "i" } },
+      { contactNumber: { $regex: searchTerm, $options: "i" } },
+    ];
+  }
+
+  // Tabs filter (status)
+  if (status !== "all") matchStage.status = status; // adjust to your schema
+
+  // Get total count for pagination based on filters
   const totalCount = await MotherInfo.countDocuments(matchStage);
 
   const mothers = await MotherInfo.aggregate([
@@ -296,10 +301,12 @@ export const getMotherInfoWithPaymentSum = async (
         packageType: 1,
         paymentSum: 1,
         edd: 1,
+        status: 1, // keep for tab filtering display
       },
     },
   ]);
 
+  // Format results
   const paginatedMothers = mothers.map(
     ({
       _id,
@@ -310,6 +317,7 @@ export const getMotherInfoWithPaymentSum = async (
       email,
       paymentSum,
       edd,
+      status,
     }) => ({
       _id,
       fullName: `${fullName} ${surname}`,
@@ -318,6 +326,7 @@ export const getMotherInfoWithPaymentSum = async (
       email,
       paymentSum,
       edd,
+      status,
     })
   );
 

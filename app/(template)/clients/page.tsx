@@ -15,19 +15,27 @@ export const revalidate = 60;
 export default async function Users({
   searchParams,
 }: {
-  searchParams: Promise<{ page?: string; pageSize?: string; search?: string }>;
+  searchParams: Promise<{
+    page?: string;
+    pageSize?: string;
+    search?: string;
+    status?: "all" | "onboarded" | "pending" | "closed";
+  }>;
 }) {
   const resolvedSearchParams = await searchParams;
 
   const currentPage = Number(resolvedSearchParams.page) || 0;
   const pageSize = Number(resolvedSearchParams.pageSize) || 10;
   const searchTerm = resolvedSearchParams.search || "";
+  const status = resolvedSearchParams.status || "all"; // default tab: all
 
   const { data, totalCount } = await getMotherInfoWithPaymentSum(
     currentPage,
     pageSize,
-    searchTerm
+    searchTerm,
+    status
   );
+
   const clients = JSON.parse(JSON.stringify(data));
   const pageCount = Math.ceil(totalCount / pageSize);
 
@@ -42,12 +50,13 @@ export default async function Users({
       </Header>
 
       <Main>
-        <div className="mb-2 flex flex-wrap items-center justify-between space-y-2">
+        <div className="mb-2 flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-2 sm:space-y-0">
           <div>
             <h2 className="text-2xl font-bold tracking-tight">Clients</h2>
             <p className="text-muted-foreground">Manage your clients here.</p>
           </div>
         </div>
+
         <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0">
           <Suspense fallback={<>Loading...</>}>
             <UsersTable
