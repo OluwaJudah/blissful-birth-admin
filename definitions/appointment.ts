@@ -48,9 +48,7 @@ export type BabyReportFormState = {
 };
 
 export const babyReportFormSchema = z.object({
-  babyHeight: z.coerce.number().min(1, {
-    message: "Baby's Height must be greater than 0.",
-  }),
+  babyHeight: z.coerce.number(),
   babyHeartRate: z.coerce.number(),
   babyPresentation: z.string(),
   babyPosition: z.string(),
@@ -86,27 +84,17 @@ export type MotherReportFormState = {
 };
 
 export const motherReportFormSchema = z.object({
-  motherWeight: z.coerce.number().min(1, {
-    message: "Mother's Weight must be greater than 0.",
-  }),
-  motherBloodPressure: z.string().regex(/^\d{2,3}\/\d{2,3}$/, {
-    message: "Please follow the pattern of mm/Hg. E.g 120/80",
-  }),
-  motherPulse: z.coerce.number().min(1, {
-    message: "Mother's Pulse must be greater than 0.",
-  }),
-  motherLeucosite: z.string().min(1, {
-    message: "Mother's Leucosite must be (Clear, Trace, +1, +2, +3).",
-  }),
-  motherGlucose: z.string().min(1, {
-    message: "Mother's Glucose must be (Clear, Trace, +1, +2, +3).",
-  }),
-  motherProtein: z.string().min(1, {
-    message: "Mother's Protein must be (Clear, Trace, +1, +2, +3).",
-  }),
-  motherBlood: z.string().min(1, {
-    message: "Mother's Blood must be (Clear, Trace, +1, +2, +3).",
-  }),
+  motherWeight: z.coerce.number(),
+  motherBloodPressure: z
+    .string()
+    .refine((val) => val === "" || /^\d{2,3}\/\d{2,3}$/.test(val), {
+      message: "Blood Pressure must be in the format 120/80",
+    }),
+  motherPulse: z.coerce.number(),
+  motherLeucosite: z.string(),
+  motherGlucose: z.string(),
+  motherProtein: z.string(),
+  motherBlood: z.string(),
   motherNote: z.string(),
 });
 
