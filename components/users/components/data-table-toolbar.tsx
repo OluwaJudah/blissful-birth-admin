@@ -31,7 +31,7 @@ export function DataTableToolbar<TData>({
       } else {
         params.delete("search");
       }
-      params.set("page", "0"); // Reset pagination on new search
+
       router.push(`?${params.toString()}`);
     }, 500);
 
