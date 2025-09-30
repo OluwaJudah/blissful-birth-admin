@@ -11,7 +11,7 @@ import { IconDots } from "@tabler/icons-react";
 import { useUsers } from "./context/users-context";
 import { Trash } from "lucide-react";
 
-export function ProfileOptionsDropdown({ id }: { id: string }) {
+export function ProfileOptionsDropdown() {
   const { setOpen } = useUsers();
 
   return (

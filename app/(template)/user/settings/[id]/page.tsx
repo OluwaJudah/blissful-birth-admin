@@ -40,7 +40,7 @@ export default async function SettingsProfile({
           </div>
           <div className="flex gap-1">
             <EditProfileButton />
-            <ProfileOptionsDropdown id={id} />
+            <ProfileOptionsDropdown />
           </div>
         </div>
         <Separator className="my-4 flex-none" />
