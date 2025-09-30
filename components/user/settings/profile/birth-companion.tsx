@@ -19,44 +19,45 @@ const BirthCompanion = async ({ userId }: { userId: string }) => {
 
   return (
     <div className="h-[340px]">
-      <div className="grid grid-cols-4 gap-y-4 gap-x-8 h-[200px]">
-        <div className="">
+      <div className="grid grid-cols-4 gap-y-4 gap-x-8 h-[200px] mb-3">
+        <div className="break-words">
           <div className="text-sm font-bold">Full Name</div>
-          <div className="">{fullName}</div>
+          <div className="break-words">{fullName}</div>
         </div>
-        <div className="">
+        <div className="break-words">
           <div className="text-sm font-bold">Surname</div>
-          <div className="">{surname}</div>
+          <div className="break-words">{surname}</div>
         </div>
-        <div className="">
+        <div className="break-words">
           <div className="text-sm font-bold">Maiden Name</div>
-          <div className="">{maidenName || "N/A"}</div>
+          <div className="break-words">{maidenName || "N/A"}</div>
         </div>
-        <div className="">
+        <div className="break-words">
           <div className="text-sm font-bold">ID / Passport</div>
-          <div className="">{idPassportNo}</div>
+          <div className="break-words">{idPassportNo}</div>
         </div>
-        <div className="">
+        <div className="break-words">
           <div className="text-sm font-bold">Date of Birth</div>
-          <div className="">{dateOfBirth.toDateString()}</div>
+          <div className="break-words">{dateOfBirth.toDateString()}</div>
         </div>
-        <div className="">
+        <div className="break-words">
           <div className="text-sm font-bold">Contact Number</div>
-          <div className="">{contactNumber}</div>
+          <div className="break-words">{contactNumber}</div>
         </div>
-        <div className="">
+        <div className="break-words">
           <div className="text-sm font-bold">Email Address</div>
-          <div className="">{email || "N/A"}</div>
+          <div className="break-words">{email || "N/A"}</div>
         </div>
-        <div className="">
+        <div className="break-words">
           <div className="text-sm font-bold">Country Of Origin</div>
-          <div className="">{countryOfOrigin}</div>
+          <div className="break-words">{countryOfOrigin}</div>
         </div>
-        <div className="">
+        <div className="break-words">
           <div className="text-sm font-bold">Occupation</div>
-          <div className="">{occupation || "N/A"}</div>
+          <div className="break-words">{occupation || "N/A"}</div>
         </div>
       </div>
+
       <div className="h-[100px]">
         <div className="mb-4">
           <div className="font-semibold text-base">Baby's Information</div>
@@ -65,13 +66,13 @@ const BirthCompanion = async ({ userId }: { userId: string }) => {
           </div>
         </div>
         <div className="grid grid-cols-4 gap-y-4 gap-x-8 h-[100px]">
-          <div className="">
+          <div className="break-words">
             <div className="text-sm font-bold">Full Name</div>
-            <div className="">{babyInfo.fullName || "N/A"}</div>
+            <div className="break-words">{babyInfo.fullName || "N/A"}</div>
           </div>
-          <div className="">
+          <div className="break-words">
             <div className="text-sm font-bold">Surname</div>
-            <div className="">{babyInfo.surname || "N/A"}</div>
+            <div className="break-words">{babyInfo.surname || "N/A"}</div>
           </div>
         </div>
       </div>

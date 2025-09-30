@@ -49,75 +49,81 @@ const MotherInfo = async ({ userId }: { userId: string }) => {
     packageTypeMap[packageType as keyof typeof packageTypeMap] || "N/A";
 
   return (
-    <div className="grid grid-cols-4 gap-y-1 gap-x-2 h-[300px]">
-      <div className="">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-4 gap-x-6">
+      <div className="flex flex-col">
         <div className="text-sm font-bold">Full Name</div>
-        <div className="">{fullName}</div>
+        <div className="break-words">{fullName}</div>
       </div>
-      <div className="">
+      <div className="flex flex-col">
         <div className="text-sm font-bold">Surname</div>
-        <div className="">{surname}</div>
+        <div className="break-words">{surname}</div>
       </div>
-      <div className="">
+      <div className="flex flex-col">
         <div className="text-sm font-bold">Maiden Name</div>
-        <div className="">{maidenName || "N/A"}</div>
+        <div className="break-words">{maidenName || "N/A"}</div>
       </div>
-      <div className="">
+      <div className="flex flex-col">
         <div className="text-sm font-bold">ID / Passport</div>
-        <div className="">{idPassportNo || "N/A"}</div>
+        <div className="break-words">{idPassportNo || "N/A"}</div>
       </div>
-      <div className="">
+      <div className="flex flex-col">
         <div className="text-sm font-bold">Date of Birth</div>
-        <div className="">{dateOfBirth?.toDateString() || "N/A"}</div>
+        <div className="break-words">
+          {dateOfBirth?.toDateString() || "N/A"}
+        </div>
       </div>
-      <div className="">
+      <div className="flex flex-col">
         <div className="text-sm font-bold">Contact Number</div>
-        <div className="">{contactNumber || "N/A"}</div>
+        <div className="break-words">{contactNumber || "N/A"}</div>
       </div>
-      <div className="">
+      <div className="flex flex-col">
         <div className="text-sm font-bold">Email Address</div>
-        <div className="">{email || "N/A"}</div>
+        <div className="break-words">{email || "N/A"}</div>
       </div>
-      <div className="">
+      <div className="flex flex-col">
         <div className="text-sm font-bold">Country Of Origin</div>
-        <div className="">{countryOfOrigin || "N/A"}</div>
+        <div className="break-words">{countryOfOrigin || "N/A"}</div>
       </div>
-      <div className="">
+      <div className="flex flex-col">
         <div className="text-sm font-bold">Occupation</div>
-        <div className="">{occupation || "N/A"}</div>
+        <div className="break-words">{occupation || "N/A"}</div>
       </div>
-      <div className="">
+      <div className="flex flex-col">
         <div className="text-sm font-bold">Last Menstrual Cycle</div>
-        <div className="">{lastMenstrualDate?.toDateString() || "N/A"}</div>
+        <div className="break-words">
+          {lastMenstrualDate?.toDateString() || "N/A"}
+        </div>
       </div>
-      <div className="">
+      <div className="flex flex-col">
         <div className="text-sm font-bold">Expected Delivery Date (EDD)</div>
-        <div className="">{eddStr || "N/A"}</div>
+        <div className="break-words">{eddStr || "N/A"}</div>
       </div>
-      <div className="">
+      <div className="flex flex-col">
         <div className="text-sm font-bold">Age</div>
-        <div className="">{age || "N/A"}</div>
+        <div className="break-words">{age || "N/A"}</div>
       </div>
-      <div className="">
+      <div className="flex flex-col">
         <div className="text-sm font-bold">G</div>
-        <div className="">{g || "N/A"}</div>
+        <div className="break-words">{g || "N/A"}</div>
       </div>
-      <div className="">
+      <div className="flex flex-col">
         <div className="text-sm font-bold">P</div>
-        <div className="">{p || "N/A"}</div>
+        <div className="break-words">{p || "N/A"}</div>
       </div>
-      <div className="">
+      <div className="flex flex-col">
         <div className="text-sm font-bold">Package Type</div>
-        <div className="">{packageTypeStr}</div>
+        <div className="break-words">{packageTypeStr}</div>
       </div>
-      <div className="">
+      <div className="flex flex-col">
         <div className="text-sm font-bold">Status</div>
-        <div className="">{statusStr}</div>
+        <div className="break-words">{statusStr}</div>
       </div>
-      <div className="col-span-4">
-        <div className="w-2/3">
-          <div className="text-sm font-bold">Registration Link: </div>
-          <div>https://blissful-birth.vercel.app/register?id={userId}</div>
+
+      {/* Full-width row */}
+      <div className="col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4 flex flex-col">
+        <div className="text-sm font-bold">Registration Link:</div>
+        <div className="break-words">
+          https://blissful-birth.vercel.app/register?id={userId}
         </div>
       </div>
     </div>
