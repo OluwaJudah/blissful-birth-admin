@@ -26,7 +26,7 @@ const KpiCards = async () => {
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       <KpiCard title="Total Patients" value={totalPatients} icon={<User />} />
       <KpiCard
-        title="Active Client"
+        title="Pregnant Patients"
         value={activeClients}
         icon={<IconUsersGroup />}
       />
