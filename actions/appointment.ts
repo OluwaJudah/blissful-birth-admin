@@ -3,6 +3,7 @@ import {
   APPOINTMENT,
   COMPLETED_APPOINTMENT,
   MAX_PER_SLOT,
+  MISSED_APPOINTMENT,
   PATIENT_CLOSED,
   PATIENT_ONBOARDED,
   PENDING_APPOINTMENT,
@@ -524,6 +525,25 @@ export const deleteAppointment = async (
     session.endSession();
   }
 
+  revalidatePath(pathname);
+  redirect(pathname);
+};
+
+export const missedAppointment = async (
+  appointmentId: string,
+  pathname: string
+) => {
+  if (!Types.ObjectId.isValid(appointmentId)) {
+    throw new Error("Invalid appointment ID");
+  }
+  await dbConnect();
+  try {
+    await Appointment.findByIdAndUpdate(appointmentId, {
+      $set: { status: MISSED_APPOINTMENT },
+    });
+  } catch (err) {
+    throw Error(`Error: Failed to update patient's status`);
+  }
   revalidatePath(pathname);
   redirect(pathname);
 };

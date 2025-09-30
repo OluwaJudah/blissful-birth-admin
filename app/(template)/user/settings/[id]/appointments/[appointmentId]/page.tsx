@@ -9,7 +9,7 @@ import { Suspense } from "react";
 import { calculateTrimester } from "@/utils";
 import { trimesters } from "@/constants/user";
 // import { SendReminderButton } from "@/components/user/settings/appointments/[appointmentId]/send-reminder-button";
-import { DeleteAppointmmentButton } from "@/components/user/settings/appointments/[appointmentId]/delete-button";
+import { AppointmentOptionsDropdown } from "@/components/user/settings/appointments/[appointmentId]/appointment-options-dropdown";
 
 export default async function Appointments({
   params,
@@ -37,7 +37,7 @@ export default async function Appointments({
           <div className="flex gap-1">
             <Suspense fallback={<>Loading ...</>}>
               <RescheduleAppointmmentButton />
-              <DeleteAppointmmentButton />
+              <AppointmentOptionsDropdown status={appointment?.status || ""} />
               {/* <SendReminderButton /> */}
             </Suspense>
           </div>

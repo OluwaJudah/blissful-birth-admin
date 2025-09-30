@@ -9,6 +9,7 @@ type UsersDialogType =
   | "edit"
   | "delete"
   | "send-reminder"
+  | "missed"
   | "";
 
 interface UsersContextType {

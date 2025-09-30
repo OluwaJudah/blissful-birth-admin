@@ -4,6 +4,7 @@ import { useUsers } from "./context/users-context";
 import { EditAppointmentDialog } from "./users-action-dialog";
 import { CreateNotificationActionDialog } from "./create-notification-dialog";
 import { DeleteAppointmentDialog } from "./users-delete-dialog";
+import { AppointmentMissedDialog } from "./appointment-missed-dialog";
 
 export function UsersDialogs({
   appointmentId,
@@ -38,6 +39,14 @@ export function UsersDialogs({
         appointmentId={appointmentId}
         open={open === "delete"}
         onOpenChange={() => setOpen("delete")}
+      />
+
+      <AppointmentMissedDialog
+        key="user-missed"
+        userId={userId}
+        appointmentId={appointmentId}
+        open={open === "missed"}
+        onOpenChange={() => setOpen("missed")}
       />
     </>
   );

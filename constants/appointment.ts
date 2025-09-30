@@ -1,4 +1,5 @@
 export const COMPLETED_APPOINTMENT = "completed";
+export const MISSED_APPOINTMENT = "missed";
 export const PENDING_APPOINTMENT = "pending";
 export const APPOINTMENT = "appointment";
 export const PATIENT_ONBOARDED = "onboarded";
