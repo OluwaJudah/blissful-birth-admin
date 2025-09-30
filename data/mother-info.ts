@@ -256,6 +256,10 @@ export const getMotherInfoWithPaymentSum = async (
 ) => {
   await dbConnect();
 
+  await MotherInfo.updateMany(
+    { edd: { $ne: null }, status: "pending" }, // condition: date is not null
+    { $set: { status: "onboarded" } } // update: set status
+  );
   // Build matchStage dynamically
   const matchStage: any = {};
 
