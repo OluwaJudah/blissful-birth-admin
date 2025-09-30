@@ -1,5 +1,4 @@
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const AppointmentStatusButtons = ({ status, stats, filterByStatus }: any) => {
   const statusArr = [
@@ -7,29 +6,23 @@ const AppointmentStatusButtons = ({ status, stats, filterByStatus }: any) => {
     { name: "Pending", data: stats.pending, value: "pending" },
     { name: "Confirmed", data: stats.confirmed, value: "confirmed" },
     { name: "Completed", data: stats.completed, value: "completed" },
+    { name: "Missed", data: stats.missed, value: "missed" },
   ];
 
   return (
     <div className="flex flex-col items-start gap-2">
       <div className="text-sm font-medium">Filter Status:</div>
       <div className="flex flex-row items-center gap-3">
-        {statusArr.map((s) => (
-          <Button
-            key={s.value}
-            type="button"
-            onClick={() => filterByStatus(s.value)}
-            className={
-              status === s.value
-                ? ""
-                : "border-2 border-gray bg-white text-black hover:bg-gray-200"
-            }
-          >
-            {s.name}{" "}
-            <Badge className={status === s.value ? "bg-white text-black" : ""}>
-              {s.data}
-            </Badge>
-          </Button>
-        ))}
+        {/* Tabs Filter */}
+        <Tabs value={status} onValueChange={filterByStatus} className="w-full">
+          <TabsList>
+            {statusArr.map((s) => (
+              <TabsTrigger key={s.value} value={s.value}>
+                {s.name} ({s.data || 0})
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
       </div>
     </div>
   );

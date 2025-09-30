@@ -27,6 +27,7 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
     pending: 0,
     confirmed: 0,
     completed: 0,
+    missed: 0,
   });
 
   const statusMap = {
@@ -34,6 +35,7 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
     confirmed: "Confirmed",
     cancelled: "Cancelled",
     completed: "Completed",
+    missed: "Missed",
     all: "",
   };
 
@@ -84,6 +86,7 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
     let pending = 0,
       confirmed = 0,
       completed = 0,
+      missed = 0,
       all = 0;
 
     appointments.forEach((entry) => {
@@ -93,11 +96,12 @@ export const Appointments = ({ appointments }: { appointments: any[] }) => {
           if (app.status.toLowerCase() === "pending") ++pending;
           else if (app.status.toLowerCase() === "confirmed") ++confirmed;
           else if (app.status.toLowerCase() === "completed") ++completed;
+          else if (app.status.toLowerCase() === "missed") ++missed;
         });
       });
     });
 
-    setStats({ all, pending, confirmed, completed });
+    setStats({ all, pending, confirmed, completed, missed });
   };
 
   return (
