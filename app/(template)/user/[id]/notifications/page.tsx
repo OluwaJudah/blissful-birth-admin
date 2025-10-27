@@ -1,6 +1,6 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import Notification from "@/components/user/settings/notifications/Notification";
+import Notification from "@/components/user/[id]/notifications/Notification";
 
 export default function SettingsAccount() {
   return (

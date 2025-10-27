@@ -25,7 +25,7 @@ const FirstAppointmentForm = ({
   edd: string;
 }) => {
   const formRef = useRef<HTMLFormElement>(null);
-  const pathname = `/user/settings/${userId}/appointments`;
+  const pathname = `/user/${userId}/appointments`;
   const generateAppointmentsWithUserId = generateAppointments.bind(
     null,
     userId,

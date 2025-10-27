@@ -1,9 +1,9 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import UsersProvider from "@/components/user/settings/payment-history/context/users-context";
-import { PaymentPrimaryButton } from "@/components/user/settings/payment-history/payment-button";
-import PaymentEntry from "@/components/user/settings/payment-history/PaymentEntry";
-import { UsersDialogs } from "@/components/user/settings/payment-history/users-dialogs";
+import UsersProvider from "@/components/user/[id]/payment-history/context/users-context";
+import { PaymentPrimaryButton } from "@/components/user/[id]/payment-history/payment-button";
+import PaymentEntry from "@/components/user/[id]/payment-history/PaymentEntry";
+import { UsersDialogs } from "@/components/user/[id]/payment-history/users-dialogs";
 import { fetchPaymentEntry } from "@/data/payment-history";
 import { Suspense } from "react";
 

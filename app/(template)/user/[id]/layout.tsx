@@ -1,19 +1,14 @@
 import {
-  IconBellRinging2,
   IconCalendarEvent,
-  IconCashRegister,
   IconDropletHalfFilled,
-  IconHistory,
-  IconMedicalCross,
-  IconNotification,
   IconReceiptDollar,
   IconReportMedical,
-  IconTool,
+  IconScan,
   IconUser,
 } from "@tabler/icons-react";
 import { Separator } from "@/components/ui/separator";
 import { Main } from "@/components/layout/main";
-import SidebarNav from "@/components/user/settings/components/sidebar-nav";
+import SidebarNav from "@/components/user/[id]/components/sidebar-nav";
 import { Header } from "@/components/layout/header";
 import { ProfileDropdown } from "@/components/profile-dropdown";
 import { Search } from "@/components/search";
@@ -34,27 +29,32 @@ export default async function RootLayout({
     {
       title: "Profile",
       icon: <IconUser size={18} />,
-      href: `/user/settings/${id}`,
+      href: `/user/${id}`,
     },
     {
       title: "Appointments",
       icon: <IconCalendarEvent size={18} />,
-      href: `/user/settings/${id}/appointments`,
+      href: `/user/${id}/appointments`,
     },
     {
       title: "Payment History",
       icon: <IconReceiptDollar size={18} />,
-      href: `/user/settings/${id}/payment-history`,
+      href: `/user/${id}/payment-history`,
     },
     {
       title: "Medical History",
       icon: <IconReportMedical size={18} />,
-      href: `/user/settings/${id}/medical-history`,
+      href: `/user/${id}/medical-history`,
     },
     {
       title: "Blood Results",
       icon: <IconDropletHalfFilled size={18} />,
-      href: `/user/settings/${id}/blood-results`,
+      href: `/user/${id}/blood-results`,
+    },
+    {
+      title: "Scans",
+      icon: <IconScan size={18} />,
+      href: `/user/${id}/scans`,
     },
   ];
 

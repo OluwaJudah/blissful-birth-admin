@@ -28,7 +28,7 @@ const AppointmentEntry = ({
       ? `Week ${pregnancyWeeks} - ${trimesterStr} Trimester - (FIRST APPOINTMENT)`
       : `Week ${pregnancyWeeks} - ${trimesterStr} Trimester`;
 
-  let url = `/user/settings/${userId}/appointments/${id}`;
+  let url = `/user/${userId}/appointments/${id}`;
 
   if (type === FIRST_APPOINTMENT) url += "?first=true";
 

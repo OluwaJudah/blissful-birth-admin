@@ -1,5 +1,5 @@
-import { AppearanceForm } from "@/components/user/settings/components/appearance-form";
-import ContentSection from "@/components/user/settings/components/content-section";
+import { AppearanceForm } from "@/components/user/[id]/components/appearance-form";
+import ContentSection from "@/components/user/[id]/components/content-section";
 
 export default function SettingsAppearance() {
   return (

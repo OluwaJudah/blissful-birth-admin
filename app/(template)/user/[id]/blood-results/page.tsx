@@ -1,5 +1,5 @@
-import ContentSection from "@/components/user/settings/medical-history/content-section";
-import { BloodResultsForm } from "@/components/user/settings/blood-results/blood-results-form";
+import ContentSection from "@/components/user/[id]/medical-history/content-section";
+import { BloodResultsForm } from "@/components/user/[id]/blood-results/blood-results-form";
 import { defaultBloodResultsData } from "@/definitions/mother-info";
 import { getBloodResult } from "@/data/mother-info";
 import { Suspense } from "react";

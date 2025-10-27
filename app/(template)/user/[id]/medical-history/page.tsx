@@ -1,5 +1,5 @@
-import { MedicalHistoryForm } from "@/components/user/settings/medical-history/medical-history-form";
-import ContentSection from "@/components/user/settings/medical-history/content-section";
+import { MedicalHistoryForm } from "@/components/user/[id]/medical-history/medical-history-form";
+import ContentSection from "@/components/user/[id]/medical-history/content-section";
 import { getMedicalHistory } from "@/data/mother-info";
 import { defaultMedicalHistoryData } from "@/definitions/mother-info";
 import { Suspense } from "react";

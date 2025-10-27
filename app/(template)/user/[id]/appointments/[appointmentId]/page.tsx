@@ -1,15 +1,15 @@
-import AppointmentTabs from "@/components/user/settings/appointments/[appointmentId]/appointment-tabs";
-import UsersProvider from "@/components/user/settings/appointments/[appointmentId]/context/users-context";
+import AppointmentTabs from "@/components/user/[id]/appointments/[appointmentId]/appointment-tabs";
+import UsersProvider from "@/components/user/[id]/appointments/[appointmentId]/context/users-context";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { RescheduleAppointmmentButton } from "@/components/user/settings/appointments/[appointmentId]/appointment-button";
-import { UsersDialogs } from "@/components/user/settings/appointments/[appointmentId]/users-dialogs";
+import { RescheduleAppointmmentButton } from "@/components/user/[id]/appointments/[appointmentId]/appointment-button";
+import { UsersDialogs } from "@/components/user/[id]/appointments/[appointmentId]/users-dialogs";
 import { getAppointment } from "@/data/appointment";
 import { Suspense } from "react";
 import { calculateTrimester } from "@/utils";
 import { trimesters } from "@/constants/user";
-// import { SendReminderButton } from "@/components/user/settings/appointments/[appointmentId]/send-reminder-button";
-import { AppointmentOptionsDropdown } from "@/components/user/settings/appointments/[appointmentId]/appointment-options-dropdown";
+// import { SendReminderButton } from "@/components/user/[id]/appointments/[appointmentId]/send-reminder-button";
+import { AppointmentOptionsDropdown } from "@/components/user/[id]/appointments/[appointmentId]/appointment-options-dropdown";
 
 export default async function Appointments({
   params,

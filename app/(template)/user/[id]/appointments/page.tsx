@@ -1,14 +1,14 @@
-import UsersProvider from "@/components/user/settings/appointments/context/users-context";
+import UsersProvider from "@/components/user/[id]/appointments/context/users-context";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import AppointmentEntry from "@/components/user/settings/appointments/AppointmentEntry";
+import AppointmentEntry from "@/components/user/[id]/appointments/AppointmentEntry";
 import { getMotherAppointments } from "@/data/appointment";
-import { UsersDialogs } from "@/components/user/settings/appointments/users-dialogs";
+import { UsersDialogs } from "@/components/user/[id]/appointments/users-dialogs";
 import { Suspense } from "react";
 import { PATIENT_CLOSED } from "@/constants/appointment";
 import { getMotherDetails } from "@/data/mother-info";
-import { CreateAppointmmentButton } from "@/components/user/settings/appointments/create-appointment-button";
-import { AppointmentOptionsDropdown } from "@/components/user/settings/appointments/appointment-options-dropdown";
+import { CreateAppointmmentButton } from "@/components/user/[id]/appointments/create-appointment-button";
+import { AppointmentOptionsDropdown } from "@/components/user/[id]/appointments/appointment-options-dropdown";
 
 export const revalidate = 0;
 

@@ -50,7 +50,7 @@ const AppointmentDetails = ({
       />
 
       <Link
-        href={`/user/settings/${userId}/appointments/${_id}`}
+        href={`/user/${userId}/appointments/${_id}`}
         className="rounded-3xl border flex justify-between items-center gap-3 px-2 py-1 hover:shadow-md w-full"
       >
         <div className="flex items-center gap-3">

@@ -1,5 +1,5 @@
-import ContentSection from "@/components/user/settings/components/content-section";
-import { DisplayForm } from "@/components/user/settings/components/display-form";
+import ContentSection from "@/components/user/[id]/components/content-section";
+import { DisplayForm } from "@/components/user/[id]/components/display-form";
 
 export default function SettingsDisplay() {
   return (

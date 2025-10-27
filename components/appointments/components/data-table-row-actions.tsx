@@ -39,7 +39,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
             onClick={() => {
               setCurrentRow(row.original);
               router.push(
-                `/user/settings/${row.original?.userId}/appointments/${row.original?.id}`
+                `/user/${row.original?.userId}/appointments/${row.original?.id}`
               );
             }}
           >

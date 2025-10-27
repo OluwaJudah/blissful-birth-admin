@@ -1,11 +1,11 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import ProfileTabs from "@/components/user/settings/profile/profile-tabs";
+import ProfileTabs from "@/components/user/[id]/profile/profile-tabs";
 import { getMotherDetails } from "@/data/mother-info";
-import UsersProvider from "@/components/user/settings/profile/context/users-context";
-import { UsersDialogs } from "@/components/user/settings/profile/users-dialogs";
-import { EditProfileButton } from "@/components/user/settings/profile/edit-profile-button";
-import { ProfileOptionsDropdown } from "@/components/user/settings/profile/profile-options-dropdown";
+import UsersProvider from "@/components/user/[id]/profile/context/users-context";
+import { UsersDialogs } from "@/components/user/[id]/profile/users-dialogs";
+import { EditProfileButton } from "@/components/user/[id]/profile/edit-profile-button";
+import { ProfileOptionsDropdown } from "@/components/user/[id]/profile/profile-options-dropdown";
 
 export default async function SettingsProfile({
   params,
