@@ -11,7 +11,7 @@ interface Props {
 }
 
 export function CloseAppointmentDialog({ userId, open, onOpenChange }: Props) {
-  const pathname = "/user/settings/" + userId;
+  const pathname = "/user/" + userId;
 
   const handleClose = async () => {
     await closeAppointment(userId, pathname);

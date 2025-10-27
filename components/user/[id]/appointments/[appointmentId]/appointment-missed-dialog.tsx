@@ -28,7 +28,7 @@ export function AppointmentMissedDialog({
   open,
   onOpenChange,
 }: Props) {
-  const pathname = "/user/settings/" + userId + "/appointments";
+  const pathname = "/user/" + userId + "/appointments";
   const { setOpen } = useUsers();
   const [isPending, setIspending] = useState(false);
   const route = useRouter();
