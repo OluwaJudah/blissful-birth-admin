@@ -1,8 +1,6 @@
 import ContentSection from "@/components/user/[id]/medical-history/content-section";
-import { BloodResultsForm } from "@/components/user/[id]/blood-results/blood-results-form";
-import { defaultBloodResultsData } from "@/definitions/mother-info";
-import { getBloodResult } from "@/data/mother-info";
 import { Suspense } from "react";
+import BloodResultForm from "@/components/user/[id]/blood-results/form";
 
 export default async function BloodResults({
   params,
@@ -10,9 +8,6 @@ export default async function BloodResults({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  let bloodResults = defaultBloodResultsData;
-  const data = await getBloodResult(id);
-  if (data) bloodResults = data;
 
   return (
     <ContentSection
@@ -20,7 +15,7 @@ export default async function BloodResults({
       desc="Manage the patient's blood results here."
     >
       <Suspense fallback={<>Loading...</>}>
-        <BloodResultsForm bloodResult={bloodResults} userId={id} />
+        <BloodResultForm id={id} />
       </Suspense>
     </ContentSection>
   );
