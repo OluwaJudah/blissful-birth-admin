@@ -52,7 +52,7 @@ export default async function RootLayout({
       href: `/user/${id}/blood-results`,
     },
     {
-      title: "Scans",
+      title: "Baby Scans",
       icon: <IconScan size={18} />,
       href: `/user/${id}/scans`,
     },

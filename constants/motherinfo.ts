@@ -106,3 +106,37 @@ export const packageTypeOptions = [
   { label: "Antenatal", value: "anc" },
   { label: "Full Package", value: "full" },
 ];
+
+export const scanInputForm: any[] = [
+  {
+    name: "date",
+    label: "Date of Scan",
+    type: "date",
+    placeholder: "",
+  },
+  {
+    name: "gestational_age",
+    label: "Gestational Age(weeks)",
+    type: "number",
+    placeholder: "Eg. 21",
+  },
+  {
+    name: "scan_gestation",
+    label: "Scan Gestational",
+    type: "text",
+    placeholder: "Eg. 2Eg. 23 weeks 4 days",
+  },
+];
+
+export const scanTextAreaForm: any[] = [
+  {
+    name: "outcome",
+    label: "Scan Outcome",
+    placeholder: "Please enter scan outcome here.",
+  },
+  {
+    name: "warning",
+    label: "Warning",
+    placeholder: "Please enter warning here.",
+  },
+];
