@@ -1,10 +1,9 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import UsersProvider from "@/components/user/[id]/payment-history/context/users-context";
+import PaymentList from "@/components/user/[id]/payment-history/list";
 import { PaymentPrimaryButton } from "@/components/user/[id]/payment-history/payment-button";
-import PaymentEntry from "@/components/user/[id]/payment-history/PaymentEntry";
 import { UsersDialogs } from "@/components/user/[id]/payment-history/users-dialogs";
-import { fetchPaymentEntry } from "@/data/payment-history";
 import { Suspense } from "react";
 
 export default async function PaymentHistory({
@@ -13,7 +12,6 @@ export default async function PaymentHistory({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const paymentEntries = await fetchPaymentEntry(id);
 
   return (
     <UsersProvider>
@@ -31,23 +29,7 @@ export default async function PaymentHistory({
         <Separator className="my-4 flex-none" />
         <ScrollArea className="faded-bottom -mx-4 flex-1 scroll-smooth px-4 md:pb-16">
           <Suspense fallback={<>Loading...</>}>
-            <div className="-mx-1 px-1.5 flex flex-col gap-3 w-full">
-              {paymentEntries && paymentEntries.length > 0 ? (
-                paymentEntries?.map(({ id, type, amount, createdAt }) => (
-                  <PaymentEntry
-                    key={id}
-                    id={id}
-                    type={type}
-                    amount={amount}
-                    createdAt={createdAt}
-                  />
-                ))
-              ) : (
-                <div className="w-full text-center">
-                  No Payment Entry Available
-                </div>
-              )}
-            </div>
+            <PaymentList id={id} />
           </Suspense>
         </ScrollArea>
         <UsersDialogs userId={id} />

@@ -25,7 +25,7 @@ const PaymentEntry = ({
   });
 
   return (
-    <div className="rounded-lg border flex justify-between items-center gap-3 p-4 hover:shadow-md">
+    <div className="rounded-lg border flex justify-between items-center gap-3 p-2 hover:shadow-md">
       <div className="flex items-center gap-3">
         {" "}
         <div className="flex items-center justify-between">
