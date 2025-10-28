@@ -7,6 +7,7 @@ import MedicalHistory from "@/models/medical-history";
 import MotherInfo from "@/models/mother-info";
 import { Types } from "mongoose";
 import { IMotherInfo } from "@/definitions/mother-info";
+import CheckList from "@/models/check-list";
 
 export const getMothers = async () => {
   await dbConnect();
@@ -125,58 +126,6 @@ export const getBloodResult = async (userId: string) => {
   };
 };
 
-/* export const getMotherInfoWithPaymentSum = async () => {
-  await dbConnect();
-
-  const mothers = await MotherInfo.aggregate([
-    {
-      $lookup: {
-        from: "paymententries",
-        localField: "userId",
-        foreignField: "userId",
-        as: "paymententries",
-      },
-    },
-    {
-      $addFields: { paymentSum: { $sum: "$paymententries.amount" } },
-    },
-    {
-      $project: {
-        userId: 1,
-        email: 1,
-        surname: 1,
-        fullName: 1,
-        contactNumber: 1,
-        packageType: 1,
-        paymentSum: 1,
-        edd: 1,
-      },
-    },
-    { $sort: { edd: -1 } },
-  ]);
-
-  return mothers.map(
-    ({
-      _id,
-      fullName,
-      userId,
-      surname,
-      contactNumber,
-      email,
-      paymentSum,
-      edd,
-    }) => ({
-      _id,
-      fullName: fullName + " " + surname,
-      userId,
-      contactNumber,
-      email,
-      paymentSum,
-      edd,
-    })
-  );
-};
- */
 interface PaginatedMothersInput {
   page?: number;
   limit?: number;
@@ -331,4 +280,11 @@ export const getMotherInfoWithPaymentSum = async (
   );
 
   return { data: paginatedMothers, totalCount };
+};
+
+export const getCheckList = async (userId: string) => {
+  return (
+    (await CheckList.findOne({ userId }).lean()) ||
+    (await CheckList.create({ userId }))
+  );
 };

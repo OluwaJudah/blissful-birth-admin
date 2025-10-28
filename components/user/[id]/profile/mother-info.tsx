@@ -1,12 +1,15 @@
-import { getMotherDetails } from "@/data/mother-info";
+import { getCheckList, getMotherDetails } from "@/data/mother-info";
 import {
   PATIENT_CLOSED,
   PATIENT_ONBOARDED,
   PATIENT_PENDING,
 } from "@/constants/appointment";
+import CheckList from "./check-list";
 
 const MotherInfo = async ({ userId }: { userId: string }) => {
   const mother = await getMotherDetails(userId);
+  const checklist = await getCheckList(userId);
+
   if (!mother) return null;
 
   const {
@@ -119,13 +122,18 @@ const MotherInfo = async ({ userId }: { userId: string }) => {
         <div className="break-words">{statusStr}</div>
       </div>
 
-      {/* Full-width row */}
-      <div className="col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4 flex flex-col">
+      {/* Full-width Registration Link */}
+      {/* <div className="col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4 flex flex-col">
         <div className="text-sm font-bold">Registration Link:</div>
         <div className="break-words">
           https://blissful-birth.vercel.app/register?id={userId}
         </div>
-      </div>
+      </div> */}
+
+      <CheckList
+        userId={userId!}
+        checklist={JSON.parse(JSON.stringify(checklist))}
+      />
     </div>
   );
 };

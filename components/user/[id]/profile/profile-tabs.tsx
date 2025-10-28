@@ -18,7 +18,7 @@ export default async function ProfileTabs({ userId }: { userId: string }) {
           <TabsTrigger value="mother">Mother's Information </TabsTrigger>
           <TabsTrigger value="birth-companion">
             Birth Companion & Baby
-          </TabsTrigger>
+          </TabsTrigger>{" "}
         </TabsList>
         <TabsContent value="mother">
           <Card>
