@@ -1,14 +1,13 @@
 import UsersProvider from "@/components/user/[id]/appointments/context/users-context";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import AppointmentEntry from "@/components/user/[id]/appointments/AppointmentEntry";
-import { getMotherAppointments } from "@/data/appointment";
 import { UsersDialogs } from "@/components/user/[id]/appointments/users-dialogs";
 import { Suspense } from "react";
 import { PATIENT_CLOSED } from "@/constants/appointment";
 import { getMotherDetails } from "@/data/mother-info";
 import { CreateAppointmmentButton } from "@/components/user/[id]/appointments/create-appointment-button";
 import { AppointmentOptionsDropdown } from "@/components/user/[id]/appointments/appointment-options-dropdown";
+import AppointmentList from "@/components/user/[id]/appointments/list";
 
 export const revalidate = 0;
 
@@ -18,7 +17,6 @@ export default async function SettingsAccount({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const appointments = await getMotherAppointments(id);
   const motherInfo = await getMotherDetails(id);
   const isClosed = motherInfo?.status === PATIENT_CLOSED;
 
@@ -45,26 +43,7 @@ export default async function SettingsAccount({
         <Separator className="my-4 flex-none" />
         <ScrollArea className="faded-bottom -mx-4 flex-1 scroll-smooth px-4 md:pb-16">
           <Suspense fallback={<>Loading...</>}>
-            <div className="-mx-1 px-1.5 flex flex-col gap-1 lg:max-w-xl">
-              {appointments.map(
-                ({ _id, date, time, status, pregnancyWeeks, type }) => (
-                  <AppointmentEntry
-                    key={_id.toString()}
-                    id={_id.toString()}
-                    date={date.toLocaleDateString("en-GB", {
-                      day: "2-digit",
-                      month: "short",
-                      year: "numeric",
-                    })}
-                    time={time}
-                    status={status || ""}
-                    pregnancyWeeks={pregnancyWeeks}
-                    userId={id}
-                    type={type || ""}
-                  />
-                )
-              )}
-            </div>
+            <AppointmentList id={id} />
           </Suspense>
         </ScrollArea>
         <UsersDialogs userId={id} />
