@@ -21,7 +21,7 @@ import { Toaster } from "@/components/ui/toaster";
 
 // This can come from your database or API.
 
-export function MedicalHistoryForm({
+export function MedicalHistoryFormClient({
   medicalHistory,
   userId,
 }: {
