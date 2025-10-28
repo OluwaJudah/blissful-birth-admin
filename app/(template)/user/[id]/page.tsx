@@ -3,9 +3,10 @@ import { Separator } from "@/components/ui/separator";
 import ProfileTabs from "@/components/user/[id]/profile/profile-tabs";
 import { getMotherDetails } from "@/data/mother-info";
 import UsersProvider from "@/components/user/[id]/profile/context/users-context";
-import { UsersDialogs } from "@/components/user/[id]/profile/users-dialogs";
 import { EditProfileButton } from "@/components/user/[id]/profile/edit-profile-button";
 import { ProfileOptionsDropdown } from "@/components/user/[id]/profile/profile-options-dropdown";
+import UsersDialogs from "@/components/user/[id]/profile/user-dialog";
+import { Suspense } from "react";
 
 export default async function SettingsProfile({
   params,
@@ -13,20 +14,6 @@ export default async function SettingsProfile({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const motherInfo = await getMotherDetails(id);
-  if (!motherInfo) return null;
-
-  const {
-    age,
-    g,
-    p,
-    packageType,
-    lastMenstrualDate,
-    scanDate,
-    scanGestationalAge,
-    fullName,
-    surname,
-  } = motherInfo;
 
   return (
     <UsersProvider>
@@ -48,19 +35,9 @@ export default async function SettingsProfile({
           <ProfileTabs userId={id} />
         </ScrollArea>
       </div>
-      <UsersDialogs
-        name={fullName + " " + surname}
-        motherInfoData={{
-          userId: id,
-          age: age || 0,
-          g: g || 0,
-          p: p || 0,
-          packageType: packageType || "",
-          lastMenstrualDate: lastMenstrualDate || null,
-          scanDate: scanDate || null,
-          scanGestationalAge: scanGestationalAge || "",
-        }}
-      />
+      <Suspense>
+        <UsersDialogs id={id} />
+      </Suspense>
     </UsersProvider>
   );
 }

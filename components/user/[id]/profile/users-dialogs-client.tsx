@@ -4,7 +4,7 @@ import { useUsers } from "./context/users-context";
 import { EditProfileDialog } from "./edit-profile-dialog";
 import { DeleteProfileDialog } from "./delete-profile-dialog";
 
-export function UsersDialogs({
+export function UsersDialogsClient({
   name,
   motherInfoData,
 }: {
