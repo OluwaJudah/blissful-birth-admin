@@ -3,8 +3,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { UsersDialogs } from "@/components/user/[id]/scans/users-dialogs";
 import { Suspense } from "react";
-import { CreateAppointmmentButton } from "@/components/user/[id]/scans/create-appointment-button";
 import ScanList from "@/components/user/[id]/scans/list";
+import { CreateScanButton } from "@/components/user/[id]/scans/create-appointment-button";
 
 export const revalidate = 0;
 
@@ -23,7 +23,7 @@ export default async function Scans({
             <h3 className="text-lg font-medium">Scans</h3>
           </div>
           <div className="flex gap-1">
-            <CreateAppointmmentButton />
+            <CreateScanButton />
           </div>
         </div>
         <Separator className="my-4 flex-none" />
