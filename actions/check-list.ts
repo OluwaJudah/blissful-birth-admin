@@ -9,8 +9,10 @@ export async function toggleCheckListItem(userId: string, key: string) {
 
   const checklist = (await CheckList.findOne({ userId })) as any;
 
-  const keys = ["datingScan", "anc", "week13", "week21"];
+  const keys = ["datingScan", "anc", "week13", "birthPrep", "week21"];
   if (!keys.includes(key)) return null;
+
+  if (!checklist[key]) checklist[key] = { status: false, completedAt: null };
 
   const current = checklist[key].status;
   checklist[key].status = !current;

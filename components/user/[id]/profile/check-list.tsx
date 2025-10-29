@@ -10,6 +10,7 @@ interface CheckListProps {
     datingScan: { status: boolean; completedAt?: string | null };
     anc: { status: boolean; completedAt?: string | null };
     week13: { status: boolean; completedAt?: string | null };
+    birthPrep: { status: boolean; completedAt?: string | null };
     week21: { status: boolean; completedAt?: string | null };
   };
 }
@@ -29,6 +30,7 @@ export default function CheckList({ userId, checklist }: CheckListProps) {
     { key: "datingScan", label: "Dating Scan" },
     { key: "anc", label: "ANC Visit" },
     { key: "week13", label: "Week 13 Visit" },
+    { key: "birthPrep", label: "Birth Prep" },
     { key: "week21", label: "Week 21 Visit" },
   ];
 
@@ -47,7 +49,7 @@ export default function CheckList({ userId, checklist }: CheckListProps) {
               <label key={item.key} className="flex items-center gap-2">
                 <input
                   type="checkbox"
-                  checked={data.status}
+                  checked={data?.status || false}
                   onChange={() => handleToggle(item.key)}
                   disabled={isPending}
                   className="w-4 h-4 accent-turquoise-500 rounded-md focus:ring-turquoise-600"

@@ -14,6 +14,10 @@ export interface ICheckList extends Document {
     status: boolean;
     completedAt?: Date | null;
   };
+  birthPrep: {
+    status: boolean;
+    completedAt?: Date | null;
+  };
   week21: {
     status: boolean;
     completedAt?: Date | null;
@@ -38,6 +42,10 @@ const CheckListSchema = new Schema<ICheckList>(
       completedAt: { type: Date, default: null },
     },
     week21: {
+      status: { type: Boolean, default: false },
+      completedAt: { type: Date, default: null },
+    },
+    birthPrep: {
       status: { type: Boolean, default: false },
       completedAt: { type: Date, default: null },
     },
