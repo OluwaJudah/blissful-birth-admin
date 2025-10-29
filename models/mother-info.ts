@@ -22,6 +22,7 @@ const MotherInfoSchema = new Schema<MotherInfo>(
     age: { type: Number },
     g: { type: Number },
     p: { type: Number },
+    bmi: { type: Number },
     scanDate: { type: Date },
     scanGestationalAge: { type: String },
     contactNumber: { type: String }, // required: true },

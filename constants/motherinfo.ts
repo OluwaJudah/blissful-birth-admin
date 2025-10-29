@@ -78,6 +78,12 @@ export const updateMotherInfoFormData: any[] = [
     placeholder: "Please enter the P value",
   },
   {
+    name: "bmi",
+    label: "BMI",
+    type: "number",
+    placeholder: "Please enter the BMI",
+  },
+  {
     name: "age",
     label: "Age",
     type: "number",

@@ -29,6 +29,7 @@ export async function updateMotherInfo(
   const {
     g,
     p,
+    bmi,
     packageType,
     age,
     scanDate,
@@ -43,6 +44,7 @@ export async function updateMotherInfo(
       $set: {
         g,
         p,
+        bmi,
         packageType,
         age,
         scanDate,

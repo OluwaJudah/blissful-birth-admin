@@ -25,6 +25,7 @@ const MotherInfo = async ({ userId }: { userId: string }) => {
     age,
     g,
     p,
+    bmi,
     contactNumber,
     email,
     countryOfOrigin,
@@ -51,76 +52,45 @@ const MotherInfo = async ({ userId }: { userId: string }) => {
   const packageTypeStr =
     packageTypeMap[packageType as keyof typeof packageTypeMap] || "N/A";
 
+  const InfoDiv = ({ title, value }: { title: string; value?: string }) => {
+    const displayValue =
+      value === undefined ||
+      value === null ||
+      value === "" ||
+      value === "undefined"
+        ? "N/A"
+        : String(value);
+
+    return (
+      <div className="flex flex-col">
+        <div className="text-sm font-bold">{title}</div>
+        <div className="break-words">{displayValue}</div>
+      </div>
+    );
+  };
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-4 gap-x-6">
-      <div className="flex flex-col">
-        <div className="text-sm font-bold">Full Name</div>
-        <div className="break-words">{fullName}</div>
-      </div>
-      <div className="flex flex-col">
-        <div className="text-sm font-bold">Surname</div>
-        <div className="break-words">{surname}</div>
-      </div>
-      <div className="flex flex-col">
-        <div className="text-sm font-bold">Maiden Name</div>
-        <div className="break-words">{maidenName || "N/A"}</div>
-      </div>
-      <div className="flex flex-col">
-        <div className="text-sm font-bold">ID / Passport</div>
-        <div className="break-words">{idPassportNo || "N/A"}</div>
-      </div>
-      <div className="flex flex-col">
-        <div className="text-sm font-bold">Date of Birth</div>
-        <div className="break-words">
-          {dateOfBirth?.toDateString() || "N/A"}
-        </div>
-      </div>
-      <div className="flex flex-col">
-        <div className="text-sm font-bold">Contact Number</div>
-        <div className="break-words">{contactNumber || "N/A"}</div>
-      </div>
-      <div className="flex flex-col">
-        <div className="text-sm font-bold">Email Address</div>
-        <div className="break-words">{email || "N/A"}</div>
-      </div>
-      <div className="flex flex-col">
-        <div className="text-sm font-bold">Country Of Origin</div>
-        <div className="break-words">{countryOfOrigin || "N/A"}</div>
-      </div>
-      <div className="flex flex-col">
-        <div className="text-sm font-bold">Occupation</div>
-        <div className="break-words">{occupation || "N/A"}</div>
-      </div>
-      <div className="flex flex-col">
-        <div className="text-sm font-bold">Last Menstrual Cycle</div>
-        <div className="break-words">
-          {lastMenstrualDate?.toDateString() || "N/A"}
-        </div>
-      </div>
-      <div className="flex flex-col">
-        <div className="text-sm font-bold">Expected Delivery Date (EDD)</div>
-        <div className="break-words">{eddStr || "N/A"}</div>
-      </div>
-      <div className="flex flex-col">
-        <div className="text-sm font-bold">Age</div>
-        <div className="break-words">{age || "N/A"}</div>
-      </div>
-      <div className="flex flex-col">
-        <div className="text-sm font-bold">G</div>
-        <div className="break-words">{g || "N/A"}</div>
-      </div>
-      <div className="flex flex-col">
-        <div className="text-sm font-bold">P</div>
-        <div className="break-words">{p || "N/A"}</div>
-      </div>
-      <div className="flex flex-col">
-        <div className="text-sm font-bold">Package Type</div>
-        <div className="break-words">{packageTypeStr}</div>
-      </div>
-      <div className="flex flex-col">
-        <div className="text-sm font-bold">Status</div>
-        <div className="break-words">{statusStr}</div>
-      </div>
+      <InfoDiv title="Full Name" value={fullName} />
+      <InfoDiv title="Surname" value={surname} />
+      <InfoDiv title="Maiden Name" value={maidenName} />
+      <InfoDiv title="ID / Passport" value={idPassportNo} />
+      <InfoDiv title="Date of Birth" value={dateOfBirth?.toDateString()} />
+      <InfoDiv title="Contact Number" value={contactNumber} />
+      <InfoDiv title="Email Address" value={email} />
+      <InfoDiv title="Country Of Origin" value={countryOfOrigin} />
+      <InfoDiv title="Occupation" value={occupation} />
+      <InfoDiv
+        title="Last Menstrual Cycle"
+        value={lastMenstrualDate?.toDateString()}
+      />
+      <InfoDiv title="Expected Delivery Date (EDD)" value={eddStr} />
+      <InfoDiv title="Age" value={age + ""} />
+      <InfoDiv title="BMI" value={bmi + ""} />
+      <InfoDiv title="G" value={g + ""} />
+      <InfoDiv title="P" value={p + ""} />
+      <InfoDiv title="Package Type" value={packageTypeStr} />
+      <InfoDiv title="Status" value={statusStr} />
 
       {/* Full-width Registration Link */}
       {/* <div className="col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4 flex flex-col">

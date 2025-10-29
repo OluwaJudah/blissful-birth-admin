@@ -204,6 +204,7 @@ export type IMotherInfo = IBirthCompanion & {
   age?: number;
   g?: number;
   p?: number;
+  bmi?: number;
   scanDate?: Date;
   scanGestationalAge?: string;
   paymentSum?: number;
@@ -221,6 +222,7 @@ export type MotherInfoData = {
   age: number;
   g: number;
   p: number;
+  bmi: number;
   packageType: string;
   lastMenstrualDate: Date | null;
   scanDate: Date | null;
@@ -243,6 +245,7 @@ export type UpdateMotherInfoFormState = {
 export const updateMotherInfoFormSchema = z.object({
   g: z.coerce.number(),
   p: z.coerce.number(),
+  bmi: z.coerce.number(),
   age: z.coerce.number().min(1, {
     message: "Age must be greater than 0.",
   }),

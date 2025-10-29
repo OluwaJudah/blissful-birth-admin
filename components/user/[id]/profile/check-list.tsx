@@ -34,7 +34,7 @@ export default function CheckList({ userId, checklist }: CheckListProps) {
       <div className="text-sm text-gray-500 mb-4">
         Mark the completed scans and tests below.
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-y-3 gap-x-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-y-3 gap-x-6">
         {checklistItems.map((item) => {
           const data = checklist[item.key as keyof typeof checklist];
           return (
