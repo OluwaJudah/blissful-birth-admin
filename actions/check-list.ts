@@ -2,6 +2,7 @@
 import CheckList from "@/models/check-list";
 import { revalidatePath } from "next/cache";
 import dbConnect from "@/lib/db";
+import { checklistItems } from "@/constants/motherinfo";
 
 // ✅ Toggle a checklist field (check/uncheck)
 export async function toggleCheckListItem(userId: string, key: string) {
@@ -9,10 +10,8 @@ export async function toggleCheckListItem(userId: string, key: string) {
 
   const checklist = (await CheckList.findOne({ userId })) as any;
 
-  const keys = ["datingScan", "anc", "week13", "birthPrep", "week21"];
+  const keys = checklistItems.map((c) => c.key);
   if (!keys.includes(key)) return null;
-
-  if (!checklist[key]) checklist[key] = { status: false, completedAt: null };
 
   const current = checklist[key].status;
   checklist[key].status = !current;

@@ -3,6 +3,7 @@
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toggleCheckListItem } from "@/actions/check-list";
+import { checklistItems } from "@/constants/motherinfo";
 
 interface CheckListProps {
   userId: string;
@@ -26,14 +27,6 @@ export default function CheckList({ userId, checklist }: CheckListProps) {
     });
   };
 
-  const items = [
-    { key: "datingScan", label: "Dating Scan" },
-    { key: "anc", label: "ANC Visit" },
-    { key: "week13", label: "Week 13 Visit" },
-    { key: "birthPrep", label: "Birth Prep" },
-    { key: "week21", label: "Week 21 Visit" },
-  ];
-
   return (
     <div className="col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4 mt-1">
       <div className="font-semibold text-base mb-2">Appointment Checklist</div>
@@ -42,7 +35,7 @@ export default function CheckList({ userId, checklist }: CheckListProps) {
         Mark the completed scans and tests below.
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-y-3 gap-x-6">
-        {items.map((item) => {
+        {checklistItems.map((item) => {
           const data = checklist[item.key as keyof typeof checklist];
           return (
             <div key={item.key}>

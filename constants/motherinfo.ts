@@ -140,3 +140,11 @@ export const scanTextAreaForm: any[] = [
     placeholder: "Please enter warning here.",
   },
 ];
+
+export const checklistItems = [
+  { key: "datingScan", label: "Dating Scan" },
+  { key: "anc", label: "ANC Visit" },
+  { key: "week13", label: "Week 13 Visit" },
+  { key: "birthPrep", label: "Birth Prep" },
+  { key: "week21", label: "Week 21 Visit" },
+];
